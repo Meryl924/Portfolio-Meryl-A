@@ -4,7 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Meryl Agnikpe — Web &amp; UI/UX Designer</title>
-<meta name="description" content="Meryl Agnikpe designs websites, digital products and brand identities with Figma and Framer.">
+<meta name="description" content="Meryl Agnikpe designs websites, digital products and brand identities with Figma, Framer and Spline 3D.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Meryl Agnikpe — Web &amp; UI/UX Designer">
+<meta property="og:description" content="Websites, products and brand identities designed by Meryl Agnikpe.">
+<meta property="og:url" content="https://meryl924.github.io/Portfolio-Meryl-A/">
+<meta property="og:image" content="https://meryl924.github.io/Portfolio-Meryl-A/assets/img/meryl-portrait.jpg">
+<meta name="twitter:card" content="summary_large_image">
 <style>
   @font-face { font-family: "Red Hat Display"; src: url("assets/fonts/redhatdisplay-latin-ext.woff2") format("woff2"); font-weight: 400 800; font-display: swap;
     unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
@@ -23,6 +29,8 @@
     --soft-2: #eaf0fe;
     --line: #e3e8f4;
     --grad: linear-gradient(90deg, #013b9a, #3866f1 44%, #65acff);
+    --grad-ink: linear-gradient(90deg, #013b9a, #3866f1);
+    --grad-ink-hover: linear-gradient(90deg, #1846c9, #3a6ee8);
     --grad-deep: linear-gradient(135deg, #0a2a7a 0%, #1846c9 55%, #3a7bff 100%);
     --shadow: 0 10px 40px rgba(16, 42, 110, .08);
     --shadow-lg: 0 24px 60px rgba(16, 42, 110, .14);
@@ -40,6 +48,14 @@
   img { display: block; max-width: 100%; }
   button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
   .wrap { max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); }
+  ::selection { background: #d6e2ff; color: var(--ink); }
+  html { accent-color: var(--blue); caret-color: var(--blue); }
+  :focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; }
+  footer :focus-visible { outline-color: #fff; }
+  [tabindex="-1"]:focus { outline: none; }
+  .skip { position: fixed; left: 16px; top: -64px; z-index: 100; background: #fff; color: var(--navy); font-weight: 600; padding: 12px 18px; border-radius: 12px; box-shadow: var(--shadow-lg); transition: top 150ms var(--ease-out); }
+  .skip:focus { top: 16px; }
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 
   /* ---------- Type ---------- */
   .eyebrow { font-size: 13px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--ink); }
@@ -57,19 +73,19 @@
   .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; height: 48px; padding: 0 28px; border-radius: 999px; font-size: 15px; font-weight: 500; transition: transform 200ms var(--ease-out), border-color 200ms ease, background-color 200ms ease; white-space: nowrap; position: relative; isolation: isolate; }
   .btn:active { transform: scale(.97); transition-duration: 160ms; }
   .btn svg { width: 16px; height: 16px; }
-  .btn-grad { background: var(--grad); background-size: 160% 100%; color: #fff; box-shadow: 0 8px 24px rgba(56, 102, 241, .35); }
-  .btn-grad::before { content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; background: var(--grad); background-size: 160% 100%; background-position: 100% 0; box-shadow: 0 12px 30px rgba(56, 102, 241, .45); opacity: 0; transition: opacity 200ms ease; pointer-events: none; }
-  .btn-ghost { background: linear-gradient(90deg, #fff, rgba(255,255,255,0)); border: 1px solid var(--line); color: var(--navy); box-shadow: 0 6px 18px rgba(56, 102, 241, .12); }
+  .btn-grad { background: var(--grad-ink); color: #fff; box-shadow: 0 8px 24px rgba(56, 102, 241, .35); }
+  .btn-grad::before { content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; background: var(--grad-ink-hover); box-shadow: 0 12px 30px rgba(56, 102, 241, .45); opacity: 0; transition: opacity 200ms ease; pointer-events: none; }
   .btn-navy { background: #1c2a6b; color: #fff; height: 42px; font-size: 14px; }
   .btn-white { background: #fff; color: var(--navy); }
   .btn-white::before { content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; box-shadow: 0 10px 26px rgba(0,0,0,.18); opacity: 0; transition: opacity 200ms ease; pointer-events: none; }
+  .btn-ghost { background: linear-gradient(90deg, #fff, rgba(255,255,255,0)); border: 1px solid var(--line); color: var(--navy); box-shadow: 0 6px 18px rgba(56, 102, 241, .12); }
 
   /* ---------- Nav ---------- */
   .nav { position: fixed; inset: 0 0 auto 0; z-index: 50; transition: background .3s, box-shadow .3s; }
   .nav.scrolled { background: rgba(255,255,255,.88); backdrop-filter: blur(14px); box-shadow: 0 1px 0 var(--line); }
   .nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 80px; gap: 24px; }
   .logo { display: inline-flex; align-items: center; gap: 10px; font-weight: 700; font-size: 20px; color: var(--navy); letter-spacing: .01em; }
-  .logo-mark { width: 34px; height: 34px; border-radius: 10px; background: var(--grad); display: grid; place-items: center; color: #fff; font-size: 17px; font-weight: 800; box-shadow: 0 6px 16px rgba(56,102,241,.35); }
+  .logo-mark { width: 34px; height: 34px; border-radius: 10px; background: var(--grad-ink); display: grid; place-items: center; color: #fff; font-size: 17px; font-weight: 800; box-shadow: 0 6px 16px rgba(56,102,241,.35); }
   .nav-links { display: flex; gap: 40px; font-size: 15px; font-weight: 500; color: var(--ink); }
   .nav-links a { position: relative; padding: 6px 0; }
   .nav-links a::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; border-radius: 2px; background: var(--grad); transform: scaleX(0); transform-origin: left; transition: transform 200ms var(--ease-out); }
@@ -89,7 +105,8 @@
   .page.active { display: block; }
 
   /* ---------- Hero ---------- */
-  .hero { position: relative; padding: 150px 0 40px; overflow: hidden; }
+  .hero { position: relative; padding: 136px 0 24px; overflow: hidden; }
+  #work { padding-top: 72px; }
   .hero::before { content: ""; position: absolute; right: -12%; top: -10%; width: 70vw; height: 70vw; max-width: 980px; max-height: 980px; background: radial-gradient(closest-side, rgba(101,172,255,.22), rgba(56,102,241,.08) 55%, transparent 75%); pointer-events: none; }
   .hero .wrap { position: relative; display: grid; grid-template-columns: 1.1fr .9fr; gap: 56px; align-items: center; }
   .badge { display: inline-flex; align-items: center; gap: 10px; padding: 6px 14px 6px 6px; border: 1px solid var(--line); border-radius: 999px; background: #fff; font-size: 13px; font-weight: 500; color: var(--navy); box-shadow: var(--shadow); margin-bottom: 28px; }
@@ -98,7 +115,7 @@
   .hero .lead { margin-bottom: 40px; }
   .hero-ctas { display: flex; gap: 14px; flex-wrap: wrap; }
 
-  .hero-visual { position: relative; justify-self: center; width: min(100%, 470px); }
+  .hero-visual { position: relative; justify-self: center; width: min(100%, 420px); }
   .hero-visual .rings { position: absolute; inset: -14%; border-radius: 50%; border: 1px solid rgba(56,102,241,.16); }
   .hero-visual .rings::before, .hero-visual .rings::after { content: ""; position: absolute; border-radius: 50%; border: 1px solid rgba(56,102,241,.12); }
   .hero-visual .rings::before { inset: 9%; }
@@ -111,39 +128,32 @@
   .chip small { display: block; font-size: 12px; font-weight: 500; color: var(--muted); }
   .chip .ico { width: 36px; height: 36px; border-radius: 10px; background: var(--soft-2); display: grid; place-items: center; color: var(--blue); }
   .chip .ico svg { width: 18px; height: 18px; }
+  /* Tool logos (Framer, Figma, Illustrator) */
+  .chip .ico.logo { background: #fff; box-shadow: inset 0 0 0 1px var(--line); }
+  .chip .ico.logo svg { width: auto; height: 20px; }
+  .chip .ico.logo-ai { background: #330000; box-shadow: none; }
+  .chip .ico.logo-ai svg { width: 36px; height: 36px; }
   .chip-1 { left: -56px; top: 14%; }
   .chip-2 { right: -40px; top: 46%; animation-delay: -2s; }
   .chip-3 { left: -24px; bottom: 8%; animation-delay: -4s; }
   @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 
   /* ---------- Bento services ---------- */
-  .bento { display: grid; grid-template-columns: 1fr 1fr 1fr; grid-template-rows: repeat(2, minmax(270px, auto)); gap: 16px; }
+  .bento { display: grid; grid-template-columns: 1fr 1fr 1fr; grid-template-rows: repeat(2, minmax(300px, auto)); gap: 16px; }
   .tile { position: relative; overflow: hidden; border-radius: var(--radius); background: linear-gradient(160deg, #f7f9ff 0%, #eef3ff 100%); border: 1px solid #edf1fb; padding: 28px; display: flex; flex-direction: column; justify-content: flex-end; gap: 10px; transition: transform 200ms var(--ease-out), box-shadow 200ms var(--ease-out); }
-  .tile .icon { width: 44px; height: 44px; border-radius: 12px; background: #fff; display: grid; place-items: center; color: var(--navy); box-shadow: 0 4px 12px rgba(16,42,110,.08); margin-bottom: 10px; position: relative; z-index: 1; }
-  .tile .icon svg { width: 22px; height: 22px; }
   .tile h3 { font-size: 26px; font-weight: 500; line-height: 1.15; color: var(--ink); position: relative; z-index: 1; }
   .tile p { font-size: 14px; color: var(--muted); max-width: 360px; position: relative; z-index: 1; }
   .tile-a { grid-row: 1 / 3; }
-  .tile-b { grid-column: 2 / 4; }
+  .tile-b { grid-column: 2 / 4; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); grid-template-rows: 1fr auto auto; column-gap: 28px; }
+  .tile-b .tile-shot { grid-column: 2; grid-row: 1 / 4; margin: -8px -8px -8px 0; }
+  .tile-b h3 { grid-column: 1; grid-row: 2; }
+  .tile-b p { grid-column: 1; grid-row: 3; }
+  /* Real project shots illustrating each service */
+  .tile-shot { position: relative; flex: 1 1 auto; min-height: 150px; margin: -8px -8px 14px; border-radius: 14px; overflow: hidden; background: #fff; box-shadow: 0 14px 34px rgba(16,42,110,.12); }
+  .tile-shot img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: var(--pos, 50% 50%); transition: transform 500ms var(--ease-out); }
   .tools-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px; position: relative; z-index: 1; }
   .tools-row span { padding: 6px 12px; border-radius: 999px; background: #fff; border: 1px solid var(--line); font-size: 13px; font-weight: 500; color: var(--navy); }
 
-  /* decorative tile art */
-  .art { position: absolute; pointer-events: none; }
-  .art-browser { top: 34px; left: 28px; right: 28px; height: 54%; border-radius: 14px; background: #fff; box-shadow: 0 16px 40px rgba(16,42,110,.10); padding: 34px 18px 18px; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: auto 1fr; gap: 10px; }
-  .art-browser::before { content: ""; position: absolute; top: 13px; left: 16px; width: 42px; height: 8px; background: radial-gradient(circle, #c8d4f3 3.5px, transparent 4px) 0 0 / 14px 8px repeat-x; }
-  .art-browser i { display: block; border-radius: 8px; background: var(--soft-2); }
-  .art-browser i:first-child { grid-column: 1 / 3; height: 34%; min-height: 54px; background: var(--grad); opacity: .85; }
-  .art-browser i:nth-child(2) { background: linear-gradient(180deg, #dfe8ff, #f1f5ff); }
-  .art-phone { right: 36px; top: 26px; width: 120px; height: 196px; border-radius: 22px; background: #fff; box-shadow: 0 16px 40px rgba(16,42,110,.12); padding: 16px 12px; display: flex; flex-direction: column; gap: 8px; }
-  .art-phone i { display: block; height: 10px; border-radius: 6px; background: var(--soft-2); }
-  .art-phone i:first-child { height: 64px; background: var(--grad); opacity: .85; }
-  .art-phone i:nth-child(3) { width: 70%; }
-  .art-wire { right: 180px; top: 54px; width: 150px; height: 120px; border: 1.5px dashed #b9c8f1; border-radius: 14px; }
-  .art-wire::after { content: ""; position: absolute; left: 100%; top: 50%; width: 30px; border-top: 1.5px dashed #b9c8f1; }
-  .art-logo { right: 22px; top: 22px; width: 96px; height: 96px; border-radius: 50%; background: conic-gradient(from 200deg, #013b9a, #3866f1, #65acff, #013b9a); opacity: .9; }
-  .art-logo::after { content: ""; position: absolute; inset: 22px; border-radius: 50%; background: #f1f5ff; }
-  .art-nodes { right: 26px; top: 26px; width: 110px; height: 80px; }
 
   /* ---------- Work carousel ---------- */
   .carousel { position: relative; }
@@ -187,7 +197,7 @@
   .exp-nav button { text-align: left; padding: 14px 18px; border-radius: 14px; font-size: 15px; font-weight: 500; color: var(--muted); display: flex; justify-content: space-between; align-items: center; transition: background .2s, color .2s; }
   .exp-nav button span:last-child { font-size: 12px; opacity: .8; }
   .exp-nav button:hover { color: var(--ink); background: var(--soft); }
-  .exp-nav button.active { color: var(--navy); background: var(--soft-2); }
+  .exp-nav button[aria-selected="true"], .exp-nav button.active { color: var(--navy); background: var(--soft-2); }
   .exp-card { position: relative; overflow: hidden; border-radius: var(--radius); background: #fff; border: 1px solid #eef2fb; box-shadow: var(--shadow); padding: 44px; min-height: 360px; display: grid; grid-template-columns: 1.2fr 1fr; gap: 32px; align-items: center; }
   .exp-card .eyebrow { color: var(--blue); margin-bottom: 18px; }
   .exp-card h3 { font-size: clamp(28px, 3vw, 40px); font-weight: 500; line-height: 1.12; margin-bottom: 18px; }
@@ -205,9 +215,11 @@
   .acc-head { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 20px; text-align: left; padding: 22px 26px; font-size: 17px; font-weight: 500; color: var(--ink); }
   .acc-icon { flex: 0 0 32px; height: 32px; border-radius: 50%; background: #fff; display: grid; place-items: center; color: var(--navy); box-shadow: 0 4px 10px rgba(16,42,110,.08); transition: transform 250ms var(--ease-in-out), background 200ms ease, color 200ms ease; }
   .acc-icon svg { width: 14px; height: 14px; }
-  .acc-item.open .acc-icon { transform: rotate(45deg); background: var(--grad); color: #fff; }
+  .acc-item.open .acc-icon { transform: rotate(45deg); background: var(--grad-ink); color: #fff; }
   .acc-body { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 250ms var(--ease-in-out); }
-  .acc-body > div { overflow: hidden; }
+  .acc-body > div { overflow: hidden; visibility: hidden; transition: visibility 0s linear 250ms; }
+  .acc-item.open .acc-body > div { visibility: visible; transition-delay: 0s; }
+  .acc-item h3 { font: inherit; }
   .acc-body p { padding: 0 26px 24px; color: var(--muted); font-size: 15px; max-width: 620px; }
   .acc-item.open .acc-body { grid-template-rows: 1fr; }
 
@@ -224,7 +236,6 @@
   .crumbs { display: flex; gap: 8px; font-size: 14px; color: var(--muted); margin-bottom: 28px; }
   .crumbs a:hover { color: var(--navy); }
   .pd-head { display: grid; grid-template-columns: 1.3fr 1fr; gap: 56px; align-items: end; margin-bottom: 40px; }
-  .pd-head .eyebrow { color: var(--blue); margin-bottom: 16px; }
   .pd-head .lead { max-width: none; }
   .pd-meta { display: grid; grid-template-columns: repeat(3, 1fr) auto; gap: 12px; margin-bottom: 40px; }
   .pd-meta > div { background: var(--soft); border-radius: 16px; padding: 18px 22px; }
@@ -240,7 +251,7 @@
   .next-proj { margin-top: 64px; display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 36px 40px; border-radius: var(--radius); background: linear-gradient(160deg, #f7f9ff, #eef3ff); border: 1px solid #edf1fb; position: relative; transition: transform 200ms var(--ease-out); }
   .next-proj::after { content: ""; position: absolute; inset: 0; border-radius: inherit; box-shadow: var(--shadow-lg); opacity: 0; transition: opacity 200ms ease; pointer-events: none; }
   .next-proj .h-md { margin-top: 8px; }
-  .next-proj .go { width: 56px; height: 56px; border-radius: 50%; background: var(--grad); color: #fff; display: grid; place-items: center; flex: 0 0 auto; }
+  .next-proj .go { width: 56px; height: 56px; border-radius: 50%; background: var(--grad-ink); color: #fff; display: grid; place-items: center; flex: 0 0 auto; }
   .next-proj .go svg { width: 20px; height: 20px; }
 
   /* ---------- Contact page ---------- */
@@ -255,27 +266,28 @@
   .contact-list small { display: block; font-size: 12px; color: var(--muted); font-weight: 500; }
   .form-card { background: #fff; border-radius: 28px; padding: 36px; box-shadow: var(--shadow-lg); border: 1px solid #eef2fb; display: grid; gap: 18px; }
   .form-card label { display: grid; gap: 8px; font-size: 14px; font-weight: 500; color: var(--ink); }
-  .form-card input, .form-card textarea, .form-card select { width: 100%; font: inherit; font-size: 15px; color: var(--ink); background: var(--soft); border: 1px solid transparent; border-radius: 14px; padding: 14px 16px; outline: none; transition: border-color .2s, background .2s; }
+  .form-card input, .form-card textarea, .form-card select { width: 100%; font: inherit; font-size: 16px; color: var(--ink); background: var(--soft); border: 1px solid transparent; border-radius: 14px; padding: 14px 16px; transition: border-color .2s, background .2s; }
   .form-card input:focus, .form-card textarea:focus, .form-card select:focus { border-color: var(--blue); background: #fff; }
   .form-card textarea { min-height: 140px; resize: vertical; }
   .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
   .form-card .btn { width: 100%; margin-top: 6px; }
   .form-note { font-size: 13px; color: var(--muted); text-align: center; }
+  .form-note a { color: var(--navy); text-decoration: underline; text-underline-offset: 3px; }
 
   /* ---------- Footer ---------- */
   footer { position: relative; overflow: hidden; margin-top: 0; background: var(--grad-deep); color: #fff; border-radius: 40px 40px 0 0; padding: 80px 0 28px; }
   footer::before { content: ""; position: absolute; right: -15%; top: -40%; width: 70%; height: 140%; border-radius: 50%; background: radial-gradient(closest-side, rgba(255,255,255,.10), transparent); }
   footer .wrap { position: relative; }
-  .foot-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 64px; }
+  .foot-grid { display: grid; grid-template-columns: 1.6fr 1fr 1fr; gap: 40px; margin-bottom: 64px; }
   .foot-brand .logo { color: #fff; margin-bottom: 40px; }
   .foot-brand .logo-mark { background: #fff; color: var(--navy); box-shadow: none; }
-  .foot-brand h4 { font-size: 22px; font-weight: 500; margin-bottom: 20px; }
+  .foot-title { font-size: 22px; font-weight: 500; margin-bottom: 20px; }
   .foot-mail { display: inline-flex; align-items: center; gap: 12px; padding: 14px 22px; border-radius: 999px; background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.22); font-size: 15px; transition: background .2s; overflow-wrap: anywhere; }
   .foot-mail:hover { background: rgba(255,255,255,.2); }
   .foot-brand .foot-mail { display: flex; width: fit-content; }
   .foot-mail + .foot-mail { margin-top: 10px; }
-  .foot-col h5 { font-size: 20px; font-weight: 500; margin-bottom: 20px; }
-  .foot-col a, .foot-col span { display: block; font-size: 14px; opacity: .78; padding: 5px 0; transition: opacity .2s; }
+  .foot-col h2 { font-size: 20px; font-weight: 500; margin-bottom: 20px; }
+  .foot-col a { display: block; font-size: 14px; opacity: .78; padding: 5px 0; transition: opacity .2s; }
   .foot-col a:hover { opacity: 1; }
   .foot-bottom { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding: 16px 24px; border-radius: 16px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.14); font-size: 13px; opacity: .9; }
 
@@ -291,13 +303,16 @@
 
   /* Hover motion only for real pointers (no sticky hover after a tap) */
   @media (hover: hover) and (pointer: fine) {
-    .btn-grad:hover, .btn-ghost:hover, .btn-navy:hover, .btn-white:hover { transform: translateY(-2px); }
+    .btn-grad:hover, .btn-ghost:hover { transform: translateY(-2px); }
     .btn:active:hover { transform: scale(.97); }
-    .btn-grad:hover::before, .btn-white:hover::before { opacity: 1; }
+    .btn-grad:hover::before { opacity: 1; }
     .btn-ghost:hover { border-color: #c9d6f6; }
-    .btn-navy:hover { background-color: var(--navy); }
     .nav-links a:hover::after { transform: scaleX(1); }
+    .btn-navy:hover, .btn-white:hover { transform: translateY(-2px); }
+    .btn-white:hover::before { opacity: 1; }
+    .btn-navy:hover { background-color: var(--navy); }
     .tile:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+    .tile:hover .tile-shot img { transform: scale(1.04); }
     .case:hover::after { opacity: 1; }
     .case:hover .case-media img { transform: scale(1.03); }
     .arrows button:not(:disabled):hover { transform: translateY(-2px); }
@@ -313,7 +328,8 @@
     @keyframes heroFade { from { opacity: 0; } }
     .exp-card .fade { animation-name: heroFade; }
     .chip, .hero-visual .rings::after { animation: none; }
-    .btn, .btn:hover, .btn:active, .tile:hover, .arrows button:hover, .arrows button:active, .next-proj:hover, .burger:active, .case:hover .case-media img { transform: none !important; }
+    .btn, .btn:hover, .btn:active, .tile:hover, .tile:hover .tile-shot img, .arrows button:hover, .arrows button:active, .next-proj:hover, .burger:active, .case:hover .case-media img { transform: none !important; }
+    .skip { transition: none; }
     .mobile-menu { transform: none !important; }
   }
 
@@ -322,10 +338,10 @@
     :root { --gutter: 28px; }
     .nav-links, .nav .btn { display: none; }
     .burger { display: flex; }
-    .mobile-menu { display: grid; position: fixed; top: 80px; left: 16px; right: 16px; z-index: 49; background: #fff; border-radius: 22px; box-shadow: var(--shadow-lg); padding: 14px; gap: 2px; opacity: 0; transform: translateY(-6px) scale(.97); transform-origin: top right; pointer-events: none; transition: opacity 150ms ease, transform 150ms var(--ease-out); }
-    .nav.open + .mobile-menu { opacity: 1; transform: none; pointer-events: auto; transition-duration: 220ms; }
+    .mobile-menu { display: grid; position: fixed; top: 80px; left: 16px; right: 16px; z-index: 49; background: #fff; border-radius: 22px; box-shadow: var(--shadow-lg); padding: 14px; gap: 2px; opacity: 0; transform: translateY(-6px) scale(.97); transform-origin: top right; pointer-events: none; visibility: hidden; transition: opacity 150ms ease, transform 150ms var(--ease-out), visibility 0s linear 150ms; }
+    .nav.open + .mobile-menu { opacity: 1; transform: none; pointer-events: auto; visibility: visible; transition: opacity 220ms ease, transform 220ms var(--ease-out), visibility 0s; }
     .mobile-menu a { padding: 14px 16px; border-radius: 12px; font-size: 17px; font-weight: 500; color: var(--ink); }
-    .mobile-menu a:hover { background: var(--soft); }
+    .mobile-menu a:not(.btn):hover { background: var(--soft); }
     .mobile-menu .btn { margin-top: 8px; color: #fff; }
     .nav.open { background: rgba(255,255,255,.95); }
 
@@ -335,8 +351,7 @@
     .band-intro { grid-column: 1 / -1; padding-right: 0; }
     .stat:nth-child(2) { border-left: 0; padding-left: 0; }
     .exp { grid-template-columns: 1fr; gap: 20px; }
-    .exp-nav { flex-direction: row; overflow-x: auto; gap: 6px; scrollbar-width: none; margin: 0 calc(-1 * var(--gutter)); padding: 0 var(--gutter); }
-    .exp-nav::-webkit-scrollbar { display: none; }
+    .exp-nav { flex-direction: row; flex-wrap: wrap; gap: 8px; }
     .exp-nav button { flex: 0 0 auto; padding: 10px 16px; border-radius: 999px; background: var(--soft); }
     .exp-nav button span:last-child { display: none; }
     .faq { grid-template-columns: 1fr; gap: 32px; }
@@ -356,7 +371,9 @@
     .bento { grid-template-columns: 1fr; grid-template-rows: none; }
     .tile-a, .tile-b { grid-row: auto; grid-column: auto; }
     .tile { min-height: 300px; }
-    .art-wire { display: none; }
+    .tile-b { display: flex; }
+    .tile-b .tile-shot { margin: -8px -8px 14px; }
+    .tile-shot { min-height: 190px; }
     .case { flex-basis: 88%; grid-template-columns: 1fr; padding: 14px; }
     .case-media { order: -1; aspect-ratio: 4 / 3; }
     .band { grid-template-columns: 1fr; padding: 40px 24px; border-radius: 24px; }
@@ -384,31 +401,33 @@
 </head>
 <body>
 
+<a class="skip" href="#main">Skip to content</a>
+
 <!-- ================= NAV ================= -->
 <header class="nav" id="nav">
   <div class="wrap">
-    <a href="#/" class="logo"><span class="logo-mark">M</span>MERYL A.</a>
-    <nav class="nav-links">
-      <a href="#/" data-section="services">Services</a>
-      <a href="#/" data-section="work">Work</a>
-      <a href="#/" data-section="experience">Experience</a>
-      <a href="#/" data-section="faq">FAQ</a>
+    <a href="#/" class="logo" aria-label="Meryl Agnikpe, home"><span class="logo-mark" aria-hidden="true">M</span>MERYL A.</a>
+    <nav class="nav-links" aria-label="Main">
+      <a href="#/work">Work</a>
+      <a href="#/experience">Experience</a>
+      <a href="#/services">Services</a>
+      <a href="#/faq">FAQ</a>
     </nav>
     <a href="#/contact" class="btn btn-grad">Start a project
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
     </a>
-    <button class="burger" id="burger" aria-label="Open menu"><span></span><span></span><span></span></button>
+    <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu"><span></span><span></span><span></span></button>
   </div>
 </header>
-<div class="mobile-menu" id="mobileMenu">
-  <a href="#/" data-section="services">Services</a>
-  <a href="#/" data-section="work">Work</a>
-  <a href="#/" data-section="experience">Experience</a>
-  <a href="#/" data-section="faq">FAQ</a>
+<nav class="mobile-menu" id="mobileMenu" aria-label="Mobile" inert>
+  <a href="#/work">Work</a>
+  <a href="#/experience">Experience</a>
+  <a href="#/services">Services</a>
+  <a href="#/faq">FAQ</a>
   <a href="#/contact" class="btn btn-grad">Start a project</a>
-</div>
+</nav>
 
-<main>
+<main id="main" tabindex="-1">
 
 <!-- ================= HOME ================= -->
 <div class="page" data-page="home">
@@ -417,72 +436,34 @@
     <div class="wrap">
       <div>
         <div class="badge hero-in"><b>Hello</b> I’m Meryl, Web &amp; UI/UX Designer</div>
-        <h1 class="h-xl grad-text hero-in d1">Websites, Products &amp; Brands Designed to Stand Out</h1>
+        <h1 class="h-xl grad-text hero-in d1" tabindex="-1">Websites, Products &amp; Brands Designed to Stand Out</h1>
         <p class="lead hero-in d2">I’m Meryl Agnikpe. I help individuals and businesses turn ideas into clean, modern and functional digital experiences — designed in Figma and built without code in Framer.</p>
         <div class="hero-ctas hero-in d3">
           <a href="#/contact" class="btn btn-grad">Start a project
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
           </a>
-          <a href="#/" data-section="work" class="btn btn-ghost">See my work</a>
+          <a href="#/work" class="btn btn-ghost">See my work</a>
         </div>
       </div>
       <div class="hero-visual hero-in d2">
-        <div class="rings"></div>
-        <div class="portrait"><img src="assets/img/meryl-portrait.jpg" alt="Portrait of Meryl Agnikpe"></div>
-        <div class="chip chip-1"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M3 8h18M8 21h8"/></svg></span><span>Website Design<small>Framer · No-code</small></span></div>
-        <div class="chip chip-2"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="7" y="2" width="10" height="20" rx="2.5"/><path d="M11 18h2"/></svg></span><span>UI/UX Design<small>Figma</small></span></div>
-        <div class="chip chip-3"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 0 0 18M3 12h18"/></svg></span><span>Logo &amp; Branding<small>Visual identity</small></span></div>
+        <div class="rings" aria-hidden="true"></div>
+        <div class="portrait"><img src="assets/img/meryl-portrait.jpg" alt="Portrait of Meryl Agnikpe" width="470" height="540"></div>
+        <div class="chip chip-1" aria-hidden="true"><span class="ico logo" title="Framer"><svg viewBox="0 0 14 21"><path fill="#000" d="M0 0h14v7H7zm0 7h7l7 7H7v7l-7-7z"/></svg></span><span>Website Design<small>Framer · No-code</small></span></div>
+        <div class="chip chip-2" aria-hidden="true"><span class="ico logo" title="Figma"><svg viewBox="0 0 38 57"><path fill="#1abcfe" d="M19 28.5a9.5 9.5 0 1 1 19 0 9.5 9.5 0 0 1-19 0z"/><path fill="#0acf83" d="M0 47.5A9.5 9.5 0 0 1 9.5 38H19v9.5a9.5 9.5 0 1 1-19 0z"/><path fill="#ff7262" d="M19 0v19h9.5a9.5 9.5 0 1 0 0-19H19z"/><path fill="#f24e1e" d="M0 9.5A9.5 9.5 0 0 0 9.5 19H19V0H9.5A9.5 9.5 0 0 0 0 9.5z"/><path fill="#a259ff" d="M0 28.5A9.5 9.5 0 0 0 9.5 38H19V19H9.5A9.5 9.5 0 0 0 0 28.5z"/></svg></span><span>UI/UX Design<small>Figma</small></span></div>
+        <div class="chip chip-3" aria-hidden="true"><span class="ico logo-ai" title="Adobe Illustrator"><svg viewBox="0 0 36 36"><text x="18" y="24.5" text-anchor="middle" fill="#ff9a00" font-family="Red Hat Display, Helvetica, Arial, sans-serif" font-size="17" font-weight="700" letter-spacing="-.3">Ai</text></svg></span><span>Logo &amp; Branding<small>Visual identity</small></span></div>
       </div>
     </div>
   </div>
 
-  <!-- Services -->
-  <section id="services">
-    <div class="wrap">
-      <div class="sec-head">
-        <p class="eyebrow reveal">My services</p>
-        <h2 class="h-lg grad-text reveal d1">Your Ideas, Designed to Work</h2>
-      </div>
-      <div class="bento">
-        <article class="tile tile-a reveal">
-          <div class="art art-browser"><i></i><i></i><i></i></div>
-          <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M3 8h18M8 21h8"/></svg></span>
-          <h3>Website Design</h3>
-          <p>Visually appealing, user-friendly and responsive websites that reflect your brand, enhance user experience and support your business goals through smart layout and functionality.</p>
-        </article>
-        <article class="tile tile-b reveal d1">
-          <div class="art art-wire"></div>
-          <div class="art art-phone"><i></i><i></i><i></i><i></i></div>
-          <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="7" y="2" width="10" height="20" rx="2.5"/><path d="M11 18h2"/></svg></span>
-          <h3>UI/UX Design</h3>
-          <p>Intuitive, engaging and user-centered digital interfaces that improve usability and satisfaction, with seamless interaction across devices.</p>
-        </article>
-        <article class="tile reveal d2">
-          <div class="art art-logo"></div>
-          <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l2.5 5.5L20 9l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-.5z"/></svg></span>
-          <h3>Logo &amp; Branding</h3>
-          <p>Unique visual identities — logos, color palettes and brand guidelines — for a memorable and consistent presence.</p>
-        </article>
-        <article class="tile reveal d3">
-          <svg class="art art-nodes" viewBox="0 0 110 80" fill="none" stroke="#9fb6ef" stroke-width="1.5"><circle cx="15" cy="40" r="7" fill="#fff"/><circle cx="60" cy="14" r="7" fill="#fff"/><circle cx="60" cy="66" r="7" fill="#fff"/><circle cx="98" cy="40" r="8" fill="#3866f1" stroke="none"/><path d="M22 40h12q8 0 12-12l6-10M22 40h12q8 0 12 12l6 10M67 14q14 0 22 20M67 66q14 0 22-20" stroke-dasharray="3 3"/></svg>
-          <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5"/></svg></span>
-          <h3>No-Code Development</h3>
-          <p>Sites you can update yourself, without technical knowledge.</p>
-          <div class="tools-row"><span>Figma</span><span>Framer</span><span>Spline 3D</span></div>
-        </article>
-      </div>
-    </div>
-  </section>
-
   <!-- Work -->
-  <section id="work">
+  <section id="work" aria-labelledby="work-title">
     <div class="wrap">
       <p class="eyebrow reveal" style="margin-bottom:16px">Selected work</p>
-      <h2 class="h-lg grad-text reveal d1" style="max-width:640px;margin-bottom:40px">Real Projects for Real Brands</h2>
+      <h2 class="h-lg grad-text reveal d1" id="work-title" tabindex="-1" style="max-width:640px;margin-bottom:40px">Real Projects for Real Brands</h2>
       <div class="carousel reveal d2">
         <div class="track" id="track"></div>
         <div class="car-ctrl">
-          <div class="progress"><i id="progress"></i></div>
+          <div class="progress" aria-hidden="true"><i id="progress"></i></div>
           <div class="arrows">
             <button id="prev" aria-label="Previous project"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg></button>
             <button id="next" aria-label="Next project"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg></button>
@@ -503,66 +484,99 @@
         </div>
         <div class="stat">
           <small>Years of design<br>experience</small>
-          <strong>3+</strong>
-          <div class="stat-art"><svg viewBox="0 0 64 64" fill="none" stroke="#fff" stroke-width="1.5"><circle cx="32" cy="32" r="22"/><path d="M32 18v14l9 6"/></svg></div>
+          <strong data-count="3" data-suffix="+">3+</strong>
+          <div class="stat-art" aria-hidden="true"><svg viewBox="0 0 64 64" fill="none" stroke="#fff" stroke-width="1.5"><circle cx="32" cy="32" r="22"/><path d="M32 18v14l9 6"/></svg></div>
         </div>
         <div class="stat">
           <small>Companies &amp; studios<br>I’ve worked with</small>
-          <strong>7</strong>
-          <div class="stat-art"><svg viewBox="0 0 64 64" fill="none" stroke="#fff" stroke-width="1.5"><rect x="10" y="22" width="18" height="30" rx="2"/><rect x="34" y="12" width="20" height="40" rx="2"/><path d="M16 30h6M16 38h6M40 20h8M40 28h8M40 36h8"/></svg></div>
+          <strong data-count="7" data-suffix="">7</strong>
+          <div class="stat-art" aria-hidden="true"><svg viewBox="0 0 64 64" fill="none" stroke="#fff" stroke-width="1.5"><rect x="10" y="22" width="18" height="30" rx="2"/><rect x="34" y="12" width="20" height="40" rx="2"/><path d="M16 30h6M16 38h6M40 20h8M40 28h8M40 36h8"/></svg></div>
         </div>
         <div class="stat">
           <small>Featured projects<br>delivered</small>
-          <strong>4</strong>
-          <div class="stat-art"><svg viewBox="0 0 64 64" fill="none" stroke="#fff" stroke-width="1.5"><rect x="8" y="14" width="48" height="32" rx="3"/><path d="M24 54h16M32 46v8M18 36l8-8 6 6 8-10 6 6"/></svg></div>
+          <strong data-count="4" data-suffix="">4</strong>
+          <div class="stat-art" aria-hidden="true"><svg viewBox="0 0 64 64" fill="none" stroke="#fff" stroke-width="1.5"><rect x="8" y="14" width="48" height="32" rx="3"/><path d="M24 54h16M32 46v8M18 36l8-8 6 6 8-10 6 6"/></svg></div>
         </div>
       </div>
     </div>
   </section>
 
   <!-- Experience -->
-  <section id="experience">
+  <section id="experience" aria-labelledby="experience-title">
     <div class="wrap">
       <div class="sec-head">
         <p class="eyebrow reveal">Experience</p>
-        <h2 class="h-lg grad-text reveal d1">Where I’ve Designed and Delivered</h2>
+        <h2 class="h-lg grad-text reveal d1" id="experience-title" tabindex="-1">Where I’ve Designed and Delivered</h2>
       </div>
       <div class="exp reveal d2">
-        <div class="exp-nav" id="expNav"></div>
-        <div class="exp-card" id="expCard"></div>
+        <div class="exp-nav" id="expNav" role="tablist" aria-label="Companies"></div>
+        <div class="exp-card" id="expCard" role="tabpanel" tabindex="0"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services -->
+  <section id="services" aria-labelledby="services-title">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow reveal">My services</p>
+        <h2 class="h-lg grad-text reveal d1" id="services-title" tabindex="-1">Your Ideas, Designed to Work</h2>
+      </div>
+      <div class="bento">
+        <article class="tile tile-a reveal">
+          <figure class="tile-shot" style="--pos: 50% 55%"><img src="assets/img/svc-website.jpg" alt="SODECO website pages in browser windows" loading="lazy" width="900" height="1040"></figure>
+          <h3>Website Design</h3>
+          <p>Visually appealing, user-friendly and responsive websites that reflect your brand, enhance user experience and support your business goals through smart layout and functionality.</p>
+        </article>
+        <article class="tile tile-b reveal d1">
+          <figure class="tile-shot" style="--pos: 50% 50%"><img src="assets/img/svc-uiux.jpg" alt="Nyouz Media interface: homepage, premium plan card, comments and gallery" loading="lazy" width="1200" height="800"></figure>
+          <h3>UI/UX Design</h3>
+          <p>Intuitive, engaging and user-centered digital interfaces that improve usability and satisfaction, with seamless interaction across devices.</p>
+        </article>
+        <article class="tile reveal d2">
+          <figure class="tile-shot" style="--pos: 50% 50%"><img src="assets/img/svc-branding.jpg" alt="Greentech City brand: logo, colour palette, cap and t-shirt" loading="lazy" width="1000" height="560"></figure>
+          <h3>Logo &amp; Branding</h3>
+          <p>Unique visual identities — logos, color palettes and brand guidelines — for a memorable and consistent presence.</p>
+        </article>
+        <article class="tile reveal d3">
+          <figure class="tile-shot" style="--pos: 50% 45%"><img src="assets/img/svc-nocode.jpg" alt="This portfolio’s homepage open in the Framer editor" loading="lazy" width="1000" height="560"></figure>
+          <h3>No-Code Development</h3>
+          <p>Sites you can update yourself, without technical knowledge.</p>
+          <div class="tools-row"><span>Figma</span><span>Framer</span><span>Spline 3D</span></div>
+        </article>
       </div>
     </div>
   </section>
 
   <!-- FAQ -->
-  <section id="faq">
+  <section id="faq" aria-labelledby="faq-title">
     <div class="wrap faq">
       <div class="faq-intro">
         <p class="eyebrow reveal">FAQ</p>
-        <h2 class="h-lg grad-text reveal d1">Common Questions</h2>
+        <h2 class="h-lg grad-text reveal d1" id="faq-title" tabindex="-1">Common Questions</h2>
         <p class="lead reveal d2">Everything you need to know before we start working together. Can’t find your answer? Just write to me.</p>
         <a href="#/contact" class="btn btn-ghost reveal d3">Ask a question</a>
       </div>
       <div class="acc reveal d1">
         <div class="acc-item">
-          <button class="acc-head">What services do you offer?<span class="acc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg></span></button>
-          <div class="acc-body"><div><p>I offer Website Design, UI/UX Design, and Logo &amp; Branding. From landing pages and full websites to user-friendly digital products and visual identities, I deliver end-to-end design solutions using Figma, Framer, and Spline.</p></div></div>
+          <h3><button class="acc-head" id="faq-1-q" aria-expanded="false" aria-controls="faq-1">What services do you offer?<span class="acc-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg></span></button></h3>
+          <div class="acc-body" id="faq-1" role="region" aria-labelledby="faq-1-q"><div><p>I offer Website Design, UI/UX Design, and Logo &amp; Branding. From landing pages and full websites to user-friendly digital products and visual identities, I deliver end-to-end design solutions using Figma, Framer, and Spline.</p></div></div>
         </div>
         <div class="acc-item">
-          <button class="acc-head">Do you use code in your projects?<span class="acc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg></span></button>
-          <div class="acc-body"><div><p>No — I primarily work with powerful no-code tools that allow for fast, flexible, and fully responsive websites and products without needing to write code. This makes updates and handoff easier for non-technical clients.</p></div></div>
+          <h3><button class="acc-head" id="faq-2-q" aria-expanded="false" aria-controls="faq-2">Do you use code in your projects?<span class="acc-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg></span></button></h3>
+          <div class="acc-body" id="faq-2" role="region" aria-labelledby="faq-2-q"><div><p>No — I primarily work with powerful no-code tools that allow for fast, flexible, and fully responsive websites and products without needing to write code. This makes updates and handoff easier for non-technical clients.</p></div></div>
         </div>
         <div class="acc-item">
-          <button class="acc-head">Can you help redesign my existing website?<span class="acc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg></span></button>
-          <div class="acc-body"><div><p>Absolutely! Whether it’s a full redesign or just improving specific sections, I can help refresh your website to make it more modern, user-friendly, and conversion-focused.</p></div></div>
+          <h3><button class="acc-head" id="faq-3-q" aria-expanded="false" aria-controls="faq-3">Can you help redesign my existing website?<span class="acc-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg></span></button></h3>
+          <div class="acc-body" id="faq-3" role="region" aria-labelledby="faq-3-q"><div><p>Absolutely! Whether it’s a full redesign or just improving specific sections, I can help refresh your website to make it more modern, user-friendly, and conversion-focused.</p></div></div>
         </div>
         <div class="acc-item">
-          <button class="acc-head">How long does a typical project take?<span class="acc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg></span></button>
-          <div class="acc-body"><div><p>It depends on the scope, but most projects are completed within 1–3 weeks. I’ll provide a timeline after understanding your requirements.</p></div></div>
+          <h3><button class="acc-head" id="faq-4-q" aria-expanded="false" aria-controls="faq-4">How long does a typical project take?<span class="acc-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg></span></button></h3>
+          <div class="acc-body" id="faq-4" role="region" aria-labelledby="faq-4-q"><div><p>It depends on the scope, but most projects are completed within 1–3 weeks. I’ll provide a timeline after understanding your requirements.</p></div></div>
         </div>
         <div class="acc-item">
-          <button class="acc-head">Will I be able to edit the website after it’s done?<span class="acc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg></span></button>
-          <div class="acc-body"><div><p>Yes! That’s the beauty of no-code. I’ll build your website in a way that’s easy for you to update without needing any technical knowledge.</p></div></div>
+          <h3><button class="acc-head" id="faq-5-q" aria-expanded="false" aria-controls="faq-5">Will I be able to edit the website after it’s done?<span class="acc-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg></span></button></h3>
+          <div class="acc-body" id="faq-5" role="region" aria-labelledby="faq-5-q"><div><p>Yes! That’s the beauty of no-code. I’ll build your website in a way that’s easy for you to update without needing any technical knowledge.</p></div></div>
         </div>
       </div>
     </div>
@@ -574,7 +588,7 @@
       <h2 class="h-lg grad-text reveal">Have a Project in Mind? Let’s Build It Together.</h2>
       <p class="lead reveal d1">Tell me about your idea and I’ll get back to you with next steps and a timeline.</p>
       <a href="#/contact" class="btn btn-grad reveal d2">Start a project
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
       </a>
     </div>
   </div>
@@ -583,7 +597,7 @@
 <!-- ================= PROJECT DETAIL ================= -->
 <div class="page" data-page="project">
   <div class="pd"><div class="wrap" id="projectDetail"></div></div>
-  <div class="cta" style="padding-top:110px">
+  <div class="cta" id="projectCta" style="padding-top:110px">
     <div class="wrap">
       <h2 class="h-lg grad-text">Like What You See? Let’s Talk.</h2>
       <p class="lead">I’d love to hear about your next project.</p>
@@ -599,8 +613,7 @@
   <div class="contact">
     <div class="wrap">
       <div>
-        <p class="eyebrow reveal">Contact</p>
-        <h1 class="h-xl grad-text reveal d1">Let’s Work Together</h1>
+        <h1 class="h-xl grad-text reveal" tabindex="-1">Let’s Work Together</h1>
         <p class="lead reveal d2">Interested in working together? Fill in the form, send me an email or give me a call — I’ll reply as soon as possible.</p>
         <div class="contact-list reveal d3">
           <a href="mailto:contactmerylagnikpe@gmail.com"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span><span><small>Email</small>contactmerylagnikpe@gmail.com</span></a>
@@ -611,8 +624,8 @@
       </div>
       <form class="form-card reveal d2" id="contactForm">
         <div class="form-row">
-          <label>Name*<input name="name" type="text" placeholder="Jane Smith" required></label>
-          <label>Email*<input name="email" type="email" placeholder="jane@example.com" required></label>
+          <label>Name*<input name="name" type="text" placeholder="Jane Smith" autocomplete="name" maxlength="100" required></label>
+          <label>Email*<input name="email" type="email" placeholder="jane@example.com" autocomplete="email" required></label>
         </div>
         <label>Service
           <select name="service">
@@ -623,11 +636,11 @@
             <option>Other</option>
           </select>
         </label>
-        <label>Message*<textarea name="message" placeholder="Tell me about your project" required></textarea></label>
+        <label>Message*<textarea name="message" placeholder="Tell me about your project" maxlength="1500" required></textarea></label>
         <button type="submit" class="btn btn-grad">Send message
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
         </button>
-        <p class="form-note">Opens your email app with your message ready to send.</p>
+        <p class="form-note" id="formNote" aria-live="polite">Opens your email app with your message ready to send.</p>
       </form>
     </div>
   </div>
@@ -640,35 +653,27 @@
   <div class="wrap">
     <div class="foot-grid">
       <div class="foot-brand">
-        <a href="#/" class="logo"><span class="logo-mark">M</span>MERYL A.</a>
-        <h4>Let’s stay in touch.</h4>
+        <a href="#/" class="logo" aria-label="Meryl Agnikpe, home"><span class="logo-mark" aria-hidden="true">M</span>MERYL A.</a>
+        <p class="foot-title">Let’s stay in touch.</p>
         <a class="foot-mail" href="mailto:contactmerylagnikpe@gmail.com">contactmerylagnikpe@gmail.com</a>
         <a class="foot-mail" href="tel:+2290161784178">+229 01 61 78 41 78</a>
       </div>
-      <div class="foot-col">
-        <h5>Navigation</h5>
-        <a href="#/" data-section="services">Services</a>
-        <a href="#/" data-section="work">Work</a>
-        <a href="#/" data-section="experience">Experience</a>
-        <a href="#/" data-section="faq">FAQ</a>
+      <nav class="foot-col" aria-labelledby="foot-nav">
+        <h2 id="foot-nav">Navigation</h2>
+        <a href="#/work">Work</a>
+        <a href="#/experience">Experience</a>
+        <a href="#/services">Services</a>
+        <a href="#/faq">FAQ</a>
         <a href="#/contact">Contact</a>
-      </div>
+      </nav>
       <div class="foot-col">
-        <h5>Services</h5>
-        <span>Website Design</span>
-        <span>UI/UX Design</span>
-        <span>Logo &amp; Branding</span>
-        <span>No-Code Development</span>
-      </div>
-      <div class="foot-col">
-        <h5>Projects</h5>
+        <h2>Projects</h2>
         <div id="footProjects"></div>
-        <a href="https://www.behance.net/merylagn" target="_blank" rel="noopener">Behance ↗</a>
+        <a href="https://www.behance.net/merylagn" target="_blank" rel="noopener">Behance ↗<span class="sr-only"> (opens in a new tab)</span></a>
       </div>
     </div>
     <div class="foot-bottom">
       <span>© 2026 Meryl Agnikpe. All rights reserved.</span>
-      <span>Designed with Figma · Built with care</span>
     </div>
   </div>
 </footer>
@@ -724,13 +729,18 @@ const EXPERIENCE = [
 ];
 
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-const arrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+const arrow = '<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
 // Title with the accent word(s) in navy, like the reference's two-tone headings
 const twoTone = p => {
   const t = esc(p.title), a = esc(p.accent);
   const i = t.lastIndexOf(a);
   return i < 0 ? t : `${t.slice(0, i)}<span class="accent">${a}</span>${t.slice(i + a.length)}`;
 };
+
+const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
+const smooth = () => reduceMotion.matches ? 'auto' : 'smooth';
+const SITE = 'Meryl Agnikpe';
+const HOME_TITLE = document.title;
 
 /* ---------- Work carousel ---------- */
 const track = document.getElementById('track');
@@ -740,12 +750,10 @@ track.innerHTML = PROJECTS.map(p => `
       <p class="eyebrow">${esc(p.category)}</p>
       <h3 class="h-md">${twoTone(p)}</h3>
       <p>${esc(p.desc)}</p>
-      <a href="#/project/${p.slug}" class="btn btn-navy">View project</a>
+      <a href="#/project/${p.slug}" class="btn btn-navy">View project<span class="sr-only">: ${esc(p.title)}</span></a>
     </div>
-    <a class="case-media" href="#/project/${p.slug}" aria-label="${esc(p.title)}"><img src="${IMG + p.cover}" alt="${esc(p.title)} — preview" loading="lazy"></a>
+    <a class="case-media" href="#/project/${p.slug}" tabindex="-1" aria-hidden="true"><img src="${IMG + p.cover}" alt="" loading="lazy"></a>
   </article>`).join('');
-const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
-const smooth = () => reduceMotion.matches ? 'auto' : 'smooth';
 const prevBtn = document.getElementById('prev'), nextBtn = document.getElementById('next'), bar = document.getElementById('progress');
 function cardStep() { const c = track.querySelector('.case'); return c.getBoundingClientRect().width + 20; }
 function updateCarousel() {
@@ -761,21 +769,57 @@ nextBtn.onclick = () => track.scrollBy({ left: cardStep(), behavior: smooth() })
 track.addEventListener('scroll', updateCarousel, { passive: true });
 window.addEventListener('resize', updateCarousel);
 
-/* ---------- Experience switcher ---------- */
+/* ---------- Stats count-up (runs once, when the band comes into view) ---------- */
+const counters = document.querySelectorAll('.stat strong[data-count]');
+const countIO = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    countIO.unobserve(e.target);
+    const el = e.target, end = +el.dataset.count, suffix = el.dataset.suffix || '';
+    if (reduceMotion.matches) return;
+    const t0 = performance.now(), dur = 1100;
+    const tick = now => {
+      const k = Math.min((now - t0) / dur, 1), eased = 1 - Math.pow(1 - k, 4);
+      el.textContent = Math.round(end * eased) + (k === 1 ? suffix : '');
+      if (k < 1) requestAnimationFrame(tick);
+    };
+    // Reset to 0 only on the first frame: if frames never run, the real value stays visible
+    requestAnimationFrame(tick);
+  });
+}, { threshold: 0.6 });
+counters.forEach(c => countIO.observe(c));
+
+/* ---------- Experience tabs ---------- */
 const expNav = document.getElementById('expNav'), expCard = document.getElementById('expCard');
-expNav.innerHTML = EXPERIENCE.map((e, i) => `<button data-i="${i}"><span>${esc(e.company)}</span><span>${esc(e.dates.split(' – ')[0])}</span></button>`).join('');
-function showExp(i) {
+expNav.innerHTML = EXPERIENCE.map((e, i) => `<button role="tab" id="exp-tab-${i}" aria-controls="expCard" data-i="${i}"><span>${esc(e.company)}</span><span>${esc(e.dates.split(' – ')[0])}</span></button>`).join('');
+const expTabs = [...expNav.querySelectorAll('[role="tab"]')];
+function showExp(i, focus) {
   const e = EXPERIENCE[i];
-  expNav.querySelectorAll('button').forEach((b, k) => b.classList.toggle('active', k === i));
+  expTabs.forEach((b, k) => {
+    const on = k === i;
+    b.classList.toggle('active', on);
+    b.setAttribute('aria-selected', String(on));
+    b.tabIndex = on ? 0 : -1;
+  });
+  if (focus) expTabs[i].focus();
+  expCard.setAttribute('aria-labelledby', `exp-tab-${i}`);
   expCard.innerHTML = `
     <div class="fade">
       <p class="eyebrow">${esc(e.company)}</p>
       <h3 class="grad-text">${esc(e.role)}</h3>
-      <span class="dates"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>${esc(e.dates)}</span>
+      <span class="dates"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>${esc(e.dates)}</span>
     </div>
-    <div class="num fade">${String(i + 1).padStart(2, '0')}</div>`;
+    <div class="num fade" aria-hidden="true">${String(i + 1).padStart(2, '0')}</div>`;
 }
 expNav.addEventListener('click', e => { const b = e.target.closest('button'); if (b) showExp(+b.dataset.i); });
+expNav.addEventListener('keydown', e => {
+  const i = expTabs.indexOf(document.activeElement); if (i < 0) return;
+  const n = expTabs.length;
+  const to = { ArrowRight: i + 1, ArrowDown: i + 1, ArrowLeft: i - 1, ArrowUp: i - 1, Home: 0, End: n - 1 }[e.key];
+  if (to === undefined) return;
+  e.preventDefault();
+  showExp((to + n) % n, true);
+});
 showExp(0);
 
 /* ---------- Footer projects ---------- */
@@ -785,43 +829,48 @@ document.getElementById('footProjects').innerHTML = PROJECTS.map(p => `<a href="
 document.querySelectorAll('.acc').forEach(group => {
   group.addEventListener('click', e => {
     const head = e.target.closest('.acc-head'); if (!head) return;
-    const item = head.parentElement, wasOpen = item.classList.contains('open');
-    group.querySelectorAll('.acc-item').forEach(i => i.classList.remove('open'));
-    if (!wasOpen) item.classList.add('open');
+    const item = head.closest('.acc-item'), wasOpen = item.classList.contains('open');
+    group.querySelectorAll('.acc-item').forEach(i => {
+      i.classList.remove('open');
+      i.querySelector('.acc-head').setAttribute('aria-expanded', 'false');
+    });
+    if (!wasOpen) { item.classList.add('open'); head.setAttribute('aria-expanded', 'true'); }
   });
 });
-document.querySelector('.acc-item').classList.add('open');
 
 /* ---------- Project detail ---------- */
 function renderProject(slug) {
   const i = PROJECTS.findIndex(p => p.slug === slug);
   const box = document.getElementById('projectDetail');
-  if (i < 0) { box.innerHTML = '<h1 class="h-xl grad-text">Project not found</h1><p style="margin-top:20px"><a class="btn btn-ghost" href="#/">Back home</a></p>'; return; }
+  document.getElementById('projectCta').hidden = i < 0;
+  if (i < 0) {
+    box.innerHTML = '<h1 class="h-xl grad-text" tabindex="-1">Project not found</h1><p class="lead" style="margin-top:20px">This project doesn’t exist or has moved.</p><p style="margin-top:28px"><a class="btn btn-ghost" href="#/work">See all projects</a></p>';
+    return 'Project not found';
+  }
   const p = PROJECTS[i], next = PROJECTS[(i + 1) % PROJECTS.length];
   const g = p.gallery.map(f => IMG + f);
   const L = p.layout || ['full', '', '', 'full'];
   box.innerHTML = `
-    <nav class="crumbs reveal"><a href="#/">Home</a><span>/</span><a href="#/" data-section="work">Work</a><span>/</span><span>${esc(p.title)}</span></nav>
+    <nav class="crumbs reveal" aria-label="Breadcrumb"><a href="#/">Home</a><span aria-hidden="true">/</span><a href="#/work">Work</a><span aria-hidden="true">/</span><span aria-current="page">${esc(p.title)}</span></nav>
     <div class="pd-head">
-      <div>
-        <p class="eyebrow reveal">${esc(p.category)}</p>
-        <h1 class="h-xl grad-text reveal d1">${esc(p.title)}</h1>
-      </div>
-      <p class="lead reveal d2">${esc(p.desc)}</p>
+      <h1 class="h-xl grad-text reveal" tabindex="-1">${esc(p.title)}</h1>
+      <p class="lead reveal d1">${esc(p.desc)}</p>
     </div>
     <div class="pd-meta reveal d2">
       <div><small>Client</small><strong>${esc(p.client)}</strong></div>
       <div><small>Year</small><strong>${esc(p.year)}</strong></div>
       <div><small>Category</small><strong>${esc(p.category)}</strong></div>
-      <a class="btn btn-grad" href="${p.live}" target="_blank" rel="noopener">${esc(p.liveLabel)} ${arrow}</a>
+      <a class="btn btn-grad" href="${p.live}" target="_blank" rel="noopener">${esc(p.liveLabel)} ${arrow}<span class="sr-only"> (opens in a new tab)</span></a>
     </div>
+    <h2 class="sr-only">Gallery</h2>
     <div class="gallery">
       ${g.map((src, k) => `<figure class="${L[k]} reveal${k === 0 && p.containFirst ? ' contain' : ''}"><img src="${src}" alt="${esc(p.title)} — image ${k + 1}"${k ? ' loading="lazy"' : ''}></figure>`).join('')}
     </div>
     <a class="next-proj reveal" href="#/project/${next.slug}">
-      <div><p class="eyebrow">Next project</p><h3 class="h-md">${twoTone(next)}</h3></div>
-      <span class="go">${arrow}</span>
+      <div><p class="eyebrow">Next project</p><h2 class="h-md">${twoTone(next)}</h2></div>
+      <span class="go" aria-hidden="true">${arrow}</span>
     </a>`;
+  return p.title;
 }
 
 /* ---------- Reveal on scroll ---------- */
@@ -830,63 +879,108 @@ const io = new IntersectionObserver(entries => {
 }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
 const observe = scope => scope.querySelectorAll('.reveal:not(.in)').forEach(el => io.observe(el));
 
+/* ---------- Mobile menu ---------- */
+const nav = document.getElementById('nav'), burger = document.getElementById('burger'), menu = document.getElementById('mobileMenu');
+function setMenu(open) {
+  nav.classList.toggle('open', open);
+  burger.setAttribute('aria-expanded', String(open));
+  burger.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+  menu.inert = !open;
+  if (!open && menu.contains(document.activeElement)) burger.focus();
+}
+burger.addEventListener('click', () => setMenu(!nav.classList.contains('open')));
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && nav.classList.contains('open')) setMenu(false); });
+document.addEventListener('click', e => {
+  if (nav.classList.contains('open') && !nav.contains(e.target) && !menu.contains(e.target)) setMenu(false);
+});
+
 /* ---------- Router ---------- */
-const nav = document.getElementById('nav');
-let currentHash = location.hash;
-function route(scrollTarget) {
-  const [name, slug] = currentHash.replace(/^#\/?/, '').split('/');
-  const page = name === 'project' ? 'project' : name === 'contact' ? 'contact' : 'home';
-  if (page === 'project') renderProject(slug);
-  document.querySelectorAll('.page').forEach(p => p.classList.toggle('active', p.dataset.page === page));
-  const el = document.querySelector(`.page[data-page="${page}"]`);
+// Routes: #/  ·  #/work | #/experience | #/services | #/faq  ·  #/project/<slug>  ·  #/contact
+const SECTIONS = ['work', 'experience', 'services', 'faq'];
+const parse = hash => {
+  const [name, slug] = hash.replace(/^#\/?/, '').split('/');
+  if (name === 'project') return { page: 'project', slug };
+  if (name === 'contact') return { page: 'contact' };
+  return { page: 'home', section: SECTIONS.includes(name) ? name : null };
+};
+const scrollToSection = (id, behavior) => {
+  const t = document.getElementById(id); if (!t) return;
+  window.scrollTo({ top: t.getBoundingClientRect().top + scrollY - 90, behavior });
+};
+let currentHash = location.hash, currentPage = null;
+
+function route(userInitiated) {
+  const r = parse(currentHash);
+  let title = HOME_TITLE;
+  if (r.page === 'project') title = `${renderProject(r.slug)} — ${SITE}`;
+  if (r.page === 'contact') title = `Contact — ${SITE}`;
+  document.title = title;
+
+  const pageChanged = r.page !== currentPage || r.page === 'project';
+  currentPage = r.page;
+  document.querySelectorAll('.page').forEach(p => p.classList.toggle('active', p.dataset.page === r.page));
+  const el = document.querySelector(`.page[data-page="${r.page}"]`);
   observe(el);
-  nav.classList.remove('open');
-  if (page === 'home') updateCarousel();
-  if (scrollTarget) {
-    requestAnimationFrame(() => {
-      const t = document.getElementById(scrollTarget);
-      if (t) window.scrollTo({ top: t.getBoundingClientRect().top + scrollY - 90, behavior: smooth() });
-    });
+  setMenu(false);
+  if (r.page === 'home') updateCarousel();
+
+  if (r.section) {
+    // The page is already displayed, so layout is up to date: scroll right away
+    scrollToSection(r.section, userInitiated ? smooth() : 'auto');
+    if (userInitiated) document.getElementById(`${r.section}-title`)?.focus({ preventScroll: true });
   } else {
     window.scrollTo({ top: 0, behavior: 'instant' });
+    if (userInitiated && pageChanged) el.querySelector('h1')?.focus({ preventScroll: true });
   }
   setActiveLink();
 }
-function go(hash, section) {
-  const changed = hash !== currentHash;
-  currentHash = hash;
-  if (changed) { try { history.pushState(null, '', hash); } catch (_) {} }
-  if (changed || !section) route(section);
-  else {
-    const t = document.getElementById(section);
-    if (t) window.scrollTo({ top: t.getBoundingClientRect().top + scrollY - 90, behavior: smooth() });
-    nav.classList.remove('open');
+
+function go(hash) {
+  if (hash === currentHash) {
+    // Same route: re-scroll to the section (or top) without a history entry
+    const r = parse(hash);
+    setMenu(false);
+    if (r.section) scrollToSection(r.section, smooth());
+    else window.scrollTo({ top: 0, behavior: smooth() });
+    return;
   }
+  currentHash = hash;
+  try { history.pushState(null, '', hash || location.pathname); } catch (_) {}
+  route(true);
 }
+
 document.addEventListener('click', e => {
+  const skip = e.target.closest('a.skip');
+  if (skip) { e.preventDefault(); document.getElementById('main').focus(); return; }
   const a = e.target.closest('a[href^="#/"]');
-  if (!a) return;
+  if (!a || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
   e.preventDefault();
-  go(a.getAttribute('href') === '#/' ? '' : a.getAttribute('href'), a.dataset.section);
+  go(a.getAttribute('href') === '#/' ? '' : a.getAttribute('href'));
 });
-const syncFromUrl = () => { currentHash = location.hash === '#/' ? '' : location.hash; route(); };
+const syncFromUrl = () => {
+  if (location.hash && !location.hash.startsWith('#/')) return;
+  currentHash = location.hash === '#/' ? '' : location.hash;
+  route(false);
+};
 window.addEventListener('popstate', syncFromUrl);
 window.addEventListener('hashchange', syncFromUrl);
 
 /* ---------- Nav state ---------- */
-const sections = ['services', 'work', 'experience', 'faq'];
 function setActiveLink() {
   let current = '';
-  if (document.querySelector('.page[data-page="home"]').classList.contains('active')) {
-    sections.forEach(id => { const s = document.getElementById(id); if (s && s.getBoundingClientRect().top < 200) current = id; });
+  if (currentPage === 'home') {
+    SECTIONS.forEach(id => { const s = document.getElementById(id); if (s && s.getBoundingClientRect().top < 200) current = id; });
   }
-  document.querySelectorAll('.nav-links a').forEach(a => a.classList.toggle('active', a.dataset.section === current));
+  document.querySelectorAll('.nav-links a').forEach(a => {
+    const on = a.getAttribute('href') === `#/${current}`;
+    a.classList.toggle('active', on);
+    if (on) a.setAttribute('aria-current', 'location'); else a.removeAttribute('aria-current');
+  });
 }
 window.addEventListener('scroll', () => {
   nav.classList.toggle('scrolled', scrollY > 10);
   setActiveLink();
 }, { passive: true });
-document.getElementById('burger').onclick = () => nav.classList.toggle('open');
 
 /* ---------- Contact form → visitor's mail app ---------- */
 document.getElementById('contactForm').addEventListener('submit', e => {
@@ -895,6 +989,7 @@ document.getElementById('contactForm').addEventListener('submit', e => {
   const subject = encodeURIComponent(`${f.get('service')} — project inquiry from ${f.get('name')}`);
   const body = encodeURIComponent(`${f.get('message')}\n\n— ${f.get('name')} (${f.get('email')})`);
   location.href = `mailto:contactmerylagnikpe@gmail.com?subject=${subject}&body=${body}`;
+  document.getElementById('formNote').innerHTML = 'Your email app should open with your message. Nothing happened? Write to <a href="mailto:contactmerylagnikpe@gmail.com">contactmerylagnikpe@gmail.com</a>.';
 });
 
 syncFromUrl();
