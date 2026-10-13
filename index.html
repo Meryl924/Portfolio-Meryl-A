@@ -139,21 +139,21 @@
   @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 
   /* ---------- Bento services ---------- */
-  .bento { display: grid; grid-template-columns: 1fr 1fr 1fr; grid-template-rows: repeat(2, minmax(300px, auto)); gap: 16px; }
-  .tile { position: relative; overflow: hidden; border-radius: var(--radius); background: var(--soft); padding: 28px; display: flex; flex-direction: column; justify-content: flex-end; gap: 10px; }
+  .bento { display: grid; grid-template-columns: 1fr 1fr 1fr; grid-template-rows: repeat(2, minmax(300px, auto)); gap: 56px 32px; }
+  .tile { position: relative; display: flex; flex-direction: column; justify-content: flex-end; gap: 10px; }
   .tile .tile-num { font-size: 13px; font-weight: 600; letter-spacing: .08em; color: var(--blue); position: relative; z-index: 1; }
   .tile h3 { font-size: 26px; font-weight: 500; line-height: 1.15; color: var(--ink); position: relative; z-index: 1; }
   .tile p { font-size: 14px; color: var(--muted); max-width: 360px; position: relative; z-index: 1; }
   .tile-a { grid-row: 1 / 3; }
   .tile-b { grid-column: 2 / 4; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); grid-template-rows: 1fr auto auto auto auto; column-gap: 28px; row-gap: 10px; }
-  .tile-b .tile-shot { grid-column: 2; grid-row: 1 / 6; margin: -8px -8px -8px 0; }
+  .tile-b .tile-shot { grid-column: 2; grid-row: 1 / 6; margin: 0; }
   .tile-b > :not(.tile-shot) { grid-column: 1; }
   .tile-b .tile-num { grid-row: 2; }
   .tile-b h3 { grid-row: 3; }
   .tile-b p { grid-row: 4; }
   .tile-b .tile-list { grid-row: 5; }
   /* Real project shots illustrating each service */
-  .tile-shot { position: relative; flex: 1 1 auto; min-height: 150px; margin: -8px -8px 14px; border-radius: 14px; overflow: hidden; }
+  .tile-shot { position: relative; flex: 1 1 auto; min-height: 150px; margin: 0 0 14px; border-radius: var(--radius); overflow: hidden; }
   .tile-shot img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: var(--pos, 50% 50%); }
   .tile-list { list-style: none; display: flex; flex-wrap: wrap; gap: 4px 16px; margin-top: 6px; padding-top: 14px; border-top: 1px solid #dfe6f6; position: relative; z-index: 1; }
   .tile-list li { position: relative; padding-left: 14px; font-size: 13px; font-weight: 500; color: var(--text); }
@@ -173,6 +173,9 @@
   .case-body .btn { margin-top: auto; align-self: stretch; }
   .case-media { border-radius: 16px; overflow: hidden; aspect-ratio: 1 / 1; background: var(--soft); }
   .case-media img { width: 100%; height: 100%; object-fit: cover; transition: transform 500ms var(--ease-out); }
+  .case-media .stage { margin: 0; width: 100%; height: 100%; aspect-ratio: auto; border-radius: 0; }
+  .case-media .stage img { transition: none; }
+  .case-media .stage.wide { display: none; }
   .car-ctrl { display: flex; align-items: center; gap: 24px; margin-top: 6px; }
   .progress { flex: 1; height: 2px; background: var(--line); border-radius: 2px; overflow: hidden; }
   .progress i { display: block; height: 100%; width: 100%; background: var(--grad); transform-origin: left; transform: scaleX(.25); }
@@ -270,6 +273,7 @@
   .stag::before { content: ""; width: .9cqw; height: .9cqw; min-width: 7px; min-height: 7px; border-radius: 50%; background: var(--dot, #28c840); }
   .swatches { display: grid; gap: .7cqw; }
   .swatches b { display: flex; align-items: flex-end; height: 3.6cqw; padding: .5cqw .7cqw; border-radius: .7cqw; font-size: max(9px, 1cqw); font-weight: 600; letter-spacing: .02em; color: #fff; }
+  .stage.sq .swatches b { height: 6cqw; font-size: max(9px, 2cqw); }
   .logo-card { display: grid; place-items: center; padding: 2cqw 2.4cqw; background: #fefef4; }
   .proc { margin: 8px 0 80px; }
   .proc-head { display: flex; justify-content: space-between; align-items: end; gap: 24px; margin-bottom: 28px; }
@@ -356,7 +360,6 @@
     .btn-white:hover::before { opacity: 1; }
     .btn-navy:hover { background-color: var(--navy); }
     .case:hover::after { opacity: 1; }
-    .case:hover .case-media img { transform: scale(1.03); }
     .arrows button:not(:disabled):hover { transform: translateY(-2px); }
     .next-proj:hover { transform: translateY(-3px); }
     .next-proj:hover::after { opacity: 1; }
@@ -373,7 +376,7 @@
     @keyframes heroFade { from { opacity: 0; } }
     .exp-card .fade { animation-name: heroFade; }
     .chip, .hero-visual .rings::after { animation: none; }
-    .btn, .btn:hover, .btn:active, .arrows button:hover, .arrows button:active, .next-proj:hover, .burger:active, .case:hover .case-media img { transform: none !important; }
+    .btn, .btn:hover, .btn:active, .arrows button:hover, .arrows button:active, .next-proj:hover, .burger:active { transform: none !important; }
     .skip { transition: none; }
     .mobile-menu { transform: none !important; }
   }
@@ -422,12 +425,13 @@
     .sec-head .eyebrow { padding-bottom: 0; }
     .bento { grid-template-columns: 1fr; grid-template-rows: none; }
     .tile-a, .tile-b { grid-row: auto; grid-column: auto; }
-    .tile { min-height: 300px; }
     .tile-b { display: flex; }
-    .tile-b .tile-shot { margin: -8px -8px 14px; }
+    .tile-b .tile-shot { margin: 0 0 14px; }
     .tile-shot { min-height: 190px; }
     .case { flex-basis: 88%; grid-template-columns: 1fr; padding: 14px; }
-    .case-media { order: -1; aspect-ratio: 4 / 3; }
+    .case-media { order: -1; aspect-ratio: 16 / 9; }
+    .case-media .stage.sq { display: none; }
+    .case-media .stage.wide { display: block; }
     .band { grid-template-columns: 1fr; padding: 40px 24px; border-radius: 24px; }
     .stat { border-left: 0; border-top: 1px solid rgba(255,255,255,.22); padding: 24px 0 0; }
     .stat small { min-height: 0; }
@@ -804,6 +808,91 @@ const SITE = 'Meryl Agnikpe';
 const HOME_TITLE = document.title;
 
 /* ---------- Work carousel ---------- */
+// Showcase scene: crops of the real screens (tools/stage-crops.py) staged like the service visuals.
+// x, y, w in % of the stage · d = parallax depth · r = tilt · t = entrance delay (ms)
+const stageSrc = f => IMG + f + '.jpg';
+const win = f => `<div class="win"><div class="win-bar"><i></i><i></i><i></i><span></span></div><img src="${stageSrc(f)}" alt=""></div>`;
+const card = f => `<div class="scard"><img src="${stageSrc(f)}" alt=""></div>`;
+const tag = (text, dot) => `<span class="stag" style="--dot:${dot}">${text}</span>`;
+const swatches = `<div class="scard pad swatches">${['#206534', '#4C9854', '#111111', '#FEFEF4'].map(c => `<b style="background:${c}${c === '#FEFEF4' ? ';color:#111;box-shadow:inset 0 0 0 1px #e6e6da' : ''}">${c}</b>`).join('')}</div>`;
+const logoCard = `<div class="scard logo-card"><img src="${IMG}greentech-1.png" alt=""></div>`;
+const STAGES = {
+  sodeco: { glow: 'rgba(38,139,160,.22)', label: 'SODECO website: Certifications and Sustainability pages, a certification card and the sustainability photo cards', layers: [
+    { x: 4, y: 8, w: 50, d: -.6, html: win('stage-sodeco-cert') },
+    { x: 40, y: 34, w: 50, d: .5, z: 2, t: 150, html: win('stage-sodeco-durab') },
+    { x: 58, y: 7, w: 37, d: 1, z: 3, t: 300, float: 1, html: card('stage-sodeco-photos') },
+    { x: 3, y: 70, w: 40, d: 1.2, z: 3, t: 400, float: 1, html: card('stage-sodeco-footer') },
+    { x: 60, y: 28, w: 'auto', d: 1.6, z: 4, t: 600, html: tag('SODECO · Corporate website', '#268ba0') }
+  ] },
+  'nyouz-media': { glow: 'rgba(56,102,241,.24)', label: 'Nyouz Media website: home page, Premium plan card, 404 page, weather widget and Instagram feed', layers: [
+    { x: 5, y: 8, w: 44, d: -.6, html: win('stage-nyouz-home') },
+    { x: 44, y: 22, w: 15, d: 1.4, z: 3, t: 250, r: '-3deg', float: 1, html: card('stage-nyouz-premium') },
+    { x: 64, y: 8, w: 28, d: .6, z: 2, t: 150, html: card('stage-nyouz-404') },
+    { x: 57, y: 50, w: 38, d: .9, z: 2, t: 350, float: 1, html: card('stage-nyouz-weather') },
+    { x: 31, y: 62, w: 15, d: 1.2, z: 3, t: 450, r: '2deg', float: 1, html: card('stage-nyouz-insta') },
+    { x: 66, y: 80, w: 'auto', d: 1.6, z: 4, t: 600, html: tag('Nyouz Media · News website', '#ff2d3a') }
+  ] },
+  greentech: { glow: 'rgba(76,152,84,.24)', label: 'Greentech City identity: logo, colour palette, field photo, cap and t-shirt, street banners', layers: [
+    { x: 5, y: 9, w: 30, d: .8, z: 2, float: 1, html: logoCard },
+    { x: 37.5, y: 9, w: 12, d: 1.2, z: 3, t: 150, float: 1, html: swatches },
+    { x: 55, y: 7, w: 40, d: -.6, t: 100, html: card('stage-green-field') },
+    { x: 5, y: 47, w: 40, d: .6, z: 2, t: 300, html: card('stage-green-merch') },
+    { x: 31, y: 60, w: 19, d: 1.3, z: 3, t: 450, r: '-2deg', float: 1, html: card('stage-green-banners') },
+    { x: 62, y: 80, w: 'auto', d: 1.6, z: 4, t: 600, html: tag('Greentech City · Brand identity', '#4c9854') }
+  ] },
+  'chill-groove': { glow: 'rgba(122,40,190,.26)', label: 'Chill & Groove website: hero with countdown, festival passes, jersey merch and crowd photo', layers: [
+    { x: 4, y: 8, w: 50, d: -.6, html: win('stage-chill-hero') },
+    { x: 58, y: 8, w: 37, d: .7, z: 2, t: 150, float: 1, html: card('stage-chill-merch') },
+    { x: 68, y: 33, w: 26, d: .4, z: 1, t: 250, html: card('stage-chill-crowd') },
+    { x: 40, y: 58, w: 48, d: 1.2, z: 3, t: 400, float: 1, html: card('stage-chill-passes') },
+    { x: 4, y: 85, w: 'auto', d: 1.6, z: 4, t: 600, html: tag('Chill &amp; Groove · Event website', '#7a28be') }
+  ] }
+};
+const layersHTML = layers => layers.map(l => `<div class="layer${l.float ? ' float' : ''}" style="--x:${l.x}%;--y:${l.y}%;--w:${l.w === 'auto' ? 'auto' : l.w + '%'};--d:${l.d};--z:${l.z || 1};--t:${l.t || 0}ms${l.r ? ';--r:' + l.r : ''}">${l.html}</div>`).join('');
+function stageSection(p) {
+  const s = STAGES[p.slug];
+  if (!s) return '';
+  return `
+    <figure class="stage reveal" style="--glow:${s.glow}" role="img" aria-label="${esc(s.label)}">
+      ${layersHTML(s.layers)}
+    </figure>`;
+}
+// Square versions of the scenes for the Work carousel covers (the wide scene is reused on small screens)
+const COVERS = {
+  sodeco: [
+    { x: 6, y: 7, w: 66, d: -.6, html: win('stage-sodeco-cert') },
+    { x: 28, y: 37, w: 66, d: .5, z: 2, t: 150, html: win('stage-sodeco-durab') },
+    { x: 6, y: 79, w: 54, d: 1.1, z: 3, t: 300, float: 1, html: card('stage-sodeco-photos') },
+    { x: 46, y: 28, w: 'auto', d: 1.5, z: 4, t: 450, html: tag('SODECO · Corporate website', '#268ba0') }
+  ],
+  'nyouz-media': [
+    { x: 6, y: 7, w: 58, d: -.6, html: win('stage-nyouz-home') },
+    { x: 60, y: 12, w: 28, d: 1.3, z: 3, t: 150, r: '-3deg', float: 1, html: card('stage-nyouz-premium') },
+    { x: 50, y: 56, w: 44, d: .5, z: 2, t: 250, html: card('stage-nyouz-404') },
+    { x: 6, y: 64, w: 50, d: 1, z: 3, t: 350, float: 1, html: card('stage-nyouz-weather') },
+    { x: 6, y: 88, w: 'auto', d: 1.5, z: 4, t: 450, html: tag('Nyouz Media · News website', '#ff2d3a') }
+  ],
+  greentech: [
+    { x: 6, y: 7, w: 52, d: .8, z: 2, float: 1, html: logoCard },
+    { x: 64, y: 7, w: 26, d: 1.2, z: 3, t: 150, float: 1, html: swatches },
+    { x: 40, y: 40, w: 54, d: -.5, t: 100, html: card('stage-green-field') },
+    { x: 6, y: 42, w: 46, d: .6, z: 2, t: 250, html: card('stage-green-merch') },
+    { x: 12, y: 60, w: 30, d: 1.3, z: 3, t: 350, r: '-2deg', float: 1, html: card('stage-green-banners') },
+    { x: 46, y: 89, w: 'auto', d: 1.5, z: 4, t: 450, html: tag('Greentech City · Brand identity', '#4c9854') }
+  ],
+  'chill-groove': [
+    { x: 6, y: 9, w: 64, d: -.6, html: win('stage-chill-hero') },
+    { x: 50, y: 5, w: 44, d: .8, z: 2, t: 150, float: 1, html: card('stage-chill-merch') },
+    { x: 64, y: 27, w: 30, d: .4, z: 2, t: 250, html: card('stage-chill-crowd') },
+    { x: 14, y: 57, w: 80, d: 1.2, z: 3, t: 350, float: 1, html: card('stage-chill-passes') },
+    { x: 6, y: 89, w: 'auto', d: 1.5, z: 4, t: 450, html: tag('Chill &amp; Groove · Event website', '#7a28be') }
+  ]
+};
+const coverStage = p => COVERS[p.slug] ? `
+      <div class="stage sq reveal" style="--glow:${STAGES[p.slug].glow}">${layersHTML(COVERS[p.slug])}</div>
+      <div class="stage wide reveal" style="--glow:${STAGES[p.slug].glow}">${layersHTML(STAGES[p.slug].layers)}</div>`
+  : `<img src="${IMG + p.cover}" alt="" loading="lazy">`;
+
 const track = document.getElementById('track');
 track.innerHTML = PROJECTS.map(p => `
   <article class="case">
@@ -813,7 +902,7 @@ track.innerHTML = PROJECTS.map(p => `
       <p>${esc(p.desc)}</p>
       <a href="#/project/${p.slug}" class="btn btn-navy">View project<span class="sr-only">: ${esc(p.title)}</span></a>
     </div>
-    <a class="case-media" href="#/project/${p.slug}" tabindex="-1" aria-hidden="true"><img src="${IMG + p.cover}" alt="" loading="lazy"></a>
+    <a class="case-media" href="#/project/${p.slug}" tabindex="-1" aria-hidden="true">${coverStage(p)}</a>
   </article>`).join('');
 const prevBtn = document.getElementById('prev'), nextBtn = document.getElementById('next'), bar = document.getElementById('progress');
 function cardStep() { const c = track.querySelector('.case'); return c.getBoundingClientRect().width + 20; }
@@ -900,52 +989,6 @@ document.querySelectorAll('.acc').forEach(group => {
 });
 
 /* ---------- Project detail ---------- */
-// Showcase scene: crops of the real screens (tools/stage-crops.py) staged like the service visuals.
-// x, y, w in % of the stage · d = parallax depth · r = tilt · t = entrance delay (ms)
-const stageSrc = f => IMG + f + '.jpg';
-const win = f => `<div class="win"><div class="win-bar"><i></i><i></i><i></i><span></span></div><img src="${stageSrc(f)}" alt=""></div>`;
-const card = f => `<div class="scard"><img src="${stageSrc(f)}" alt=""></div>`;
-const tag = (text, dot) => `<span class="stag" style="--dot:${dot}">${text}</span>`;
-const STAGES = {
-  sodeco: { glow: 'rgba(38,139,160,.22)', label: 'SODECO website: Certifications and Sustainability pages, a certification card and the sustainability photo cards', layers: [
-    { x: 4, y: 8, w: 50, d: -.6, html: win('stage-sodeco-cert') },
-    { x: 40, y: 34, w: 50, d: .5, z: 2, t: 150, html: win('stage-sodeco-durab') },
-    { x: 58, y: 7, w: 37, d: 1, z: 3, t: 300, float: 1, html: card('stage-sodeco-photos') },
-    { x: 3, y: 70, w: 40, d: 1.2, z: 3, t: 400, float: 1, html: card('stage-sodeco-footer') },
-    { x: 60, y: 28, w: 'auto', d: 1.6, z: 4, t: 600, html: tag('SODECO · Corporate website', '#268ba0') }
-  ] },
-  'nyouz-media': { glow: 'rgba(56,102,241,.24)', label: 'Nyouz Media website: home page, Premium plan card, 404 page, weather widget and Instagram feed', layers: [
-    { x: 5, y: 8, w: 44, d: -.6, html: win('stage-nyouz-home') },
-    { x: 44, y: 22, w: 15, d: 1.4, z: 3, t: 250, r: '-3deg', float: 1, html: card('stage-nyouz-premium') },
-    { x: 64, y: 8, w: 28, d: .6, z: 2, t: 150, html: card('stage-nyouz-404') },
-    { x: 57, y: 50, w: 38, d: .9, z: 2, t: 350, float: 1, html: card('stage-nyouz-weather') },
-    { x: 31, y: 62, w: 15, d: 1.2, z: 3, t: 450, r: '2deg', float: 1, html: card('stage-nyouz-insta') },
-    { x: 66, y: 80, w: 'auto', d: 1.6, z: 4, t: 600, html: tag('Nyouz Media · News website', '#ff2d3a') }
-  ] },
-  greentech: { glow: 'rgba(76,152,84,.24)', label: 'Greentech City identity: logo, colour palette, field photo, cap and t-shirt, street banners', layers: [
-    { x: 5, y: 9, w: 30, d: .8, z: 2, float: 1, html: `<div class="scard logo-card"><img src="${IMG}greentech-1.png" alt=""></div>` },
-    { x: 37.5, y: 9, w: 12, d: 1.2, z: 3, t: 150, float: 1, html: `<div class="scard pad swatches">${['#206534', '#4C9854', '#111111', '#FEFEF4'].map(c => `<b style="background:${c}${c === '#FEFEF4' ? ';color:#111;box-shadow:inset 0 0 0 1px #e6e6da' : ''}">${c}</b>`).join('')}</div>` },
-    { x: 55, y: 7, w: 40, d: -.6, t: 100, html: card('stage-green-field') },
-    { x: 5, y: 47, w: 40, d: .6, z: 2, t: 300, html: card('stage-green-merch') },
-    { x: 31, y: 60, w: 19, d: 1.3, z: 3, t: 450, r: '-2deg', float: 1, html: card('stage-green-banners') },
-    { x: 62, y: 80, w: 'auto', d: 1.6, z: 4, t: 600, html: tag('Greentech City · Brand identity', '#4c9854') }
-  ] },
-  'chill-groove': { glow: 'rgba(122,40,190,.26)', label: 'Chill & Groove website: hero with countdown, festival passes, jersey merch and crowd photo', layers: [
-    { x: 4, y: 8, w: 50, d: -.6, html: win('stage-chill-hero') },
-    { x: 58, y: 8, w: 37, d: .7, z: 2, t: 150, float: 1, html: card('stage-chill-merch') },
-    { x: 68, y: 33, w: 26, d: .4, z: 1, t: 250, html: card('stage-chill-crowd') },
-    { x: 40, y: 58, w: 48, d: 1.2, z: 3, t: 400, float: 1, html: card('stage-chill-passes') },
-    { x: 4, y: 85, w: 'auto', d: 1.6, z: 4, t: 600, html: tag('Chill &amp; Groove · Event website', '#7a28be') }
-  ] }
-};
-function stageSection(p) {
-  const s = STAGES[p.slug];
-  if (!s) return '';
-  return `
-    <figure class="stage reveal" style="--glow:${s.glow}" role="img" aria-label="${esc(s.label)}">
-      ${s.layers.map(l => `<div class="layer${l.float ? ' float' : ''}" style="--x:${l.x}%;--y:${l.y}%;--w:${l.w === 'auto' ? 'auto' : l.w + '%'};--d:${l.d};--z:${l.z || 1};--t:${l.t || 0}ms${l.r ? ';--r:' + l.r : ''}">${l.html}</div>`).join('')}
-    </figure>`;
-}
 // Pointer parallax on the showcase (desktop, motion allowed)
 if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
   document.addEventListener('pointermove', e => {
