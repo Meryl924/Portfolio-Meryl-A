@@ -242,6 +242,21 @@
   .pd-meta small { display: block; font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin-bottom: 6px; }
   .pd-meta strong { font-weight: 600; color: var(--ink); }
   .pd-meta .btn { height: 100%; min-height: 64px; border-radius: 16px; }
+  .proc { margin: 8px 0 80px; }
+  .proc-head { display: flex; justify-content: space-between; align-items: end; gap: 24px; margin-bottom: 28px; }
+  .proc-head .eyebrow { color: var(--blue); margin-bottom: 10px; }
+  .proc-head .lead { max-width: 420px; }
+  .proc-video { border-radius: var(--radius); overflow: hidden; background: var(--soft-2); box-shadow: var(--shadow-lg); aspect-ratio: 16 / 9; }
+  .proc-video video { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .proc-steps { list-style: none; display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 20px; }
+  .proc-steps > li { position: relative; overflow: hidden; background: var(--soft); border-radius: 18px; padding: 26px 24px 24px; }
+  .proc-steps > li::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 3px; background: var(--grad); }
+  .proc-steps .num { font-size: 13px; font-weight: 600; letter-spacing: .08em; color: var(--blue); }
+  .proc-steps h3 { font-size: 20px; font-weight: 600; line-height: 1.25; color: var(--ink); margin: 8px 0 10px; }
+  .proc-steps p { font-size: 14px; color: var(--muted); margin-bottom: 16px; }
+  .proc-steps ul { list-style: none; display: grid; gap: 9px; }
+  .proc-steps ul li { position: relative; padding-left: 20px; font-size: 14px; line-height: 1.4; color: var(--text); }
+  .proc-steps ul li::before { content: ""; position: absolute; left: 0; top: .42em; width: 9px; height: 9px; border-radius: 50%; border: 2px solid var(--blue); background: #fff; }
   .gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
   .gallery figure { border-radius: var(--radius); overflow: hidden; background: var(--soft); box-shadow: var(--shadow); }
   .gallery figure.full { grid-column: 1 / -1; }
@@ -335,6 +350,7 @@
 
   /* ---------- Responsive ---------- */
   @media (max-width: 1080px) {
+    .proc-steps { grid-template-columns: 1fr 1fr; }
     :root { --gutter: 28px; }
     .nav-links, .nav .btn { display: none; }
     .burger { display: flex; }
@@ -360,6 +376,9 @@
     .foot-brand { grid-column: 1 / -1; }
   }
   @media (max-width: 760px) {
+    .proc-head { flex-direction: column; align-items: flex-start; }
+    .proc-steps { grid-template-columns: 1fr; }
+    .proc { margin-bottom: 56px; }
     :root { --gutter: 16px; }
     section { padding-top: 80px; }
     .hero { padding-top: 120px; }
@@ -678,8 +697,10 @@
   </div>
 </footer>
 
+<script src="assets/process.js"></script>
 <script>
 const IMG = 'assets/img/';
+const VIDEO = 'assets/video/';
 const PROJECTS = [
   {
     slug: 'sodeco', title: 'SODECO Website', accent: 'Website',
@@ -839,6 +860,34 @@ document.querySelectorAll('.acc').forEach(group => {
 });
 
 /* ---------- Project detail ---------- */
+// Design process: video walkthrough + the same four phases as text (readable without playing the video)
+function processSection(p) {
+  const phases = (window.PROCESS || {})[p.slug];
+  if (!phases) return '';
+  return `
+    <section class="proc" aria-labelledby="proc-title">
+      <div class="proc-head reveal">
+        <div><p class="eyebrow">Design process</p><h2 class="h-lg grad-text" id="proc-title">How it was made</h2></div>
+        <p class="lead">From the brief to the hand-off, in four phases.</p>
+      </div>
+      <figure class="proc-video reveal">
+        <video controls playsinline preload="none" width="1920" height="1080"
+          poster="${VIDEO + p.slug}-process.jpg" aria-label="Design process video: ${esc(p.title)}">
+          <source src="${VIDEO + p.slug}-process.mp4" type="video/mp4">
+        </video>
+      </figure>
+      <ol class="proc-steps">
+        ${phases.map((ph, i) => `
+        <li class="reveal${i ? ' d' + Math.min(i, 3) : ''}">
+          <span class="num">0${i + 1}</span>
+          <h3>${esc(ph.phase)}</h3>
+          <p>${esc(ph.summary)}</p>
+          <ul>${ph.steps.map(st => `<li>${esc(st)}</li>`).join('')}</ul>
+        </li>`).join('')}
+      </ol>
+    </section>`;
+}
+
 function renderProject(slug) {
   const i = PROJECTS.findIndex(p => p.slug === slug);
   const box = document.getElementById('projectDetail');
@@ -862,6 +911,7 @@ function renderProject(slug) {
       <div><small>Category</small><strong>${esc(p.category)}</strong></div>
       <a class="btn btn-grad" href="${p.live}" target="_blank" rel="noopener">${esc(p.liveLabel)} ${arrow}<span class="sr-only"> (opens in a new tab)</span></a>
     </div>
+    ${processSection(p)}
     <h2 class="sr-only">Gallery</h2>
     <div class="gallery">
       ${g.map((src, k) => `<figure class="${L[k]} reveal${k === 0 && p.containFirst ? ' contain' : ''}"><img src="${src}" alt="${esc(p.title)} — image ${k + 1}"${k ? ' loading="lazy"' : ''}></figure>`).join('')}
