@@ -140,19 +140,24 @@
 
   /* ---------- Bento services ---------- */
   .bento { display: grid; grid-template-columns: 1fr 1fr 1fr; grid-template-rows: repeat(2, minmax(300px, auto)); gap: 16px; }
-  .tile { position: relative; overflow: hidden; border-radius: var(--radius); background: linear-gradient(160deg, #f7f9ff 0%, #eef3ff 100%); border: 1px solid #edf1fb; padding: 28px; display: flex; flex-direction: column; justify-content: flex-end; gap: 10px; transition: transform 200ms var(--ease-out), box-shadow 200ms var(--ease-out); }
+  .tile { position: relative; overflow: hidden; border-radius: var(--radius); background: var(--soft); padding: 28px; display: flex; flex-direction: column; justify-content: flex-end; gap: 10px; }
+  .tile .tile-num { font-size: 13px; font-weight: 600; letter-spacing: .08em; color: var(--blue); position: relative; z-index: 1; }
   .tile h3 { font-size: 26px; font-weight: 500; line-height: 1.15; color: var(--ink); position: relative; z-index: 1; }
   .tile p { font-size: 14px; color: var(--muted); max-width: 360px; position: relative; z-index: 1; }
   .tile-a { grid-row: 1 / 3; }
-  .tile-b { grid-column: 2 / 4; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); grid-template-rows: 1fr auto auto; column-gap: 28px; }
-  .tile-b .tile-shot { grid-column: 2; grid-row: 1 / 4; margin: -8px -8px -8px 0; }
-  .tile-b h3 { grid-column: 1; grid-row: 2; }
-  .tile-b p { grid-column: 1; grid-row: 3; }
+  .tile-b { grid-column: 2 / 4; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); grid-template-rows: 1fr auto auto auto auto; column-gap: 28px; row-gap: 10px; }
+  .tile-b .tile-shot { grid-column: 2; grid-row: 1 / 6; margin: -8px -8px -8px 0; }
+  .tile-b > :not(.tile-shot) { grid-column: 1; }
+  .tile-b .tile-num { grid-row: 2; }
+  .tile-b h3 { grid-row: 3; }
+  .tile-b p { grid-row: 4; }
+  .tile-b .tile-list { grid-row: 5; }
   /* Real project shots illustrating each service */
-  .tile-shot { position: relative; flex: 1 1 auto; min-height: 150px; margin: -8px -8px 14px; border-radius: 14px; overflow: hidden; background: #fff; box-shadow: 0 14px 34px rgba(16,42,110,.12); }
-  .tile-shot img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: var(--pos, 50% 50%); transition: transform 500ms var(--ease-out); }
-  .tools-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px; position: relative; z-index: 1; }
-  .tools-row span { padding: 6px 12px; border-radius: 999px; background: #fff; border: 1px solid var(--line); font-size: 13px; font-weight: 500; color: var(--navy); }
+  .tile-shot { position: relative; flex: 1 1 auto; min-height: 150px; margin: -8px -8px 14px; border-radius: 14px; overflow: hidden; }
+  .tile-shot img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: var(--pos, 50% 50%); }
+  .tile-list { list-style: none; display: flex; flex-wrap: wrap; gap: 4px 16px; margin-top: 6px; padding-top: 14px; border-top: 1px solid #dfe6f6; position: relative; z-index: 1; }
+  .tile-list li { position: relative; padding-left: 14px; font-size: 13px; font-weight: 500; color: var(--text); }
+  .tile-list li::before { content: ""; position: absolute; left: 0; top: .5em; width: 6px; height: 6px; border-radius: 50%; background: var(--blue); }
 
 
   /* ---------- Work carousel ---------- */
@@ -242,6 +247,30 @@
   .pd-meta small { display: block; font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin-bottom: 6px; }
   .pd-meta strong { font-weight: 600; color: var(--ink); }
   .pd-meta .btn { height: 100%; min-height: 64px; border-radius: 16px; }
+  /* Project showcase: real screens and details staged on a soft backdrop.
+     Every position is a % of the stage, sizes use cqw, so the scene scales as one picture. */
+  .stage { position: relative; container-type: inline-size; aspect-ratio: 16 / 9; margin: 0 0 80px; border-radius: 32px; overflow: hidden;
+    background: radial-gradient(60% 70% at 78% 18%, var(--glow, rgba(101,172,255,.28)), transparent 70%), linear-gradient(160deg, #f7f9ff 0%, #e7eefe 100%); }
+  .stage::before { content: ""; position: absolute; inset: 0; background-image: radial-gradient(rgba(56,102,241,.13) 1px, transparent 1.2px); background-size: 2.2cqw 2.2cqw; mask-image: linear-gradient(180deg, #000, transparent 85%); }
+  .layer { position: absolute; left: var(--x); top: var(--y); width: var(--w); z-index: var(--z, 1);
+    translate: calc(var(--mx, 0) * var(--d, 0) * 1cqw) calc(var(--my, 0) * var(--d, 0) * 1cqw); transition: translate 600ms var(--ease-out); }
+  .layer > * { rotate: var(--r, 0deg); opacity: 0; transform: translateY(4cqw) scale(.96); transition: opacity 700ms ease, transform 900ms var(--ease-out); transition-delay: var(--t, 0ms); }
+  .stage.in .layer > * { opacity: 1; transform: none; }
+  .stage.in .layer.float > * { animation: drift 7s ease-in-out var(--t, 0ms) infinite alternate; }
+  @keyframes drift { from { translate: 0 0; } to { translate: 0 -.7cqw; } }
+  .win, .scard { background: #fff; border-radius: 1.1cqw; overflow: hidden; box-shadow: 0 1.6cqw 4cqw rgba(16,42,110,.16), 0 0 0 1px rgba(16,42,110,.05); }
+  .win img, .scard img { display: block; width: 100%; height: auto; }
+  .win-bar { display: flex; align-items: center; gap: .45cqw; height: 2.2cqw; padding: 0 1cqw; background: #f6f8fd; border-bottom: 1px solid #edf1fb; }
+  .win-bar i { width: .65cqw; height: .65cqw; border-radius: 50%; background: #ff5f57; }
+  .win-bar i:nth-child(2) { background: #febc2e; }
+  .win-bar i:nth-child(3) { background: #28c840; }
+  .win-bar span { margin-left: 1cqw; flex: 1; max-width: 45%; height: 1.1cqw; border-radius: 1cqw; background: #e9edf7; }
+  .scard.pad { padding: 1.2cqw; }
+  .stag { display: inline-flex; align-items: center; gap: .8cqw; padding: .9cqw 1.6cqw; border-radius: 999px; background: #fff; box-shadow: 0 1.2cqw 3cqw rgba(16,42,110,.14); font-size: max(11px, 1.45cqw); font-weight: 500; color: var(--ink); white-space: nowrap; }
+  .stag::before { content: ""; width: .9cqw; height: .9cqw; min-width: 7px; min-height: 7px; border-radius: 50%; background: var(--dot, #28c840); }
+  .swatches { display: grid; gap: .7cqw; }
+  .swatches b { display: flex; align-items: flex-end; height: 3.6cqw; padding: .5cqw .7cqw; border-radius: .7cqw; font-size: max(9px, 1cqw); font-weight: 600; letter-spacing: .02em; color: #fff; }
+  .logo-card { display: grid; place-items: center; padding: 2cqw 2.4cqw; background: #fefef4; }
   .proc { margin: 8px 0 80px; }
   .proc-head { display: flex; justify-content: space-between; align-items: end; gap: 24px; margin-bottom: 28px; }
   .proc-head .eyebrow { color: var(--blue); margin-bottom: 10px; }
@@ -326,8 +355,6 @@
     .btn-navy:hover, .btn-white:hover { transform: translateY(-2px); }
     .btn-white:hover::before { opacity: 1; }
     .btn-navy:hover { background-color: var(--navy); }
-    .tile:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
-    .tile:hover .tile-shot img { transform: scale(1.04); }
     .case:hover::after { opacity: 1; }
     .case:hover .case-media img { transform: scale(1.03); }
     .arrows button:not(:disabled):hover { transform: translateY(-2px); }
@@ -339,11 +366,14 @@
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
     .reveal, .reveal.in { transform: none; transition: opacity 300ms ease; }
+    .layer { translate: none !important; }
+    .layer > * { transform: none; transition: opacity 400ms ease; }
+    .stage.in .layer.float > * { animation: none; }
     .hero-in { animation-name: heroFade; }
     @keyframes heroFade { from { opacity: 0; } }
     .exp-card .fade { animation-name: heroFade; }
     .chip, .hero-visual .rings::after { animation: none; }
-    .btn, .btn:hover, .btn:active, .tile:hover, .tile:hover .tile-shot img, .arrows button:hover, .arrows button:active, .next-proj:hover, .burger:active, .case:hover .case-media img { transform: none !important; }
+    .btn, .btn:hover, .btn:active, .arrows button:hover, .arrows button:active, .next-proj:hover, .burger:active, .case:hover .case-media img { transform: none !important; }
     .skip { transition: none; }
     .mobile-menu { transform: none !important; }
   }
@@ -379,6 +409,9 @@
     .proc-head { flex-direction: column; align-items: flex-start; }
     .proc-steps { grid-template-columns: 1fr; }
     .proc { margin-bottom: 56px; }
+    .stage { margin-bottom: 56px; border-radius: 20px; }
+    .swatches b { font-size: 0; }
+    .layer:has(.stag) { display: none; }   /* the label would overflow; the page title already names the project */
     :root { --gutter: 16px; }
     section { padding-top: 80px; }
     .hero { padding-top: 120px; }
@@ -544,24 +577,31 @@
       <div class="bento">
         <article class="tile tile-a reveal">
           <figure class="tile-shot" style="--pos: 50% 55%"><img src="assets/img/svc-website.jpg" alt="SODECO website pages in browser windows" loading="lazy" width="900" height="1040"></figure>
+          <p class="tile-num">01</p>
           <h3>Website Design</h3>
           <p>Visually appealing, user-friendly and responsive websites that reflect your brand, enhance user experience and support your business goals through smart layout and functionality.</p>
+          <ul class="tile-list" aria-label="Deliverables"><li>Corporate sites</li><li>Landing pages</li><li>Responsive layouts</li></ul>
         </article>
         <article class="tile tile-b reveal d1">
           <figure class="tile-shot" style="--pos: 50% 50%"><img src="assets/img/svc-uiux.jpg" alt="Nyouz Media interface: homepage, premium plan card, comments and gallery" loading="lazy" width="1200" height="800"></figure>
+          <p class="tile-num">02</p>
           <h3>UI/UX Design</h3>
           <p>Intuitive, engaging and user-centered digital interfaces that improve usability and satisfaction, with seamless interaction across devices.</p>
+          <ul class="tile-list" aria-label="Deliverables"><li>User research</li><li>Wireframes</li><li>UI kits</li><li>Prototypes</li></ul>
         </article>
         <article class="tile reveal d2">
           <figure class="tile-shot" style="--pos: 50% 50%"><img src="assets/img/svc-branding.jpg" alt="Greentech City brand: logo, colour palette, cap and t-shirt" loading="lazy" width="1000" height="560"></figure>
+          <p class="tile-num">03</p>
           <h3>Logo &amp; Branding</h3>
           <p>Unique visual identities — logos, color palettes and brand guidelines — for a memorable and consistent presence.</p>
+          <ul class="tile-list" aria-label="Deliverables"><li>Logo</li><li>Palette</li><li>Brand guidelines</li></ul>
         </article>
         <article class="tile reveal d3">
           <figure class="tile-shot" style="--pos: 50% 45%"><img src="assets/img/svc-nocode.jpg" alt="This portfolio’s homepage open in the Framer editor" loading="lazy" width="1000" height="560"></figure>
+          <p class="tile-num">04</p>
           <h3>No-Code Development</h3>
           <p>Sites you can update yourself, without technical knowledge.</p>
-          <div class="tools-row"><span>Figma</span><span>Framer</span><span>Spline 3D</span></div>
+          <ul class="tile-list" aria-label="Tools"><li>Figma</li><li>Framer</li><li>Spline 3D</li></ul>
         </article>
       </div>
     </div>
@@ -860,6 +900,65 @@ document.querySelectorAll('.acc').forEach(group => {
 });
 
 /* ---------- Project detail ---------- */
+// Showcase scene: crops of the real screens (tools/stage-crops.py) staged like the service visuals.
+// x, y, w in % of the stage · d = parallax depth · r = tilt · t = entrance delay (ms)
+const stageSrc = f => IMG + f + '.jpg';
+const win = f => `<div class="win"><div class="win-bar"><i></i><i></i><i></i><span></span></div><img src="${stageSrc(f)}" alt=""></div>`;
+const card = f => `<div class="scard"><img src="${stageSrc(f)}" alt=""></div>`;
+const tag = (text, dot) => `<span class="stag" style="--dot:${dot}">${text}</span>`;
+const STAGES = {
+  sodeco: { glow: 'rgba(38,139,160,.22)', label: 'SODECO website: Certifications and Sustainability pages, a certification card and the sustainability photo cards', layers: [
+    { x: 4, y: 8, w: 50, d: -.6, html: win('stage-sodeco-cert') },
+    { x: 40, y: 34, w: 50, d: .5, z: 2, t: 150, html: win('stage-sodeco-durab') },
+    { x: 58, y: 7, w: 37, d: 1, z: 3, t: 300, float: 1, html: card('stage-sodeco-photos') },
+    { x: 3, y: 70, w: 40, d: 1.2, z: 3, t: 400, float: 1, html: card('stage-sodeco-footer') },
+    { x: 60, y: 28, w: 'auto', d: 1.6, z: 4, t: 600, html: tag('SODECO · Corporate website', '#268ba0') }
+  ] },
+  'nyouz-media': { glow: 'rgba(56,102,241,.24)', label: 'Nyouz Media website: home page, Premium plan card, 404 page, weather widget and Instagram feed', layers: [
+    { x: 5, y: 8, w: 44, d: -.6, html: win('stage-nyouz-home') },
+    { x: 44, y: 22, w: 15, d: 1.4, z: 3, t: 250, r: '-3deg', float: 1, html: card('stage-nyouz-premium') },
+    { x: 64, y: 8, w: 28, d: .6, z: 2, t: 150, html: card('stage-nyouz-404') },
+    { x: 57, y: 50, w: 38, d: .9, z: 2, t: 350, float: 1, html: card('stage-nyouz-weather') },
+    { x: 31, y: 62, w: 15, d: 1.2, z: 3, t: 450, r: '2deg', float: 1, html: card('stage-nyouz-insta') },
+    { x: 66, y: 80, w: 'auto', d: 1.6, z: 4, t: 600, html: tag('Nyouz Media · News website', '#ff2d3a') }
+  ] },
+  greentech: { glow: 'rgba(76,152,84,.24)', label: 'Greentech City identity: logo, colour palette, field photo, cap and t-shirt, street banners', layers: [
+    { x: 5, y: 9, w: 30, d: .8, z: 2, float: 1, html: `<div class="scard logo-card"><img src="${IMG}greentech-1.png" alt=""></div>` },
+    { x: 37.5, y: 9, w: 12, d: 1.2, z: 3, t: 150, float: 1, html: `<div class="scard pad swatches">${['#206534', '#4C9854', '#111111', '#FEFEF4'].map(c => `<b style="background:${c}${c === '#FEFEF4' ? ';color:#111;box-shadow:inset 0 0 0 1px #e6e6da' : ''}">${c}</b>`).join('')}</div>` },
+    { x: 55, y: 7, w: 40, d: -.6, t: 100, html: card('stage-green-field') },
+    { x: 5, y: 47, w: 40, d: .6, z: 2, t: 300, html: card('stage-green-merch') },
+    { x: 31, y: 60, w: 19, d: 1.3, z: 3, t: 450, r: '-2deg', float: 1, html: card('stage-green-banners') },
+    { x: 62, y: 80, w: 'auto', d: 1.6, z: 4, t: 600, html: tag('Greentech City · Brand identity', '#4c9854') }
+  ] },
+  'chill-groove': { glow: 'rgba(122,40,190,.26)', label: 'Chill & Groove website: hero with countdown, festival passes, jersey merch and crowd photo', layers: [
+    { x: 4, y: 8, w: 50, d: -.6, html: win('stage-chill-hero') },
+    { x: 58, y: 8, w: 37, d: .7, z: 2, t: 150, float: 1, html: card('stage-chill-merch') },
+    { x: 68, y: 33, w: 26, d: .4, z: 1, t: 250, html: card('stage-chill-crowd') },
+    { x: 40, y: 58, w: 48, d: 1.2, z: 3, t: 400, float: 1, html: card('stage-chill-passes') },
+    { x: 4, y: 85, w: 'auto', d: 1.6, z: 4, t: 600, html: tag('Chill &amp; Groove · Event website', '#7a28be') }
+  ] }
+};
+function stageSection(p) {
+  const s = STAGES[p.slug];
+  if (!s) return '';
+  return `
+    <figure class="stage reveal" style="--glow:${s.glow}" role="img" aria-label="${esc(s.label)}">
+      ${s.layers.map(l => `<div class="layer${l.float ? ' float' : ''}" style="--x:${l.x}%;--y:${l.y}%;--w:${l.w === 'auto' ? 'auto' : l.w + '%'};--d:${l.d};--z:${l.z || 1};--t:${l.t || 0}ms${l.r ? ';--r:' + l.r : ''}">${l.html}</div>`).join('')}
+    </figure>`;
+}
+// Pointer parallax on the showcase (desktop, motion allowed)
+if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
+  document.addEventListener('pointermove', e => {
+    const st = e.target.closest && e.target.closest('.stage');
+    document.querySelectorAll('.stage').forEach(el => {
+      if (reduceMotion.matches || el !== st) { el.style.removeProperty('--mx'); el.style.removeProperty('--my'); return; }
+      const r = el.getBoundingClientRect();
+      el.style.setProperty('--mx', ((e.clientX - r.left) / r.width - .5).toFixed(3));
+      el.style.setProperty('--my', ((e.clientY - r.top) / r.height - .5).toFixed(3));
+    });
+  }, { passive: true });
+}
+
 // Design process: video walkthrough + the same four phases as text (readable without playing the video)
 function processSection(p) {
   const phases = (window.PROCESS || {})[p.slug];
@@ -911,6 +1010,7 @@ function renderProject(slug) {
       <div><small>Category</small><strong>${esc(p.category)}</strong></div>
       <a class="btn btn-grad" href="${p.live}" target="_blank" rel="noopener">${esc(p.liveLabel)} ${arrow}<span class="sr-only"> (opens in a new tab)</span></a>
     </div>
+    ${stageSection(p)}
     ${processSection(p)}
     <h2 class="sr-only">Gallery</h2>
     <div class="gallery">
