@@ -11,6 +11,9 @@
 <meta property="og:url" content="https://meryl924.github.io/Portfolio-Meryl-A/">
 <meta property="og:image" content="https://meryl924.github.io/Portfolio-Meryl-A/assets/img/meryl-portrait.jpg">
 <meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="assets/logo/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/logo/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="assets/logo/apple-touch-icon.png">
 <style>
   @font-face { font-family: "Red Hat Display"; src: url("assets/fonts/redhatdisplay-latin-ext.woff2") format("woff2"); font-weight: 400 800; font-display: swap;
     unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
@@ -84,8 +87,9 @@
   .nav { position: fixed; inset: 0 0 auto 0; z-index: 50; transition: background .3s, box-shadow .3s; }
   .nav.scrolled { background: rgba(255,255,255,.88); backdrop-filter: blur(14px); box-shadow: 0 1px 0 var(--line); }
   .nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 80px; gap: 24px; }
-  .logo { display: inline-flex; align-items: center; gap: 10px; font-weight: 700; font-size: 20px; color: var(--navy); letter-spacing: .01em; }
-  .logo-mark { width: 34px; height: 34px; border-radius: 10px; background: var(--grad-ink); display: grid; place-items: center; color: #fff; font-size: 17px; font-weight: 800; box-shadow: 0 6px 16px rgba(56,102,241,.35); }
+  .logo { display: inline-flex; align-items: center; gap: 12px; font-weight: 600; font-size: 20px; color: var(--ink); letter-spacing: -.005em; }
+  .logo-mark { width: 40px; height: auto; flex: none; }
+  .logo-name > span { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
   .nav-links { display: flex; gap: 40px; font-size: 15px; font-weight: 500; color: var(--ink); }
   .nav-links a { position: relative; padding: 6px 0; }
   .nav-links a::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; border-radius: 2px; background: var(--grad); transform: scaleX(0); transform-origin: left; transition: transform 200ms var(--ease-out); }
@@ -328,7 +332,7 @@
   footer .wrap { position: relative; }
   .foot-grid { display: grid; grid-template-columns: 1.6fr 1fr 1fr; gap: 40px; margin-bottom: 64px; }
   .foot-brand .logo { color: #fff; margin-bottom: 40px; }
-  .foot-brand .logo-mark { background: #fff; color: var(--navy); box-shadow: none; }
+  .foot-brand .logo-name > span { background: linear-gradient(90deg, #cfe0ff, #65acff); -webkit-background-clip: text; background-clip: text; }
   .foot-title { font-size: 22px; font-weight: 500; margin-bottom: 20px; }
   .foot-mail { display: inline-flex; align-items: center; gap: 12px; padding: 14px 22px; border-radius: 999px; background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.22); font-size: 15px; transition: background .2s; overflow-wrap: anywhere; }
   .foot-mail:hover { background: rgba(255,255,255,.2); }
@@ -462,7 +466,7 @@
 <!-- ================= NAV ================= -->
 <header class="nav" id="nav">
   <div class="wrap">
-    <a href="#/" class="logo" aria-label="Meryl Agnikpe, home"><span class="logo-mark" aria-hidden="true">M</span>MERYL A.</a>
+    <a href="#/" class="logo" aria-label="Meryl Agnikpe, home"><svg class="logo-mark" viewBox="6 16 89 70" aria-hidden="true"><defs><linearGradient id="logo-g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#013b9a"/><stop offset=".44" stop-color="#3866f1"/><stop offset="1" stop-color="#65acff"/></linearGradient></defs><path d="M12 80 V22 L39 60 L66 22 L90 80" stroke="url(#logo-g)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="67.5" cy="60" r="7" fill="#65acff"/></svg><span class="logo-name" aria-hidden="true">Meryl <span>Agnikpe</span></span></a>
     <nav class="nav-links" aria-label="Main">
       <a href="#/work">Work</a>
       <a href="#/experience">Experience</a>
@@ -716,7 +720,7 @@
   <div class="wrap">
     <div class="foot-grid">
       <div class="foot-brand">
-        <a href="#/" class="logo" aria-label="Meryl Agnikpe, home"><span class="logo-mark" aria-hidden="true">M</span>MERYL A.</a>
+        <a href="#/" class="logo" aria-label="Meryl Agnikpe, home"><svg class="logo-mark" viewBox="6 16 89 70" aria-hidden="true"><defs><linearGradient id="logo-g-foot" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#65acff"/></linearGradient></defs><path d="M12 80 V22 L39 60 L66 22 L90 80" stroke="url(#logo-g-foot)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="67.5" cy="60" r="7" fill="#fff"/></svg><span class="logo-name" aria-hidden="true">Meryl <span>Agnikpe</span></span></a>
         <p class="foot-title">Let’s stay in touch.</p>
         <a class="foot-mail" href="mailto:contactmerylagnikpe@gmail.com">contactmerylagnikpe@gmail.com</a>
         <a class="foot-mail" href="tel:+2290161784178">+229 01 61 78 41 78</a>
