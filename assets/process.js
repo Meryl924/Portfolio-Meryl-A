@@ -8,6 +8,29 @@
   timeline.
 */
 window.PROCESS = {
+  fosso: [
+    {
+      phase: 'Research & analysis',
+      summary: 'Understanding how Cotonou households empty their septic tanks, and why it so often happens too late.',
+      steps: ['Brief: a low-carbon territory', 'Household questionnaire', 'Data: GIZ, World Bank, gouv.bj']
+    },
+    {
+      phase: 'Ideation',
+      summary: 'Turning the findings into solution paths, then choosing one concept to develop.',
+      steps: ['Anticipating overflows', '3 concepts compared', 'Concept: sensor + alerts']
+    },
+    {
+      phase: 'UI design',
+      summary: 'One shared design system for the household app, the SGDS dashboard and the presentation site.',
+      steps: ['Household app: level & payment', 'SGDS supervision dashboard', 'Presentation site']
+    },
+    {
+      phase: 'Presentation',
+      summary: 'Pitching the concept to the jury with clickable prototypes, a key visual and a summary sheet.',
+      steps: ['Pitch & key visual', 'Schematic & summary sheet', 'Clickable prototypes']
+    }
+  ],
+
   sodeco: [
     {
       phase: 'Research & analysis',

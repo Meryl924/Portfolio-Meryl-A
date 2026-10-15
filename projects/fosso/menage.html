@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Suivi de fosse · ménage</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@300;400;500;600;700&display=swap">
+<style>
+:root{
+  --page:#eef3fa; --card:#ffffff; --card-2:#f4f7fc; --tint:#e3ebf7; --line:#dfe7f2;
+  --navy:#0f2756; --navy-2:#1a3a78; --blue:#2f63d6; --blue-2:#6f97e6; --sky:#c9d9f3;
+  --ink:#0c1a33; --text:#33415c; --muted:#6f7f9c;
+  --ok:#1f9d63; --ok-soft:#e3f5ec; --warn:#e29a18; --warn-soft:#fdf2dc; --warn-ink:#8a5a06;
+  --high:#e46c2a; --high-soft:#fde8dc; --high-ink:#963f0f; --crit:#d6384a; --crit-soft:#fbe3e6; --crit-ink:#93202d;
+  --font:"Onest",system-ui,-apple-system,"Segoe UI",sans-serif; color-scheme:light;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--page);color:var(--text);font-family:var(--font);font-size:15px;line-height:1.5}
+h1,h2,h3{font-family:var(--font);color:var(--ink);margin:0;line-height:1.1;letter-spacing:-.025em;text-wrap:balance}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.num{font-variant-numeric:tabular-nums}
+
+/* coque : barre latérale marine + zone blanche */
+.app{display:grid;grid-template-columns:244px minmax(0,1fr);gap:14px;padding:14px;min-height:100vh;min-height:100dvh}
+.side{position:sticky;top:14px;height:calc(100vh - 28px);height:calc(100dvh - 28px);background:var(--navy);border-radius:26px;color:#fff;padding:22px 14px 16px;display:flex;flex-direction:column;gap:4px;overflow:auto}
+.brand{display:flex;align-items:center;gap:10px;padding:0 10px 22px;font-size:17px;font-weight:600;letter-spacing:-.02em;color:#fff}
+.brand .bi{width:36px;height:36px;border-radius:12px;background:rgba(255,255,255,.12);display:grid;place-items:center}
+.brand small{display:block;font-size:11.5px;font-weight:400;color:#a9bde6;letter-spacing:0}
+.mi{display:flex;align-items:center;gap:12px;border:0;background:transparent;color:#dfe8fb;text-align:left;padding:11px 12px;border-radius:13px;font-size:14px;width:100%;position:relative}
+.mi:hover{background:rgba(255,255,255,.07)}
+.mi[aria-current="page"]{background:rgba(255,255,255,.15);color:#fff}
+.mi .dot{position:absolute;right:12px;top:50%;margin-top:-3.5px;width:7px;height:7px;border-radius:50%;background:#8fb3ff}
+.mi .cnt{position:absolute;right:10px;top:50%;margin-top:-9px;background:var(--crit);color:#fff;font-size:10.5px;border-radius:999px;min-width:18px;height:18px;display:grid;place-items:center;padding:0 5px}
+.side .user{margin-top:auto;display:flex;gap:12px;align-items:center;padding:16px 8px 4px;border-top:1px solid rgba(255,255,255,.12)}
+.avatar{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#8fb3ff,#2f63d6);color:#fff;display:grid;place-items:center;font-weight:600;flex:none;font-size:14px}
+.side .user b{display:block;font-weight:500;font-size:14.5px}
+.side .user small{color:#b9c9ea;font-size:12px;line-height:1.35;display:block}
+.main{background:#fff;border-radius:28px;padding:22px 26px 30px;min-width:0;box-shadow:0 30px 60px -48px rgba(15,39,86,.5)}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:18px}
+.topbar h1{font-size:clamp(26px,3vw,36px);font-weight:500}
+.topbar .sub{color:var(--blue);font-size:13.5px;text-decoration:none;background:none;border:0;padding:0}
+.tb-r{display:flex;align-items:center;gap:8px}
+.icon-btn{width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:#fff;display:grid;place-items:center;color:var(--navy);position:relative}
+.icon-btn:hover{border-color:var(--blue)}
+.icon-btn .cnt{position:absolute;top:-3px;right:-3px;background:var(--crit);color:#fff;font-size:10px;border-radius:999px;min-width:17px;height:17px;display:grid;place-items:center;padding:0 4px}
+.foot-note{margin-top:26px;font-size:12px;color:var(--muted);display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+@media (max-width:900px){
+  .app{grid-template-columns:minmax(0,1fr);padding:10px 10px calc(env(safe-area-inset-bottom,0px) + 96px)}
+  .side{position:fixed;z-index:30;left:10px;right:10px;top:auto;bottom:calc(env(safe-area-inset-bottom,0px) + 10px);height:auto;flex-direction:row;justify-content:space-around;padding:7px;border-radius:22px;gap:2px;box-shadow:0 18px 40px -16px rgba(15,39,86,.6);overflow:visible}
+  .brand,.side .user{display:none}
+  .mi{flex-direction:column;gap:3px;padding:8px 4px;font-size:10.5px;width:auto;flex:1;align-items:center;text-align:center}
+  .mi .dot{right:auto;left:calc(50% + 8px);top:6px;margin:0}.mi .cnt{right:auto;left:calc(50% + 6px);top:2px;margin:0}
+  .main{padding:18px 14px 24px;border-radius:22px}
+}
+
+/* éléments */
+.btn{border:1px solid var(--line);background:#fff;border-radius:999px;padding:9px 16px;font-size:14px;color:var(--ink);white-space:nowrap}
+.btn:hover{border-color:var(--blue);color:var(--blue)}
+.btn.primary{background:var(--navy);border-color:var(--navy);color:#fff}
+.btn.primary:hover{background:var(--navy-2);color:#fff}
+.btn.blue{background:var(--blue);border-color:var(--blue);color:#fff}
+.btn.small{padding:6px 12px;font-size:13px}
+.btn.block{width:100%;padding:12px}
+.btn[disabled]{opacity:.5;cursor:not-allowed}
+.pill-btn{display:inline-flex;align-items:center;gap:12px;background:var(--navy);color:#fff;border:0;border-radius:999px;padding:6px 6px 6px 18px;font-size:14px;text-decoration:none;white-space:nowrap}
+.pill-btn .ar{width:30px;height:30px;border-radius:50%;background:#fff;color:var(--navy);display:grid;place-items:center}
+.pill-btn:hover{background:var(--navy-2)}
+.chip{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:4px 11px;font-size:12.5px;font-weight:500;white-space:nowrap}
+.t-ok{background:var(--ok-soft);color:var(--ok)}
+.t-warn{background:var(--warn-soft);color:var(--warn-ink)}
+.t-high{background:var(--high-soft);color:var(--high-ink)}
+.t-crit{background:var(--crit-soft);color:var(--crit-ink)}
+.t-info{background:var(--tint);color:var(--navy)}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+@media (max-width:1200px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:620px){.grid{grid-template-columns:minmax(0,1fr)}}
+.c{background:linear-gradient(160deg,#f7f9fd 0%,#edf2fa 100%);border-radius:20px;padding:18px;min-width:0;position:relative;overflow:hidden}
+.c.white{background:#fff;border:1px solid var(--line)}
+.c.navy{background:linear-gradient(150deg,#2a5bb8,#0f2756);color:#dbe6ff}
+.c.navy h3{color:#fff}
+.c h3{font-size:15px;font-weight:500;letter-spacing:-.01em;color:var(--ink);display:flex;align-items:center;gap:8px}
+.c-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.meta{font-size:12px;color:var(--muted)}
+.span2{grid-column:span 2}.span3{grid-column:span 3}.row2{grid-row:span 2}.full{grid-column:1/-1}
+@media (max-width:1200px){.span3{grid-column:span 2}}
+@media (max-width:620px){.span2,.span3{grid-column:auto}.row2{grid-row:auto}}
+.pbar{height:6px;border-radius:3px;background:var(--sky);overflow:hidden}
+.pbar i{display:block;height:100%;border-radius:3px;background:var(--blue)}
+.kv{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-top:1px solid var(--line);font-size:14px}
+.kv:first-child{border-top:0}
+.kv>span:first-child,.kv>label:first-child{color:var(--muted)}
+.kv>span:last-child{text-align:right}
+.rec{display:flex;gap:8px;align-items:flex-start;font-size:12.5px;color:var(--text);padding:5px 0}
+.rec i{width:18px;height:18px;border-radius:50%;background:#fff;border:1px solid var(--line);display:grid;place-items:center;font-style:normal;font-size:10px;color:var(--blue);flex:none}
+.stack{display:flex;flex-direction:column;gap:10px}
+.two{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);gap:12px;align-items:start}
+@media (max-width:1000px){.two{grid-template-columns:minmax(0,1fr)}}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label,.lbl{font-size:12px;color:var(--muted);letter-spacing:.02em}
+.field input,.field select{border:1px solid var(--line);border-radius:12px;padding:11px 13px;background:#fff}
+.err{color:var(--crit-ink);font-size:13px}
+.empty{text-align:center;padding:40px 16px;color:var(--muted)}
+.toggle{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 0}
+.toggle b{font-weight:500;color:var(--ink);font-size:13.5px;display:block}
+.toggle small{color:var(--muted);font-size:11.5px}
+.sw{width:38px;height:22px;border-radius:999px;background:var(--sky);position:relative;flex:none;border:0;padding:0}
+.sw::after{content:"";position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:#fff;transition:left .2s}
+.sw.on,.sw[aria-checked="true"]{background:var(--navy)}.sw.on::after,.sw[aria-checked="true"]::after{left:19px}
+.appt{background:#fff;border-radius:14px;padding:12px;display:grid;grid-template-columns:40px minmax(0,1fr) auto;gap:10px;align-items:center;margin-top:10px}
+.appt b{color:var(--ink);font-weight:600;font-size:13.5px;display:block}
+.appt .role{color:var(--blue);font-size:11.5px}
+.appt .when{font-size:11.5px;color:var(--muted)}
+.conf{background:var(--navy);color:#fff;font-size:11px;border-radius:999px;padding:3px 12px;white-space:nowrap}
+.truck{width:40px;height:40px;border-radius:50%;background:var(--tint);color:var(--navy);display:grid;place-items:center}
+.notif{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 14px;display:grid;grid-template-columns:8px minmax(0,1fr);gap:12px}
+.notif .b,.feed-i .b{border-radius:4px}
+.notif h3{font-size:14px;font-weight:600}
+.notif p{margin:3px 0 0;font-size:13.5px}
+.notif time{font-size:11.5px;color:var(--muted);white-space:nowrap}
+.feed-i{display:grid;grid-template-columns:8px minmax(0,1fr);gap:10px;padding:10px 0;border-top:1px solid var(--line);font-size:13px}
+.feed-i:first-child{border-top:0}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+@media (max-width:1000px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.kpi{background:linear-gradient(160deg,#f7f9fd,#edf2fa);border-radius:20px;padding:16px 18px;display:flex;flex-direction:column;gap:16px;min-width:0}
+.kpi .tag{align-self:flex-end;background:#fff;border-radius:999px;padding:2px 10px;font-size:11px;color:var(--ink)}
+.kpi .v{font-size:clamp(30px,3vw,40px);font-weight:500;color:var(--navy);letter-spacing:-.04em;line-height:1}
+.kpi .v small{font-size:15px;margin-left:3px;font-weight:400}
+.kpi.warn .v{color:var(--warn-ink)}.kpi.crit .v{color:var(--crit-ink)}.kpi.ok .v{color:var(--ok)}
+.kpi.navy{background:linear-gradient(150deg,#2a5bb8,#0f2756)}.kpi.navy .v{color:#fff}.kpi.navy .meta{color:#cddcff}.kpi.navy .tag{background:rgba(255,255,255,.16);color:#fff}
+.fchips{display:flex;gap:6px;flex-wrap:wrap}
+.fchip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 13px;font-size:13px;color:var(--ink)}
+.fchip[aria-pressed="true"]{background:var(--navy);border-color:var(--navy);color:#fff}
+.tbl{overflow-x:auto;background:#fff;border:1px solid var(--line);border-radius:20px}
+table{border-collapse:collapse;width:100%;font-size:13.5px}
+th{text-align:left;font-weight:500;color:var(--muted);font-size:12px;padding:12px 14px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:middle}
+tr:last-child td{border-bottom:0}
+tr.hl td{background:#f2f6fe}
+.lvl{display:flex;align-items:center;gap:8px;min-width:120px}
+.lvl .tr{flex:1;height:6px;border-radius:3px;background:var(--tint);overflow:hidden}
+.lvl .fl{height:100%;border-radius:3px}
+.overlay{position:fixed;inset:0;background:rgba(12,26,51,.45);display:grid;place-items:center;padding:16px;z-index:40}
+.modal{background:#fff;border-radius:26px;width:min(520px,100%);max-height:calc(100% - 32px);overflow:auto;padding:24px;display:flex;flex-direction:column;gap:14px}
+.toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 22px);transform:translateX(-50%);background:var(--navy);color:#fff;padding:11px 18px;border-radius:999px;font-size:14px;z-index:50;max-width:calc(100% - 32px);box-shadow:0 12px 30px -12px rgba(0,0,0,.4)}
+@media (max-width:900px){.toast{bottom:calc(env(safe-area-inset-bottom,0px) + 100px)}}
+.demo{margin-bottom:16px;background:var(--card-2);border:1px dashed var(--blue-2);border-radius:18px;padding:10px 12px 10px 16px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;font-size:13.5px}
+.demo .tag{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--blue);font-weight:600}
+.demo input[type=range]{flex:1;min-width:140px;accent-color:var(--blue)}
+.demo strong{min-width:46px;color:var(--ink);font-weight:600}
+.demo a{color:var(--blue)}
+.spinner{width:34px;height:34px;border-radius:50%;border:3px solid var(--sky);border-top-color:var(--navy);animation:spin 1s linear infinite;margin:10px auto}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.spinner{animation-duration:3s}}
+.choice{display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:14px;padding:12px 14px;cursor:pointer;background:#fff}
+.choice:has(input:checked){border-color:var(--navy);background:var(--tint)}
+.choice input{accent-color:var(--navy)}
+.choice .amt{margin-left:auto;font-weight:600;color:var(--ink)}
+@media (max-width:520px){.vis{grid-template-columns:minmax(0,1fr)!important}}
+.steps{display:flex;flex-direction:column}
+.step{display:grid;grid-template-columns:30px minmax(0,1fr);gap:12px;padding-bottom:18px;position:relative}
+.step::before{content:"";position:absolute;left:14px;top:30px;bottom:0;width:2px;background:var(--sky)}
+.step:last-child::before{display:none}
+.step .d{width:30px;height:30px;border-radius:50%;border:2px solid var(--sky);background:#fff;display:grid;place-items:center;font-size:13px;color:var(--muted)}
+.step.done .d{background:var(--navy);border-color:var(--navy);color:#fff}
+.step.now .d{border-color:var(--blue);color:var(--blue)}
+.step h3{font-size:15px}
+.step p{margin:2px 0 0;font-size:13.5px;color:var(--muted)}
+.phone{background:var(--navy);border-radius:28px;padding:14px;border:6px solid #17305f}
+.phone .ptop{color:#fff;font-size:13px;display:flex;justify-content:space-between;gap:8px;padding:2px 6px 10px}
+.sms{background:#1f3c76;color:#eaf1ff;border-radius:16px 16px 16px 4px;padding:10px 12px;font-size:13px;margin-top:8px}
+.sms .f{font-size:10.5px;letter-spacing:.1em;color:#9dbcff;font-weight:600}
+.sms time{color:#9fb3d9;display:block;margin-top:3px;font-size:11.5px}
+</style></head><body><div class="app" id="app"></div><div id="layer"></div><script>
+/* Données et règles partagées par l'app ménage et le dashboard SGDS (même clé de stockage : les deux apps se mettent à jour l'une l'autre). */
+const H=3600e3,D=24*H;
+const SEUILS=[{p:50,name:'Alerte 1',tone:'warn',title:'Fosse à moitié pleine'},{p:75,name:'Alerte 2',tone:'high',title:'Fosse remplie à 75 %'},{p:90,name:'Alerte 3',tone:'crit',title:'Vidange urgente'},{p:100,name:'Fosse pleine',tone:'crit',title:'Risque de débordement'}];
+const OPS=['Opérateur agréé A','Opérateur agréé B','Opérateur agréé C','Opérateur agréé D','Opérateur agréé E','Opérateur agréé F'];
+const KEY='suivi-fosses-demo-v1';
+const SMS_FROM='ALERTE FOSSE';
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const nf=n=>Math.round(n).toLocaleString('fr-FR').replace(/[  ]/g,' ');
+const fcfa=n=>nf(n)+' FCFA';
+const m3=v=>v.toFixed(1).replace('.',',')+' m³';
+const tone=l=>l>=90?'crit':l>=75?'high':l>=50?'warn':'ok';
+const TC={ok:'#1f9d63',warn:'#e29a18',high:'#e46c2a',crit:'#d6384a'};
+const montant=(f,l)=>Math.round((5000+6000*f.volume*(l??f.level)/100)/500)*500;
+const dayLbl=t=>new Date(t).toLocaleDateString('fr-FR',{weekday:'short',day:'numeric',month:'short'});
+const hm=t=>{const d=new Date(t);return d.getHours()+' h'+(d.getMinutes()?String(d.getMinutes()).padStart(2,'0'):'')};
+const ago=t=>{const m=Math.round((Date.now()-t)/60000);if(m<1)return "à l'instant";if(m<60)return 'il y a '+m+' min';const h=Math.round(m/60);return h<24?'il y a '+h+' h':dayLbl(t)};
+const left=t=>{const ms=t-Date.now();if(ms<=0)return 'délai dépassé';return Math.floor(ms/H)+' h '+String(Math.floor(ms%H/60000)).padStart(2,'0')+' restantes'};
+const slotAt=(d,h)=>{const x=new Date();x.setDate(x.getDate()+d);x.setHours(h,0,0,0);return x.getTime()};
+const slotLabel=t=>dayLbl(t)+' · '+hm(t)+' à '+hm(t+2*H);
+function slots(){const o=[],n=Date.now();for(let d=0;d<3;d++)for(const h of[8,10,14,16]){const t=slotAt(d,h);if(t>n+H&&t<=n+48*H)o.push(t)}return o}
+
+function seed(){
+  const now=Date.now(),mk=o=>Object.assign({sent:{},pay:null,req:null,history:[],battery:80,mine:false},o);
+  const payFull=(f,mode,op,ago_)=>{const m=montant(f),base=Math.floor(m/mode/100)*100;f.pay={mode,operator:op,montant:m,tranches:Array.from({length:mode},(_,i)=>({montant:i===mode-1?m-base*(mode-1):base,paid:now-ago_+i*H}))}};
+  const payPart=(f,mode,op,nPaid,ago_)=>{payFull(f,mode,op,ago_);f.pay.tranches.forEach((t,i)=>{if(i>=nPaid)t.paid=null})};
+  const sentTo=l=>{const s={};SEUILS.forEach(x=>{if(l>=x.p)s[x.p]=1});return s};
+  const hist=[];for(let i=30;i>=0;i--)hist.push({t:now-i*D,l:Math.round(12+(46-12)*(30-i)/30+(i%4===0?1:0))});
+  const F=[
+    mk({id:'F-0001',nom:'Famille Houngbo',quartier:'Akpakpa',volume:6,level:46,mine:true,battery:86,hist,history:[{date:now-690*D,vol:5.6,montant:38500,op:'Opérateur agréé C'}]}),
+    mk({id:'F-0127',nom:'Cour Adjovi',quartier:'Vossa',volume:8,level:78}),
+    mk({id:'F-0312',nom:'Résidence Tossou',quartier:'Agla',volume:6,level:91}),
+    mk({id:'F-0455',nom:'Maison Dossou',quartier:'Fidjrossè',volume:4,level:55}),
+    mk({id:'F-0231',nom:'Cour Agbo',quartier:'Godomey',volume:6,level:96}),
+    mk({id:'F-0198',nom:'Maison Kpadé',quartier:'Cadjèhoun',volume:10,level:83}),
+    mk({id:'F-0089',nom:'Maison Sossa',quartier:'Fidjrossè',volume:6,level:18}),
+    mk({id:'F-0340',nom:'Cour Ahouandjinou',quartier:'Gbégamey',volume:8,level:67}),
+    mk({id:'F-0402',nom:'Maison Zinsou',quartier:'Sainte-Rita',volume:6,level:34}),
+    mk({id:'F-0518',nom:'Cour Hounkpè',quartier:'Missèbo',volume:10,level:88}),
+    mk({id:'F-0263',nom:'Maison Ahyi',quartier:'Zogbo',volume:4,level:72}),
+    mk({id:'F-0610',nom:'Résidence Codjia',quartier:'Houéyiho',volume:6,level:12}),
+    mk({id:'F-0377',nom:'Cour Lokossou',quartier:'Akpakpa',volume:8,level:61}),
+    mk({id:'F-0144',nom:'Maison Gbaguidi',quartier:'Vossa',volume:6,level:93})];
+  F.forEach(f=>{f.sent=sentTo(f.level);f.battery=f.battery||60+((f.id.charCodeAt(4)*7)%38)});
+  const g=id=>F.find(f=>f.id===id);
+  payPart(g('F-0127'),3,'MTN MoMo',1,6*D);
+  payFull(g('F-0312'),1,'Moov Money',18*H);g('F-0312').req={status:'a_programmer',createdAt:now-18*H,deadline:now+30*H};
+  payFull(g('F-0198'),2,'MTN MoMo',2*D);
+  payPart(g('F-0340'),2,'Moov Money',1,3*D);
+  payFull(g('F-0518'),3,'MTN MoMo',8*H);g('F-0518').req={status:'a_programmer',createdAt:now-8*H,deadline:now+40*H};
+  payFull(g('F-0144'),1,'MTN MoMo',30*H);
+  const sl=slots(),s1=sl[1]||slotAt(1,10),s2=sl[0]||slotAt(1,8);
+  g('F-0198').req={status:'programmee',createdAt:now-2*D,deadline:now+20*H,slot:{start:s1,label:slotLabel(s1)},vidangeur:'Opérateur agréé B'};
+  g('F-0144').req={status:'programmee',createdAt:now-30*H,deadline:now+18*H,slot:{start:s2,label:slotLabel(s2)},vidangeur:'Opérateur agréé D'};
+  return {mTab:'dash',gTab:'over',filter:'tous',q:'',seen:1,demo:true,channels:{app:true,sms:true},fosses:F,nid:3,
+    notifs:[{id:1,ch:'app',tone:'ok',title:'Capteur connecté',body:'Le capteur de votre fosse envoie ses mesures. Vous serez alerté à partir de 50 % de remplissage.',t:now-3*D},{id:2,ch:'sms',tone:'ok',title:'',body:'Votre capteur est actif. Alertes par SMS à 50, 75, 90 et 100 % de remplissage.',t:now-3*D}],
+    done:[{t:now-1*D,id:'F-0071',quartier:'Gbégamey',vol:5.2,op:'Opérateur agréé A'},{t:now-1*D-3*H,id:'F-0520',quartier:'Agla',vol:7.4,op:'Opérateur agréé C'},{t:now-2*D,id:'F-0033',quartier:'Akpakpa',vol:4.8,op:'Opérateur agréé E'},{t:now-3*D,id:'F-0291',quartier:'Zogbo',vol:3.6,op:'Opérateur agréé B'}],
+    feed:[{tone:'crit',text:'F-0231 · Godomey : seuil 90 % atteint · '+fcfa(montant(g('F-0231')))+' · paiement en attente',t:now-5*H},
+      {tone:'ok',text:'F-0518 · Missèbo : paiement complet reçu (3 tranches) · à programmer sous 48 h',t:now-8*H},
+      {tone:'ok',text:'F-0312 · Agla : paiement complet reçu · à programmer sous 48 h',t:now-18*H},
+      {tone:'warn',text:'F-0455 · Fidjrossè : seuil 50 % atteint · '+fcfa(montant(g('F-0455'))),t:now-26*H},
+      {tone:'ok',text:'F-0144 · Vossa : vidange programmée '+slotLabel(s2)+' · Opérateur agréé D',t:now-28*H},
+      {tone:'warn',text:'F-0340 · Gbégamey : tranche 1/2 reçue',t:now-3*D},
+      {tone:'ok',text:'F-0198 · Cadjèhoun : vidange programmée '+slotLabel(s1)+' · Opérateur agréé B',t:now-2*D}]};
+}
+let S;
+function load(){try{const r=localStorage.getItem(KEY);S=r?JSON.parse(r):null}catch(e){S=null}if(!S||!S.fosses)S=seed()}
+load();
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+const mine=()=>S.fosses.find(f=>f.mine);
+const paidCount=f=>f.pay?f.pay.tranches.filter(x=>x.paid).length:0;
+const paidSum=f=>f.pay?f.pay.tranches.filter(x=>x.paid).reduce((a,x)=>a+x.montant,0):0;
+const fullyPaid=f=>!!f.pay&&paidCount(f)===f.pay.tranches.length;
+const notify=(ch,tone,title,body)=>{if(S.channels&&S.channels[ch]===false)return;S.notifs.unshift({id:S.nid++,ch,tone,title,body,t:Date.now()})};
+const feed=(tone,text)=>S.feed.unshift({tone,text,t:Date.now()});
+function toast(m){document.querySelectorAll('.toast').forEach(x=>x.remove());const l=document.createElement('div');l.className='toast';l.setAttribute('role','status');l.textContent=m;document.body.appendChild(l);setTimeout(()=>l.remove(),2800)}
+
+function alertBody(f,s){const m=f.pay?f.pay.montant:montant(f);
+  if(f.req&&f.req.status==='programmee')return 'Votre vidange est programmée : '+f.req.slot.label+'. Merci de dégager l’accès à la fosse.';
+  if(f.req)return 'Votre paiement est validé. La SGDS programme votre vidange avant le '+dayLbl(f.req.deadline)+' à '+hm(f.req.deadline)+'.';
+  if(s.p===50)return 'Votre fosse est remplie à 50 %. Montant de la vidange : '+fcfa(m)+'. Vous pouvez payer en 1 fois ou par tranches.';
+  if(s.p===75)return 'Votre fosse est remplie à 75 %. Pensez à régler votre vidange ('+fcfa(m)+'). Le paiement par tranches reste possible.';
+  if(s.p===90)return 'Votre fosse est remplie à 90 %. La SGDS est prévenue et traite votre demande en priorité.';
+  return 'Votre fosse est pleine. Limitez les rejets d’eau : un vidangeur doit passer au plus vite.'}
+function smsBody(f,s){const m=f.pay?f.pay.montant:montant(f);
+  if(s.p===50)return 'Fosse remplie à 50 %. Vidange : '+fcfa(m)+'. Payez en 1 fois ou par tranches dans l’application.';
+  if(s.p===75)return 'Fosse remplie à 75 %. Réglez votre vidange ('+fcfa(m)+') pour un passage sous 48 h.';
+  if(s.p===90)return 'URGENT : fosse remplie à 90 %. La SGDS traite votre demande en priorité.';
+  return 'Fosse pleine, risque de débordement. Un vidangeur doit passer au plus vite.'}
+function setLevel(v){const f=mine();f.level=v;(f.hist=f.hist||[]).push({t:Date.now(),l:v});if(f.hist.length>60)f.hist.shift();let msg='';
+  for(const s of SEUILS){
+    if(v>=s.p&&!f.sent[s.p]){f.sent[s.p]=1;notify('app',s.tone,s.name+' · '+s.title,alertBody(f,s));notify('sms',s.tone,'',smsBody(f,s));
+      feed(s.tone,f.id+' · '+f.quartier+' : seuil '+s.p+' % atteint · '+fcfa(f.pay?f.pay.montant:montant(f))+(fullyPaid(f)?' · payé':' · paiement en attente'));msg=s.name+' envoyée au ménage et à la SGDS'}
+    if(v<s.p-5&&f.sent[s.p])delete f.sent[s.p]}
+  save();return msg}
+function payTranche(f,mode,operator,phone){
+  if(!f.pay){const m=montant(f),n=mode,base=Math.floor(m/n/100)*100;f.pay={mode:n,operator,phone,montant:m,tranches:Array.from({length:n},(_,i)=>({montant:i===n-1?m-base*(n-1):base,paid:null}))}}
+  const tr=f.pay.tranches.find(x=>!x.paid);tr.paid=Date.now();const k=paidCount(f),n=f.pay.tranches.length;
+  if(fullyPaid(f)){if(!f.req)f.req={status:'a_programmer',createdAt:Date.now(),deadline:Date.now()+48*H};
+    notify('app','ok','Paiement validé',(n>1?'Dernière tranche reçue ('+fcfa(tr.montant)+'). ':'Paiement de '+fcfa(f.pay.montant)+' reçu. ')+'La SGDS programme votre vidange dans les 48 h.');
+    notify('sms','ok','','Paiement de '+fcfa(f.pay.montant)+' validé. La SGDS programme votre vidange sous 48 h. Vous recevrez la date et l’heure par SMS.');
+    feed('ok',f.id+' · '+f.quartier+' : paiement complet reçu ('+fcfa(f.pay.montant)+') · à programmer avant '+dayLbl(f.req.deadline)+' '+hm(f.req.deadline))}
+  else{const reste=f.pay.tranches.filter(x=>!x.paid).reduce((a,x)=>a+x.montant,0);notify('app','ok','Tranche '+k+'/'+n+' reçue',fcfa(tr.montant)+' payés. Reste à payer : '+fcfa(reste)+'.');notify('sms','ok','','Tranche '+k+'/'+n+' de '+fcfa(tr.montant)+' reçue. Reste : '+fcfa(reste)+'.');feed('warn',f.id+' · '+f.quartier+' : tranche '+k+'/'+n+' reçue ('+fcfa(tr.montant)+')')}
+  save()}
+function program(f,op,start){if(!f.req)f.req={status:'a_programmer',createdAt:Date.now(),deadline:Date.now()+48*H};
+  f.req.status='programmee';f.req.slot={start,label:slotLabel(start)};f.req.vidangeur=op;feed('ok',f.id+' · '+f.quartier+' : vidange programmée '+slotLabel(start)+' · '+op);
+  if(f.mine){notify('app','ok','Vidange programmée','Le camion passera '+slotLabel(start)+'. Vidangeur : '+op+'. Merci de dégager l’accès à la fosse.');notify('sms','ok','','Vidange programmée '+slotLabel(start)+'. '+op+'. Merci d’ouvrir l’accès à la fosse.')}save()}
+function done(f){const vol=f.volume*f.level/100;f.history.unshift({date:Date.now(),vol,montant:f.pay?f.pay.montant:montant(f),op:f.req&&f.req.vidangeur||'Opérateur agréé'});
+  S.done.unshift({t:Date.now(),id:f.id,quartier:f.quartier,vol,op:f.req&&f.req.vidangeur||'Opérateur agréé'});
+  feed('ok',f.id+' · '+f.quartier+' : vidange effectuée, '+m3(vol)+' déposés à la station de traitement');
+  if(f.mine){notify('app','ok','Vidange effectuée','Vos boues ('+m3(vol)+') ont été déposées à la station de traitement. Le capteur repart à 0 %.');notify('sms','ok','','Vidange effectuée. Boues déposées à la station de traitement. Merci !');(f.hist=f.hist||[]).push({t:Date.now(),l:0})}
+  f.level=f.mine?0:3;f.sent={};f.pay=null;f.req=null;save()}
+function remind(f){feed('warn',f.id+' · '+f.quartier+' : relance de paiement envoyée');if(f.mine)notify('sms','warn','','Rappel : votre vidange ('+fcfa(montant(f))+') n’est pas encore réglée. Paiement en 1 fois ou par tranches dans l’application.');save()}
+function statusOf(f){if(f.req&&f.req.status==='programmee')return{k:'programmee',label:'Programmée',tone:'ok'};if(f.req)return{k:'a_programmer',label:'À programmer',tone:'warn'};if(f.level>=90)return{k:'urgence',label:'Urgence',tone:'crit'};if(f.level>=50)return{k:'alerte',label:'Alerte envoyée',tone:tone(f.level)};return{k:'normal',label:'Normal',tone:'ok'}}
+const payLabel=f=>!f.pay?(f.level>=50?'En attente':'Non requis'):fullyPaid(f)?'Payé'+(f.pay.mode>1?' ('+f.pay.mode+' tranches)':''):'Tranche '+paidCount(f)+'/'+f.pay.tranches.length;
+
+const P={dash:'<rect x="4" y="4" width="7" height="7" rx="2"/><rect x="13" y="4" width="7" height="7" rx="2"/><rect x="4" y="13" width="7" height="7" rx="2"/><rect x="13" y="13" width="7" height="7" rx="2"/>',
+ pay:'<rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18M16 15h2"/>',rdv:'<rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 9h16M9 3v4M15 3v4"/>',
+ alerts:'<path d="M6 16V11a6 6 0 0112 0v5l2 2H4zM10 20a2 2 0 004 0"/>',fosse:'<rect x="5" y="8" width="14" height="12" rx="3"/><path d="M5 15c2.3-1.6 4.7-1.6 7 0s4.7 1.6 7 0M10 4h4v4h-4z"/>',
+ chart:'<path d="M4 19h16M6 15l4-5 3 3 5-7"/>',truck:'<path d="M3 7h11v9H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/>',
+ table:'<rect x="4" y="5" width="16" height="14" rx="2"/><path d="M4 10h16M10 10v9"/>',map:'<path d="M9 4l-5 2v14l5-2 6 2 5-2V4l-5 2-6-2zM9 4v14M15 6v14"/>',
+ search:'<circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/>',reset:'<path d="M4 12a8 8 0 108-8H8M8 1v6h6" transform="translate(0 2) scale(.9)"/>',
+ ext:'<path d="M7 17L17 7M9 7h8v8"/>'};
+const ico=(k,s=18)=>`<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${P[k]}</svg>`;
+const LOGO='<svg width="20" height="22" viewBox="0 0 22 24" aria-hidden="true"><rect x="1.5" y="6" width="19" height="16.5" rx="5" fill="none" stroke="#fff" stroke-width="2.2"/><path d="M4 16.5c2.5-2 5-2 7 0s4.5 2 7 0" fill="none" stroke="#8fb3ff" stroke-width="2.2" stroke-linecap="round"/><rect x="8" y="1" width="6" height="5" rx="1.5" fill="#8fb3ff"/></svg>';
+/* App ménage */
+const ui={pay:null};
+function tankArt(f){
+  const l=f.level,t=tone(l),ih=196,h=ih*l/100,y=56+ih-h;
+  let dots='';for(let i=0;i<26;i++){const x=(i*53)%300+10,yy=(i*37)%250+10,r=(i%5)+1.5;dots+=`<circle cx="${x}" cy="${yy}" r="${r}" fill="#2f63d6" opacity="${.08+(i%4)*.05}"/>`}
+  const mark=p=>{const yy=56+ih-ih*p/100;return `<line x1="72" y1="${yy}" x2="236" y2="${yy}" stroke="${TC[tone(p)]}" stroke-dasharray="5 5" opacity=".7"/><text x="244" y="${yy+4}" font-size="11" fill="#6f7f9c" font-family="Onest">${p}%</text>`};
+  return `<svg viewBox="0 0 300 280" width="100%" role="img" aria-label="Coupe de la fosse remplie à ${l} %"><defs><linearGradient id="lq" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7fa6ec"/><stop offset="1" stop-color="#1d4bb0"/></linearGradient><clipPath id="tk"><rect x="72" y="56" width="164" height="196" rx="22"/></clipPath></defs>${dots}
+  <rect x="68" y="52" width="172" height="204" rx="26" fill="#fff" stroke="#c9d9f3" stroke-width="3"/>
+  <g clip-path="url(#tk)"><rect x="72" y="${y}" width="164" height="${h}" fill="url(#lq)" opacity=".9"/><rect x="72" y="${y}" width="164" height="3" fill="${TC[t]}"/></g>
+  ${mark(50)}${mark(75)}${mark(90)}
+  <rect x="134" y="26" width="40" height="28" fill="#fff" stroke="#c9d9f3" stroke-width="3"/><rect x="126" y="18" width="56" height="10" rx="3" fill="#0f2756"/><rect x="144" y="32" width="20" height="11" rx="3" fill="#2f63d6"/>
+  <line x1="154" y1="46" x2="154" y2="${Math.max(60,y)}" stroke="#2f63d6" stroke-width="1.5" stroke-dasharray="3 4"/>
+  <path d="M140 64q14 9 28 0M132 76q22 14 44 0" fill="none" stroke="#2f63d6" stroke-width="1.6" opacity=".45"/></svg>`}
+function ring(l){const t=tone(l),c=2*Math.PI*30;return `<svg width="76" height="76" viewBox="0 0 76 76" aria-hidden="true"><circle cx="38" cy="38" r="30" fill="none" stroke="#c9d9f3" stroke-width="5"/><circle cx="38" cy="38" r="30" fill="none" stroke="${TC[t]}" stroke-width="5" stroke-linecap="round" stroke-dasharray="${c*l/100} ${c}" transform="rotate(-90 38 38)"/>${t==='ok'?'<path d="M29 38l6 6 12-12" fill="none" stroke="#2f63d6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>':'<path d="M38 27v14M38 47v1" stroke="'+TC[t]+'" stroke-width="3.4" stroke-linecap="round"/>'}</svg>`}
+function lineChart(f){const pts=(f.hist||[]).slice(-31);if(pts.length<2)return '';const W=280,Hh=110,t0=pts[0].t,t1=pts[pts.length-1].t||t0+1;
+  const X=t=>12+(W-24)*((t-t0)/Math.max(1,t1-t0)),Y=l=>Hh-10-(Hh-24)*l/100;
+  const d=pts.map((p,i)=>(i?'L':'M')+X(p.t).toFixed(1)+' '+Y(p.l).toFixed(1)).join(' ');const last=pts[pts.length-1];
+  const ticks=[0,1,2,3].map(i=>{const t=t0+(t1-t0)*i/3;return `<text x="${X(t)}" y="${Hh+8}" font-size="10" fill="#6f7f9c" text-anchor="middle" font-family="Onest">${new Date(t).toLocaleDateString('fr-FR',{day:'numeric',month:'short'})}</text>`}).join('');
+  return `<svg viewBox="0 0 ${W} ${Hh+14}" width="100%" role="img" aria-label="Évolution du niveau sur 30 jours"><line x1="12" y1="${Y(50)}" x2="${W-12}" y2="${Y(50)}" stroke="#e29a18" stroke-dasharray="4 4" opacity=".6"/><path d="${d} L${X(last.t)} ${Hh-10} L12 ${Hh-10}Z" fill="#2f63d6" opacity=".08"/><path d="${d}" fill="none" stroke="#2f63d6" stroke-width="2"/><circle cx="${X(last.t)}" cy="${Y(last.l)}" r="4.5" fill="#fff" stroke="#2f63d6" stroke-width="2.5"/>${ticks}</svg>`}
+
+function vDash(f){
+  const t=tone(f.level),st=statusOf(f),m=f.pay?f.pay.montant:montant(f),next=SEUILS.find(s=>f.level<s.p);
+  const prevP=[...SEUILS].reverse().find(s=>f.level>=s.p);
+  const toNext=next?Math.round(100*f.level/next.p):100;
+  const appt=f.req&&f.req.status==='programmee'?`<div class="appt"><span class="truck">${ico('truck')}</span><div><b>${esc(f.req.vidangeur)}</b><span class="role">Vidangeur agréé · SGDS</span><div class="when">${f.req.slot.label}</div></div><span class="conf">Confirmé</span></div>`
+    :f.req?`<div class="appt"><span class="truck">${ico('truck')}</span><div><b>En cours de programmation</b><span class="role">SGDS</span><div class="when">Avant le ${dayLbl(f.req.deadline)} à ${hm(f.req.deadline)}</div></div><span class="conf" style="background:var(--blue)">${left(f.req.deadline).replace(' restantes','')}</span></div>`
+    :`<div class="appt"><span class="truck">${ico('truck')}</span><div><b>Aucun passage prévu</b><span class="role">Vidange sous 48 h après paiement</span><div class="when">Dernière vidange : ${f.history[0]?dayLbl(f.history[0].date)+' '+new Date(f.history[0].date).getFullYear():'—'}</div></div></div>`;
+  const tr=f.pay?f.pay.tranches:[{montant:m,paid:null}];
+  const recs=f.level>=90?['Limitez les rejets d’eau inutiles','Dégagez l’accès au regard de la fosse','Gardez votre téléphone joignable']:f.level>=50?['Réglez la vidange en une fois ou par tranches','Vérifiez l’accès du camion à la maison','Ne jetez pas de sachets dans les toilettes']:['Ne jetez pas de sachets dans les toilettes','Séparez les eaux de pluie de la fosse','Vérifiez le couvercle du regard'];
+  const lastA=S.notifs.filter(n=>n.ch==='app').slice(0,3);
+  let cta='';
+  if(f.req&&f.req.status==='programmee')cta=`<span class="chip t-ok">Vidange programmée · ${f.req.slot.label}</span>`;
+  else if(f.req)cta=`<span class="chip t-warn">Paiement validé · programmation sous 48 h</span>`;
+  else if(f.pay)cta=`<button class="btn primary" data-tab="pay">Payer la tranche suivante</button>`;
+  else if(f.level>=50)cta=`<button class="btn primary" data-tab="pay">Payer la vidange · ${fcfa(m)}</button>`;
+  return `${cta?`<div style="margin-bottom:12px">${cta}</div>`:''}<div class="grid">
+    <div class="c white span2 row2"><div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px;align-items:center" class="vis"><div>${tankArt(f)}</div><div>
+      <span class="chip t-${t}">${st.label}</span>
+      <div class="num" style="margin-top:12px;font-size:64px;font-weight:500;color:var(--ink);letter-spacing:-.05em;line-height:1">${f.level}<small style="font-size:22px;color:var(--muted)">%</small></div>
+      <div class="meta num" style="margin-top:6px">${m3(f.volume*f.level/100)} sur ${m3(f.volume)} · fosse ${f.id}</div>
+      <div class="meta" style="margin-top:12px">Capteur à ultrasons · batterie ${f.battery} %<br>Dernière mesure ${ago(Date.now()-120000)}</div>
+      <p style="margin:14px 0 0;font-size:13.5px;color:var(--ink)">${prevP?esc(alertBody(f,prevP)):'Aucune action requise. Première alerte à 50 %.'}</p>
+    </div></div></div>
+    <div class="c"><h3>Niveau de remplissage</h3><div style="display:flex;justify-content:space-between;align-items:center;margin-top:14px"><div><div class="num" style="font-size:38px;font-weight:500;color:var(--ink);letter-spacing:-.04em">${f.level}%</div><span class="meta">Mesure du capteur</span></div>${ring(f.level)}</div><div class="meta" style="text-align:right;margin-top:6px">${next?'Prochaine alerte à '+next.p+' %':'Seuil maximal atteint'}</div></div>
+    <div class="c row2"><h3>Rendez-vous</h3>${appt}
+      <div class="c white" style="margin-top:10px;padding:12px"><div class="rec" style="padding:0"><i>✓</i><div><b style="font-weight:500;color:var(--ink)">Conseil</b><br><span class="meta">${recs[0]}</span></div></div></div>
+      <div style="margin-top:12px">${recs.slice(1).map(r=>`<div class="rec"><i>•</i>${r}</div>`).join('')}</div></div>
+    <div class="c"><h3>Évolution sur 30 jours</h3><div style="margin-top:6px">${lineChart(f)}</div></div>
+    <div class="c span2"><div class="c-head"><h3>${ico('chart',16)} Avant la prochaine alerte</h3><div style="display:flex;align-items:center;gap:8px;min-width:120px"><div class="pbar" style="flex:1;width:80px"><i style="width:${toNext}%"></i></div><span class="meta num">${toNext}%</span></div></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px">${SEUILS.map(s=>`<span style="background:#fff;border-radius:12px;padding:8px 12px;font-size:12.5px;color:var(--ink);display:flex;flex-direction:column;line-height:1.2;min-width:86px;${f.sent[s.p]?'outline:1.5px solid var(--blue)':''}">${s.p} %<small class="meta">${s.name}${f.sent[s.p]?' · envoyée':''}</small></span>`).join('')}</div></div>
+    <div class="c"><h3>Paiement</h3>${tr.map((x,i)=>`<div class="toggle"><div><b>${tr.length>1?'Tranche '+(i+1):'Vidange'} · ${fcfa(x.montant)}</b><small>${x.paid?'Payé le '+dayLbl(x.paid):f.level>=50||f.pay?'À payer':'Disponible à 50 %'}</small></div><span class="sw ${x.paid?'on':''}" role="img" aria-label="${x.paid?'payé':'non payé'}"></span></div>`).join('')}
+      ${!fullyPaid(f)&&(f.level>=50||f.pay)?`<button class="btn small" data-tab="pay" style="margin-top:6px">Payer</button>`:''}</div>
+    <div class="c"><h3>Dernières alertes</h3>${lastA.map(n=>`<div class="rec"><i style="color:${TC[n.tone]}">●</i><div><span style="color:var(--ink)">${esc(n.title)}</span><br><span class="meta">${ago(n.t)}</span></div></div>`).join('')||'<p class="meta">Aucune alerte.</p>'}<button class="btn small" data-tab="alerts" style="margin-top:6px">Tout voir</button></div>
+  </div>`}
+
+const recap=f=>`<div class="kv"><span>Total</span><strong class="num">${fcfa(f.pay.montant)}</strong></div><div class="kv"><span>Moyen</span><span>${esc(f.pay.operator)}</span></div>${f.pay.tranches.map((x,i)=>`<div class="kv"><span>${f.pay.tranches.length>1?'Tranche '+(i+1):'Paiement'}</span><span class="num">${fcfa(x.montant)} · ${x.paid?'payé le '+dayLbl(x.paid):'à payer'}</span></div>`).join('')}`;
+function vPay(f){
+  if(!f.pay&&f.level<50)return `<div class="c empty"><h3 style="font-size:20px;justify-content:center">Pas encore de paiement à faire</h3><p>Le paiement s'ouvre à la première alerte, quand votre fosse atteint 50 %. Elle est à ${f.level} %.</p><p class="meta">En démo, montez le niveau avec le simulateur du capteur.</p></div>`;
+  if(fullyPaid(f))return `<div class="two"><div class="c white"><span class="chip t-ok">Paiement validé</span><h3 style="font-size:22px;margin-top:12px">${f.req&&f.req.status==='programmee'?'Votre vidange est programmée':'La SGDS programme votre vidange sous 48 h'}</h3><div style="margin-top:12px">${recap(f)}</div></div><div class="c"><h3>Et ensuite ?</h3><p class="meta" style="font-size:13.5px">Vous recevez la date et l'heure du passage par notification et par SMS.</p><button class="btn" data-tab="rdv">Voir le rendez-vous</button></div></div>`;
+  const p=ui.pay||(ui.pay={step:'form',mode:f.pay?f.pay.mode:1,operator:f.pay?f.pay.operator:'MTN MoMo',phone:f.pay&&f.pay.phone||'',error:''});
+  const m=f.pay?f.pay.montant:montant(f),nextTr=f.pay?f.pay.tranches.find(x=>!x.paid):null,amt=f.pay?nextTr.montant:(p.mode===1?m:Math.floor(m/p.mode/100)*100);
+  if(p.step==='processing')return `<div class="c empty"><div class="spinner" aria-hidden="true"></div><p>Validation du paiement auprès de ${esc(p.operator)}…</p></div>`;
+  if(p.step==='confirm')return `<div class="two"><div class="c white"><h3 style="font-size:20px">Confirmer le paiement</h3><div style="margin-top:10px"><div class="kv"><span>Montant débité</span><strong class="num">${fcfa(amt)}</strong></div><div class="kv"><span>Formule</span><span>${f.pay||p.mode>1?'Tranche '+((f.pay?paidCount(f):0)+1)+' sur '+(f.pay?f.pay.mode:p.mode):'En 1 fois'}</span></div><div class="kv"><span>Compte</span><span>${esc(p.operator)} · ${esc(p.phone)}</span></div><div class="kv"><span>Total de la vidange</span><span class="num">${fcfa(m)}</span></div></div>
+    <div style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap"><button class="btn" data-act="pay-back">Modifier</button><button class="btn primary" style="flex:1" data-act="pay-go">Confirmer et payer ${fcfa(amt)}</button></div></div><div class="c"><h3>Validation</h3><p class="meta" style="font-size:13.5px">Une demande de validation arrive sur votre téléphone (simulée ici).</p></div></div>`;
+  return `<div class="two"><form id="payform" class="c white stack" novalidate>
+    ${f.pay?`<span class="chip t-warn" style="align-self:flex-start">Paiement en ${f.pay.mode} tranches · ${paidCount(f)} payée(s)</span>`:`<fieldset style="border:0;padding:0;margin:0" class="stack"><legend class="lbl" style="margin-bottom:8px">Formule</legend>${[1,2,3].map(n=>`<label class="choice"><input type="radio" name="mode" value="${n}" ${p.mode===n?'checked':''}> ${n===1?'En 1 fois':'En '+n+' tranches'}<span class="amt num">${n===1?fcfa(m):n+' × '+fcfa(Math.floor(m/n/100)*100)}</span></label>`).join('')}</fieldset>`}
+    <fieldset style="border:0;padding:0;margin:0" class="stack"><legend class="lbl" style="margin-bottom:8px">Mobile money</legend>${['MTN MoMo','Moov Money'].map(o=>`<label class="choice"><input type="radio" name="op" value="${o}" ${p.operator===o?'checked':''}> ${o}</label>`).join('')}</fieldset>
+    <div class="field"><label for="phone">Numéro mobile money</label><input id="phone" inputmode="tel" autocomplete="off" placeholder="Ex. 01 90 00 00 00" value="${esc(p.phone)}">${p.error?`<span class="err">${esc(p.error)}</span>`:''}</div>
+    <button class="btn primary block" type="submit">Continuer · ${fcfa(amt)}</button></form>
+    <div class="c navy"><h3>Montant de la vidange</h3><div class="num" style="font-size:42px;font-weight:500;color:#fff;letter-spacing:-.04em;margin-top:10px">${fcfa(m)}</div><span class="chip" style="margin-top:8px;background:rgba(255,255,255,.16);color:#fff">${f.pay?'Montant bloqué':'Selon le niveau mesuré'}</span><p style="font-size:13px;margin-top:14px;color:#cddcff">Tarif indicatif de démonstration : 5 000 FCFA de déplacement + 6 000 FCFA par m³ (${m3(f.volume*f.level/100)} mesurés).</p></div></div>`}
+function vRdv(f){const a=!!f.sent[50],pd=fullyPaid(f),pr=f.req&&f.req.status==='programmee';
+  const st=[{ok:a,now:!a,t:'Alerte reçue',d:a?'Votre fosse a atteint 50 %.':'En attente du seuil de 50 %.'},{ok:pd,now:a&&!pd,t:'Paiement validé',d:pd?fcfa(f.pay.montant)+' via '+f.pay.operator+'.':f.pay?'Tranche '+paidCount(f)+'/'+f.pay.tranches.length+' payée.':'En 1 fois ou par tranches.'},{ok:pr,now:pd&&!pr,t:'Vidange programmée par la SGDS',d:pr?f.req.slot.label+' · '+f.req.vidangeur:pd?'Sous 48 h, avant le '+dayLbl(f.req.deadline)+' à '+hm(f.req.deadline)+'.':'Dans les 48 h après le paiement.'},{ok:false,now:pr,t:'Passage du camion',d:'Les boues sont déposées à la station de traitement.'}];
+  return `<div class="two"><div class="c white"><div class="steps">${st.map((s,i)=>`<div class="step ${s.ok?'done':s.now?'now':''}"><span class="d">${s.ok?'✓':i+1}</span><div><h3>${s.t}</h3><p>${esc(s.d)}</p></div></div>`).join('')}</div></div>
+  <div class="c">${pr?`<h3>Passage confirmé</h3><div class="appt"><span class="truck">${ico('truck')}</span><div><b>${esc(f.req.vidangeur)}</b><span class="role">Vidangeur agréé</span><div class="when">${f.req.slot.label}</div></div><span class="conf">Confirmé</span></div><div style="margin-top:12px"><div class="kv"><span>Adresse</span><span>${esc(f.nom)} · ${esc(f.quartier)}</span></div><div class="kv"><span>À préparer</span><span>Accès dégagé au regard</span></div></div>`:`<h3>Pas encore de passage</h3><p class="meta" style="font-size:13.5px">La date s'affichera ici dès que la SGDS aura programmé la vidange.</p>`}</div></div>`}
+function vAlerts(){const app=S.notifs.filter(n=>n.ch==='app'),sms=S.notifs.filter(n=>n.ch==='sms');if(S.seen!==app.length){S.seen=app.length;save()}
+  return `<div class="two"><div class="stack">${app.map(n=>`<article class="notif"><span class="b" style="background:${TC[n.tone]}"></span><div><div style="display:flex;justify-content:space-between;gap:10px"><h3>${esc(n.title)}</h3><time>${ago(n.t)}</time></div><p>${esc(n.body)}</p></div></article>`).join('')||'<p class="meta">Aucune notification.</p>'}</div>
+  <div class="phone" aria-label="SMS reçus"><div class="ptop"><b>SMS · téléphone simple</b><span>Sans internet</span></div>${sms.map(n=>`<div class="sms"><div class="f">${SMS_FROM}</div>${esc(n.body)}<time>${ago(n.t)}</time></div>`).join('')||'<p style="color:#9fb3d9;font-size:13px">Aucun SMS.</p>'}</div></div>`}
+function vFosse(f){const ch=S.channels||{app:true,sms:true};return `<div class="grid">
+  <div class="c white span2"><h3>Capteur</h3><div style="margin-top:8px"><div class="kv"><span>Type</span><span>Ultrasons, sans contact, sous le regard</span></div><div class="kv"><span>Liaison</span><span>Réseau GSM · signal bon</span></div><div class="kv"><span>Alimentation</span><span class="num">Batterie ${f.battery} % · panneau solaire</span></div><div class="kv"><span>Dernière mesure</span><span>${ago(Date.now()-120000)}</span></div></div></div>
+  <div class="c white span2"><h3>Fosse</h3><div style="margin-top:8px"><div class="kv"><span>Identifiant</span><span class="num">${f.id}</span></div><div class="kv"><span>Adresse</span><span>${esc(f.nom)} · ${esc(f.quartier)}, Cotonou</span></div><div class="kv"><label for="vol">Volume de la fosse</label><select id="vol" ${f.pay?'disabled':''} style="border:1px solid var(--line);border-radius:10px;padding:4px 8px;background:#fff">${[4,6,8,10].map(v=>`<option value="${v}" ${f.volume===v?'selected':''}>${v} m³</option>`).join('')}</select></div></div></div>
+  <div class="c span2"><h3>Canaux d'alerte</h3><div style="margin-top:6px">
+    <div class="toggle"><div><b>Notifications dans l'application</b><small>Smartphone avec internet</small></div><button class="sw" role="switch" aria-checked="${ch.app!==false}" aria-label="Notifications application" data-ch="app"></button></div>
+    <div class="toggle"><div><b>SMS (GSM)</b><small>Fonctionne sur tout téléphone, sans internet</small></div><button class="sw" role="switch" aria-checked="${ch.sms!==false}" aria-label="Alertes SMS" data-ch="sms"></button></div></div>
+    <p class="meta" style="margin:6px 0 0">La SGDS reçoit toujours les alertes, quel que soit votre choix.</p></div>
+  <div class="c span2"><h3>Seuils d'alerte</h3><div style="margin-top:6px">${SEUILS.map(s=>`<div class="kv"><span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${TC[s.tone]};margin-right:8px"></span>${s.p} % · ${s.name}</span><span>${s.title}</span></div>`).join('')}</div></div>
+  <div class="c white full"><h3>Historique des vidanges</h3><div style="margin-top:8px">${f.history.map(h=>`<div class="kv"><span>${dayLbl(h.date)} ${new Date(h.date).getFullYear()} · ${esc(h.op)}</span><span class="num">${m3(h.vol)} · ${fcfa(h.montant)}</span></div>`).join('')||'<p class="meta">Aucune vidange enregistrée.</p>'}</div></div></div>`}
+
+const TABS=[['dash','Accueil','dash'],['pay','Paiement','pay'],['rdv','Rendez-vous','rdv'],['alerts','Alertes','alerts'],['fosse','Ma fosse','fosse']];
+const TITLES={dash:'Bonjour, famille Houngbo !',pay:'Paiement de la vidange',rdv:'Rendez-vous',alerts:'Alertes',fosse:'Ma fosse'};
+const SUBS={dash:'Votre fosse est sous surveillance',pay:'Montant calculé selon le volume mesuré',rdv:'Suivi de votre vidange',alerts:'Application et SMS',fosse:'Capteur, alertes et historique'};
+function render(){
+  const f=mine(),tab=S.mTab||'dash',unread=Math.max(0,S.notifs.filter(n=>n.ch==='app').length-S.seen);
+  const side=`<div class="brand"><span class="bi">${LOGO}</span><div>Suivi de fosse<small>Espace ménage</small></div></div>`+TABS.map(([k,l,i])=>`<button class="mi" type="button" data-tab="${k}" ${tab===k?'aria-current="page"':''}>${ico(i)}<span class="lab">${l}</span>${k==='alerts'&&unread&&tab!=='alerts'?`<span class="cnt">${unread}</span>`:k==='pay'&&f.level>=50&&!fullyPaid(f)?'<span class="dot"></span>':''}</button>`).join('')+`<div class="user"><span class="avatar">FH</span><div><b>Famille Houngbo</b><small>${f.id} · ${esc(f.quartier)}</small></div></div>`;
+  const board={dash:vDash,pay:vPay,rdv:vRdv,alerts:vAlerts,fosse:vFosse}[tab](f);
+  const demo=S.demo?`<div class="demo"><span class="tag">Démo</span><label for="sim">Niveau mesuré par le capteur</label><input type="range" id="sim" min="0" max="100" step="1" value="${f.level}"><strong class="num" id="sim-v">${f.level} %</strong><button class="btn blue small" type="button" data-act="plus">+10 %</button><button class="btn small" type="button" data-act="reset">Réinitialiser</button><a href="sgds.html" target="_blank" rel="noopener">Ouvrir le dashboard SGDS ↗</a></div>`:'';
+  document.getElementById('app').innerHTML=`<nav class="side" aria-label="Menu">${side}</nav><main class="main">
+    <div class="topbar"><div><h1>${TITLES[tab]}</h1><button class="sub" type="button" data-tab="${tab==='dash'?'fosse':'dash'}">${SUBS[tab]} ›</button></div>
+      <div class="tb-r"><button class="icon-btn" type="button" data-act="demo" aria-pressed="${!!S.demo}" aria-label="Afficher le simulateur du capteur" title="Simulateur">${ico('chart',17)}</button><button class="icon-btn" type="button" data-tab="alerts" aria-label="Alertes${unread?' ('+unread+' non lues)':''}">${ico('alerts',17)}${unread&&tab!=='alerts'?`<span class="cnt">${unread}</span>`:''}</button><span class="avatar" aria-hidden="true">FH</span></div></div>
+    ${demo}${board}
+    <div class="foot-note"><span>Maquette de démonstration · données, opérateurs et tarifs fictifs</span><span>Les données restent dans ce navigateur</span></div></main>`;
+}
+document.addEventListener('click',e=>{
+  const el=e.target.closest('[data-tab],[data-act],[data-ch]');if(!el)return;
+  if(el.dataset.tab){S.mTab=el.dataset.tab;if(S.mTab!=='pay')ui.pay=null;save();render();window.scrollTo(0,0);return}
+  if(el.dataset.ch){S.channels=S.channels||{app:true,sms:true};const k=el.dataset.ch,on=S.channels[k]!==false;if(on&&!S.channels[k==='app'?'sms':'app']){toast('Gardez au moins un canal d’alerte actif');return}S.channels[k]=!on;save();render();return}
+  const a=el.dataset.act;
+  if(a==='plus'){const m=setLevel(Math.min(100,mine().level+10));render();if(m)toast(m);return}
+  if(a==='reset'){S=seed();ui.pay=null;save();render();toast('Démo réinitialisée');return}
+  if(a==='demo'){S.demo=!S.demo;save();render();return}
+  if(a==='pay-back'){ui.pay.step='form';render()}
+  else if(a==='pay-go'){const p=ui.pay;p.step='processing';render();setTimeout(()=>{payTranche(mine(),p.mode,p.operator,p.phone);ui.pay=null;render();toast(fullyPaid(mine())?'Paiement validé · demande transmise à la SGDS':'Tranche payée')},1300)}
+});
+document.addEventListener('input',e=>{if(e.target.id==='sim')document.getElementById('sim-v').textContent=e.target.value+' %';
+  if(e.target.id==='phone'&&ui.pay){ui.pay.phone=e.target.value;if(ui.pay.error){ui.pay.error='';const r=e.target.parentNode.querySelector('.err');if(r)r.remove()}}});
+document.addEventListener('change',e=>{
+  if(e.target.id==='sim'){const m=setLevel(+e.target.value);render();if(m)toast(m)}
+  if(e.target.name==='mode'&&ui.pay){ui.pay.mode=+e.target.value;ui.pay.phone=document.getElementById('phone').value;render()}
+  if(e.target.name==='op'&&ui.pay)ui.pay.operator=e.target.value;
+  if(e.target.id==='vol'){mine().volume=+e.target.value;save();render()}
+});
+document.addEventListener('submit',e=>{if(e.target.id!=='payform')return;e.preventDefault();const p=ui.pay,d=p.phone.replace(/\D/g,'');
+  if(d.length!==10&&d.length!==8){p.error='Entrez un numéro mobile money valide (10 chiffres, ex. 01 90 00 00 00).';render();document.getElementById('phone').focus();return}p.step='confirm';render()});
+window.addEventListener('storage',e=>{if(e.key!==KEY)return;const before=JSON.stringify(mine().req);load();render();const r=mine().req;if(r&&r.status==='programmee'&&JSON.stringify(r)!==before)toast('Nouveau : vidange programmée '+r.slot.label)});
+render();
+</script></body></html>

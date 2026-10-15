@@ -550,7 +550,7 @@
         </div>
         <div class="stat">
           <small>Featured projects<br>delivered</small>
-          <strong data-count="4" data-suffix="">4</strong>
+          <strong data-count="5" data-suffix="">5</strong>
           <div class="stat-art" aria-hidden="true"><svg viewBox="0 0 64 64" fill="none" stroke="#fff" stroke-width="1.5"><rect x="8" y="14" width="48" height="32" rx="3"/><path d="M24 54h16M32 46v8M18 36l8-8 6 6 8-10 6 6"/></svg></div>
         </div>
       </div>
@@ -747,6 +747,14 @@ const IMG = 'assets/img/';
 const VIDEO = 'assets/video/';
 const PROJECTS = [
   {
+    slug: 'fosso', title: 'Fosso Septic Monitoring', accent: 'Monitoring',
+    category: 'Product design · UI/UX', client: 'Africa Design School × FIC', year: '2026',
+    cover: 'fosso-1.png', layout: ['full', 'full', 'full', 'full'],
+    desc: 'In Greater Cotonou, no household is connected to a sewer: every home relies on a septic tank, often emptied too late. Fosso puts a level sensor in the tank and alerts the household and the SGDS before it overflows. The household pays by mobile money, in one go or in instalments, and the SGDS schedules the emptying within 48 hours. A student concept from the Africa Design School M2 × FIC 2026 workshop: a presentation site, a household app and a supervision dashboard.',
+    live: 'projects/fosso/', liveLabel: 'Open the prototype',
+    gallery: ['fosso-1.png', 'fosso-2.png', 'fosso-3.png', 'fosso-4.png']
+  },
+  {
     slug: 'sodeco', title: 'SODECO Website', accent: 'Website',
     category: 'Website design', client: 'SODECO (with SFP)', year: '2025',
     thumb: 'sodeco-thumb.png', cover: 'sodeco-1.png',
@@ -817,6 +825,14 @@ const tag = (text, dot) => `<span class="stag" style="--dot:${dot}">${text}</spa
 const swatches = `<div class="scard pad swatches">${['#206534', '#4C9854', '#111111', '#FEFEF4'].map(c => `<b style="background:${c}${c === '#FEFEF4' ? ';color:#111;box-shadow:inset 0 0 0 1px #e6e6da' : ''}">${c}</b>`).join('')}</div>`;
 const logoCard = `<div class="scard logo-card"><img src="${IMG}greentech-1.png" alt=""></div>`;
 const STAGES = {
+  fosso: { glow: 'rgba(47,99,214,.26)', label: 'Fosso: household app with the tank level, SGDS supervision dashboard, phone screen and alert cards', layers: [
+    { x: 4, y: 8, w: 48, d: -.6, html: win('stage-fosso-menage') },
+    { x: 44, y: 30, w: 48, d: .5, z: 2, t: 150, html: win('stage-fosso-sgds') },
+    { x: 77, y: 6, w: 17, d: 1.3, z: 3, t: 300, r: '3deg', float: 1, html: card('stage-fosso-phone') },
+    { x: 5, y: 60, w: 26, d: 1.1, z: 3, t: 400, float: 1, html: card('stage-fosso-tank') },
+    { x: 54, y: 5, w: 19, d: .9, z: 3, t: 250, float: 1, html: card('stage-fosso-alerts') },
+    { x: 66, y: 85, w: 'auto', d: 1.6, z: 4, t: 600, html: tag('Fosso · Product design', '#2f63d6') }
+  ] },
   sodeco: { glow: 'rgba(38,139,160,.22)', label: 'SODECO website: Certifications and Sustainability pages, a certification card and the sustainability photo cards', layers: [
     { x: 4, y: 8, w: 50, d: -.6, html: win('stage-sodeco-cert') },
     { x: 40, y: 34, w: 50, d: .5, z: 2, t: 150, html: win('stage-sodeco-durab') },
@@ -859,6 +875,13 @@ function stageSection(p) {
 }
 // Square versions of the scenes for the Work carousel covers (the wide scene is reused on small screens)
 const COVERS = {
+  fosso: [
+    { x: 6, y: 7, w: 62, d: -.6, html: win('stage-fosso-menage') },
+    { x: 66, y: 5, w: 28, d: 1.3, z: 3, t: 150, r: '3deg', float: 1, html: card('stage-fosso-phone') },
+    { x: 6, y: 50, w: 50, d: .6, z: 2, t: 250, html: card('stage-fosso-map') },
+    { x: 40, y: 62, w: 34, d: 1.1, z: 3, t: 350, float: 1, html: card('stage-fosso-level') },
+    { x: 6, y: 89, w: 'auto', d: 1.5, z: 4, t: 450, html: tag('Fosso · Product design', '#2f63d6') }
+  ],
   sodeco: [
     { x: 6, y: 7, w: 66, d: -.6, html: win('stage-sodeco-cert') },
     { x: 28, y: 37, w: 66, d: .5, z: 2, t: 150, html: win('stage-sodeco-durab') },
