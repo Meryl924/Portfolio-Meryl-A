@@ -258,6 +258,10 @@
   .pd-meta small { display: block; font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin-bottom: 6px; }
   .pd-meta strong { font-weight: 600; color: var(--ink); }
   .pd-meta .btn { height: 100%; min-height: 64px; border-radius: 16px; }
+  /* Collaborators credited on a project */
+  .pd-credits { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; margin: -16px 0 40px; font-size: 15px; color: var(--muted); }
+  .pd-credits .who { display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; border-radius: 999px; background: var(--soft); color: var(--text); }
+  .pd-credits b { font-weight: 600; color: var(--ink); }
   /* Project showcase: real screens and details staged on a soft backdrop.
      Every position is a % of the stage, sizes use cqw, so the scene scales as one picture. */
   .stage { position: relative; container-type: inline-size; aspect-ratio: 16 / 9; margin: 0 0 80px; border-radius: 32px; overflow: hidden;
@@ -781,6 +785,7 @@ const PROJECTS = [
   },
   {
     slug: 'greentech', title: 'GreenTech Brand Guidelines', accent: 'Brand Guidelines',
+    credits: [{ name: 'Herman ZINZINDOHOUE', role: 'Graphic Designer' }],
     category: 'Brand identity', client: 'Greentech Holland', year: '2024',
     thumb: 'greentech-thumb.png', cover: 'greentech-2.png', containFirst: true, layout: ['full', 'full', '', ''],
     desc: 'GreenTech City is an ambitious event that is redefining horticulture and technology in West Africa. The goal was to create a strong visual identity capable of capturing attention and setting the event apart — merging agricultural innovation, art and culture, and combining nature and technology to create a lasting impact.',
@@ -789,6 +794,7 @@ const PROJECTS = [
   },
   {
     slug: 'chill-groove', title: 'Chill & Groove', accent: 'Groove',
+    credits: [{ name: 'Alex Maurel CHEKETE', role: 'Graphic Designer' }],
     category: 'Event website', client: 'Vitalor', year: '2026',
     thumb: 'chill-groove-thumb.png', cover: 'chill-groove-1.png',
     desc: 'An immersive festival that celebrates Beninese culture through music, gastronomy, games and conviviality. Between local and international DJ sets, unique entertainment and interactive experiences, Chill & Groove 2026 turns every moment into pure energy and lasting memories.',
@@ -1083,6 +1089,7 @@ function renderProject(slug) {
       <div><small>Category</small><strong>${esc(p.category)}</strong></div>
       <a class="btn btn-grad" href="${p.live}" target="_blank" rel="noopener">${esc(p.liveLabel)} ${arrow}<span class="sr-only"> (opens in a new tab)</span></a>
     </div>
+    ${p.credits ? `<p class="pd-credits reveal d2"><span>Made with</span>${p.credits.map(c => `<span class="who"><b>${esc(c.name)}</b> · ${esc(c.role)}</span>`).join('')}</p>` : ''}
     ${stageSection(p)}
     ${processSection(p)}
     <h2 class="sr-only">Gallery</h2>
