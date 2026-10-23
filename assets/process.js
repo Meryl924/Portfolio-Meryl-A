@@ -113,7 +113,7 @@ window.PROCESS = {
     },
     {
       phase: 'UI design',
-      summary: 'A vibrant purple identity with bold lettering, applied to every section of the site.',
+      summary: 'A bright purple identity with bold lettering, used on every section of the site.',
       steps: ['Purple identity & bold type', 'Ticketing, merch & about sections', 'Countdown, mobile & prototype']
     },
     {
