@@ -111,6 +111,17 @@
   main { min-height: 100vh; }
   .page { display: none; }
   .page.active { display: block; }
+  /* 404: Pointu, surprised */
+  .nf { padding: 150px 0 90px; min-height: 100vh; display: flex; align-items: center; background: radial-gradient(60% 60% at 75% 45%, #eaf0fe, transparent 70%); }
+  .nf-grid { display: grid; grid-template-columns: 1.1fr .9fr; gap: 48px; align-items: center; width: 100%; }
+  .nf .eyebrow { margin-bottom: 18px; }
+  .nf .lead { margin: 22px 0 34px; max-width: 460px; }
+  .nf-actions { display: flex; flex-wrap: wrap; gap: 14px; }
+  .nf-art { justify-self: center; }
+  .nf-art img { width: min(340px, 70vw); height: auto; display: block; animation: nf-bob 3.6s ease-in-out infinite; }
+  @keyframes nf-bob { 50% { transform: translateY(-10px); } }
+  @media (max-width: 760px) { .nf { padding-top: 120px; } .nf-grid { grid-template-columns: 1fr; gap: 24px; } .nf-art { order: -1; } .nf-art img { width: 200px; } }
+  @media (prefers-reduced-motion: reduce) { .nf-art img { animation: none; } }
 
   /* ---------- Hero ---------- */
   .hero { position: relative; padding: 136px 0 24px; overflow: hidden; }
@@ -682,6 +693,26 @@
   </div>
 </div>
 
+<!-- ================= 404 ================= -->
+<div class="page" data-page="notfound">
+  <div class="nf">
+    <div class="wrap nf-grid">
+      <div>
+        <p class="eyebrow">Error 404</p>
+        <h1 class="h-xl grad-text" tabindex="-1">Page not found<span class="pt">.</span></h1>
+        <p class="lead">The page you’re looking for doesn’t exist or has moved. Pointu checked twice.</p>
+        <div class="nf-actions">
+          <a href="#/" class="btn btn-grad">Back to home
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+          <a href="#/work" class="btn btn-ghost">See my work</a>
+        </div>
+      </div>
+      <figure class="nf-art"><img src="assets/img/pointu-404.svg" alt="Pointu, the brand character, looks surprised at a laptop showing 404" width="420" height="730"></figure>
+    </div>
+  </div>
+</div>
+
 <!-- ================= CONTACT ================= -->
 <div class="page" data-page="contact">
   <div class="contact">
@@ -1129,9 +1160,10 @@ document.addEventListener('click', e => {
 const SECTIONS = ['work', 'experience', 'services', 'faq'];
 const parse = hash => {
   const [name, slug] = hash.replace(/^#\/?/, '').split('/');
-  if (name === 'project') return { page: 'project', slug };
+  if (name === 'project') return PROJECTS.some(p => p.slug === slug) ? { page: 'project', slug } : { page: 'notfound' };
   if (name === 'contact') return { page: 'contact' };
-  return { page: 'home', section: SECTIONS.includes(name) ? name : null };
+  if (!name || SECTIONS.includes(name)) return { page: 'home', section: name || null };
+  return { page: 'notfound' };
 };
 const scrollToSection = (id, behavior) => {
   const t = document.getElementById(id); if (!t) return;
@@ -1144,6 +1176,7 @@ function route(userInitiated) {
   let title = HOME_TITLE;
   if (r.page === 'project') title = `${renderProject(r.slug)} · ${SITE}`;
   if (r.page === 'contact') title = `Contact · ${SITE}`;
+  if (r.page === 'notfound') title = `Page not found · ${SITE}`;
   document.title = title;
 
   const pageChanged = r.page !== currentPage || r.page === 'project';
