@@ -335,6 +335,10 @@
   .contact-list .ico { flex: 0 0 40px; height: 40px; border-radius: 12px; background: #fff; display: grid; place-items: center; color: var(--navy); }
   .contact-list .ico svg { width: 18px; height: 18px; }
   .contact-list small { display: block; font-size: 12px; color: var(--muted); font-weight: 500; }
+  /* Eva waves from behind the form card */
+  .form-wrap { position: relative; padding-top: 166px; }
+  .form-eva { position: absolute; top: 0; right: 40px; width: 150px; height: auto; pointer-events: none; }
+  .form-wrap .form-card { position: relative; z-index: 1; }
   .form-card { background: #fff; border-radius: 28px; padding: 36px; box-shadow: var(--shadow-lg); border: 1px solid #eef2fb; display: grid; gap: 18px; }
   .form-card label { display: grid; gap: 8px; font-size: 14px; font-weight: 500; color: var(--ink); }
   .form-card input, .form-card textarea, .form-card select { width: 100%; font: inherit; font-size: 16px; color: var(--ink); background: var(--soft); border: 1px solid transparent; border-radius: 14px; padding: 14px 16px; transition: border-color .2s, background .2s; }
@@ -471,6 +475,7 @@
     .gallery { grid-template-columns: 1fr; }
     .next-proj { padding: 24px; }
     .form-card { padding: 22px; border-radius: 22px; }
+    .form-wrap { padding-top: 136px; } .form-eva { width: 122px; right: 24px; }
     .form-row { grid-template-columns: 1fr; }
     .foot-grid { grid-template-columns: 1fr; gap: 32px; }
     footer { border-radius: 28px 28px 0 0; }
@@ -727,7 +732,9 @@
           <a href="https://www.linkedin.com/in/meryl-agnikpe-94565b238/" target="_blank" rel="noopener"><span class="ico"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9.75h4v11H3zm7 0h3.8v1.5h.06c.53-1 1.84-2.06 3.79-2.06 4.05 0 4.8 2.67 4.8 6.13v5.43h-4v-4.82c0-1.15-.02-2.63-1.6-2.63-1.6 0-1.85 1.25-1.85 2.55v4.9h-4z"/></svg></span><span><small>LinkedIn</small>Meryl Agnikpe</span></a>
         </div>
       </div>
-      <form class="form-card reveal d2" id="contactForm">
+      <div class="form-wrap reveal d2">
+      <img class="form-eva" src="assets/img/eva-contact.svg" alt="" width="300" height="420">
+      <form class="form-card" id="contactForm">
         <div class="form-row">
           <label>Name*<input name="name" type="text" placeholder="Jane Smith" autocomplete="name" maxlength="100" required></label>
           <label>Email*<input name="email" type="email" placeholder="jane@example.com" autocomplete="email" required></label>
@@ -747,6 +754,7 @@
         </button>
         <p class="form-note" id="formNote" aria-live="polite">Opens your email app with your message ready to send.</p>
       </form>
+      </div>
     </div>
   </div>
 </div>
