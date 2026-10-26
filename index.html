@@ -134,6 +134,18 @@
   .split.split-in .wi { transform: none; }
   .split .pt .wi, .split .w > .pt { -webkit-text-fill-color: var(--red); }
   .split.hero-in, .split.reveal { opacity: 1; transform: none; animation: none; transition: none; }
+
+  /* ---------- Page transitions (View Transitions API, ignored where unsupported) ---------- */
+  .nav { view-transition-name: site-nav; }
+  .scroll-bar { view-transition-name: site-progress; }
+  ::view-transition-old(root), ::view-transition-new(root) { animation-duration: 420ms; animation-timing-function: var(--ease-out); }
+  ::view-transition-old(root) { animation-name: vt-out; }
+  ::view-transition-new(root) { animation-name: vt-in; }
+  @keyframes vt-out { to { opacity: 0; transform: translateY(-10px); } }
+  @keyframes vt-in { from { opacity: 0; transform: translateY(18px); } }
+  ::view-transition-group(proj-cover) { animation-duration: 640ms; animation-timing-function: cubic-bezier(.22, 1, .36, 1); z-index: 5; }
+  ::view-transition-old(proj-cover), ::view-transition-new(proj-cover) { height: 100%; object-fit: cover; }
+  @media (prefers-reduced-motion: reduce) { ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; } }
   /* ---------- Eva around the site ---------- */
   .eva-peek { position: absolute; pointer-events: none; height: auto; }
   .hero-eva { width: 104px; right: -62px; bottom: -26px; z-index: 2; animation: eva-wave 3.2s ease-in-out infinite; transform-origin: 50% 100%; }
@@ -1273,6 +1285,24 @@ function route(userInitiated) {
   setActiveLink();
 }
 
+// Soft page change; the clicked project cover grows into the project's scene
+const cardCover = slug => document.querySelector(`.case-media[href="#/project/${slug}"]`);
+const projStage = () => document.querySelector('.page[data-page="project"] .stage');
+function transition(prevHash, nextHash, fn) {
+  const a = parse(prevHash), b = parse(nextHash);
+  const changes = a.page !== b.page || (b.page === 'project' && a.slug !== b.slug);
+  if (!changes || !document.startViewTransition || reduceMotion.matches || document.hidden) { fn(); return; }
+  const from = a.page === 'home' && b.page === 'project' ? cardCover(b.slug) : a.page === 'project' && b.page === 'project' ? projStage() : null;
+  if (from) from.style.viewTransitionName = 'proj-cover';
+  const t = document.startViewTransition(() => {
+    fn();
+    if (from) from.style.viewTransitionName = '';
+    const to = b.page === 'project' ? projStage() : null;
+    if (from && to) { to.classList.add('in'); to.style.viewTransitionName = 'proj-cover'; }
+  });
+  t.finished.finally(() => document.querySelectorAll('[style*="proj-cover"]').forEach(el => { el.style.viewTransitionName = ''; }));
+}
+
 function go(hash) {
   if (hash === currentHash) {
     // Same route: re-scroll to the section (or top) without a history entry
@@ -1282,9 +1312,10 @@ function go(hash) {
     else window.scrollTo({ top: 0, behavior: smooth() });
     return;
   }
+  const prev = currentHash;
   currentHash = hash;
   try { history.pushState(null, '', hash || location.pathname); } catch (_) {}
-  route(true);
+  transition(prev, hash, () => route(true));
 }
 
 document.addEventListener('click', e => {
@@ -1297,8 +1328,9 @@ document.addEventListener('click', e => {
 });
 const syncFromUrl = () => {
   if (location.hash && !location.hash.startsWith('#/')) return;
+  const prev = currentHash;
   currentHash = location.hash === '#/' ? '' : location.hash;
-  route(false);
+  if (currentPage === null) route(false); else transition(prev, currentHash, () => route(false));
 };
 window.addEventListener('popstate', syncFromUrl);
 window.addEventListener('hashchange', syncFromUrl);
