@@ -111,6 +111,21 @@
   main { min-height: 100vh; }
   .page { display: none; }
   .page.active { display: block; }
+
+  /* ---------- Immersion layer: scroll bar, hero depth, cursor light, card tilt ---------- */
+  .scroll-bar { position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 60; background: linear-gradient(90deg, #3866f1, #65acff 70%, #e5383b); transform-origin: left; transform: scaleX(var(--p, 0)); pointer-events: none; }
+  .cursor-light { position: fixed; left: 0; top: 0; width: 560px; height: 560px; margin: -280px 0 0 -280px; border-radius: 50%; background: radial-gradient(closest-side, rgba(56,102,241,.11), rgba(101,172,255,.05) 55%, transparent 75%); pointer-events: none; z-index: 2; opacity: 0; transition: opacity 400ms ease; will-change: transform; }
+  .cursor-light.on { opacity: 1; }
+  .depth .portrait { translate: calc(var(--hx, 0) * -10px) calc(var(--hy, 0) * -8px + var(--sc, 0) * -34px); }
+  .depth .rings { translate: calc(var(--hx, 0) * 16px) calc(var(--hy, 0) * 12px + var(--sc, 0) * -12px); }
+  .depth .chip-1 { translate: calc(var(--hx, 0) * 24px) calc(var(--hy, 0) * 18px + var(--sc, 0) * -60px); }
+  .depth .chip-2 { translate: calc(var(--hx, 0) * -18px) calc(var(--hy, 0) * 14px + var(--sc, 0) * -26px); }
+  .depth .chip-3 { translate: calc(var(--hx, 0) * 30px) calc(var(--hy, 0) * 22px + var(--sc, 0) * -80px); }
+  .depth .hero-eva { translate: calc(var(--hx, 0) * -26px) calc(var(--hy, 0) * -16px + var(--sc, 0) * -50px); }
+  .hero-copy-drift { translate: 0 calc(var(--sc, 0) * 36px); opacity: calc(1 - var(--sc, 0) * .55); }
+  .hero::before { translate: 0 calc(var(--sc, 0) * 70px); }
+  .case { transform: perspective(1100px) rotateX(var(--ty, 0deg)) rotateY(var(--tx, 0deg)); transition: transform 260ms var(--ease-out); }
+  @media (prefers-reduced-motion: reduce) { .cursor-light { display: none; } .depth * { translate: none !important; } .hero-copy-drift, .hero::before { translate: none; opacity: 1; } .case { transform: none !important; } }
   /* ---------- Eva around the site ---------- */
   .eva-peek { position: absolute; pointer-events: none; height: auto; }
   .hero-eva { width: 104px; right: -62px; bottom: -26px; z-index: 2; animation: eva-wave 3.2s ease-in-out infinite; transform-origin: 50% 100%; }
@@ -502,6 +517,8 @@
 </style>
 </head>
 <body>
+<div class="scroll-bar" id="scrollBar" aria-hidden="true"></div>
+<div class="cursor-light" id="cursorLight" aria-hidden="true"></div>
 
 <a class="skip" href="#main">Skip to content</a>
 
@@ -536,7 +553,7 @@
 
   <div class="hero">
     <div class="wrap">
-      <div>
+      <div class="hero-copy-drift">
         <div class="badge hero-in"><b>Hello</b> I’m Meryl, UX Designer &amp; Digital Innovation Strategy Consultant</div>
         <h1 class="h-xl grad-text hero-in d1" tabindex="-1">Websites, Products &amp; Brands Designed to Stand Out<span class="pt">.</span></h1>
         <p class="lead hero-in d2">I’m Meryl Agnikpe. I design digital products and websites in Figma, build them without code in Framer, and help businesses plan their digital innovation.</p>
@@ -547,7 +564,7 @@
           <a href="#/work" class="btn btn-ghost">See my work</a>
         </div>
       </div>
-      <div class="hero-visual hero-in d2">
+      <div class="hero-visual depth hero-in d2">
         <div class="rings" aria-hidden="true"></div>
         <img class="eva-peek hero-eva" src="assets/img/eva-hero.svg" alt="" width="300" height="580">
         <div class="portrait"><img src="assets/img/meryl-portrait.jpg" alt="Portrait of Meryl Agnikpe" width="470" height="540"></div>
@@ -1285,6 +1302,45 @@ document.getElementById('contactForm').addEventListener('submit', e => {
   location.href = `mailto:contactmerylagnikpe@gmail.com?subject=${subject}&body=${body}`;
   document.getElementById('formNote').innerHTML = 'Your email app should open with your message. Nothing happened? Write to <a href="mailto:contactmerylagnikpe@gmail.com">contactmerylagnikpe@gmail.com</a>.';
 });
+
+/* ---------- Immersion layer ---------- */
+(() => {
+  const root = document.documentElement, bar = document.getElementById('scrollBar'), light = document.getElementById('cursorLight');
+  const fine = matchMedia('(hover: hover) and (pointer: fine)');
+  let tx = 0, ty = 0, cx = 0, cy = 0, lx = -999, ly = -999, ticking = false;
+  const hero = () => document.querySelector('.hero');
+  const vis = () => document.querySelector('.hero-visual.depth');
+  function onScroll() {
+    const max = root.scrollHeight - innerHeight;
+    bar.style.setProperty('--p', max > 0 ? (scrollY / max).toFixed(4) : 0);
+    const h = hero();
+    if (h && !reduceMotion.matches) h.style.setProperty('--sc', Math.min(1, Math.max(0, scrollY / ((h.offsetHeight || 800) * .9))).toFixed(3));
+  }
+  addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(() => { ticking = false; onScroll(); }); } }, { passive: true });
+  addEventListener('hashchange', () => requestAnimationFrame(onScroll));
+  onScroll();
+  if (!fine.matches) return;
+  addEventListener('pointermove', e => {
+    if (reduceMotion.matches) return;
+    lx = e.clientX; ly = e.clientY; light.classList.add('on');
+    tx = e.clientX / innerWidth - .5; ty = e.clientY / innerHeight - .5;
+    const c = e.target.closest && e.target.closest('.case');
+    document.querySelectorAll('.case').forEach(el => {
+      if (el !== c) { el.style.removeProperty('--tx'); el.style.removeProperty('--ty'); return; }
+      const r = el.getBoundingClientRect();
+      el.style.setProperty('--tx', (((e.clientX - r.left) / r.width - .5) * 5).toFixed(2) + 'deg');
+      el.style.setProperty('--ty', (-((e.clientY - r.top) / r.height - .5) * 5).toFixed(2) + 'deg');
+    });
+  }, { passive: true });
+  document.addEventListener('pointerleave', () => light.classList.remove('on'));
+  (function loop() {
+    cx += (tx - cx) * .08; cy += (ty - cy) * .08;
+    const v = vis();
+    if (v && !reduceMotion.matches) { v.style.setProperty('--hx', cx.toFixed(3)); v.style.setProperty('--hy', cy.toFixed(3)); }
+    light.style.transform = `translate(${lx}px, ${ly}px)`;
+    requestAnimationFrame(loop);
+  })();
+})();
 
 syncFromUrl();
 observe(document.querySelector('footer'));
