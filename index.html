@@ -126,6 +126,14 @@
   .hero::before { translate: 0 calc(var(--sc, 0) * 70px); }
   .case { transform: perspective(1100px) rotateX(var(--ty, 0deg)) rotateY(var(--tx, 0deg)); transition: transform 260ms var(--ease-out); }
   @media (prefers-reduced-motion: reduce) { .cursor-light { display: none; } .depth * { translate: none !important; } .hero-copy-drift, .hero::before { translate: none; opacity: 1; } .case { transform: none !important; } }
+
+  /* ---------- Headings revealed word by word ---------- */
+  .split { background: none; -webkit-text-fill-color: currentColor; color: var(--ink); }
+  .split .w { display: inline-block; overflow: hidden; vertical-align: top; padding: 0 .03em .16em; margin: 0 -.03em -.16em; }
+  .split .wi { display: inline-block; transform: translateY(108%); transition: transform 640ms var(--ease-out); transition-delay: calc(var(--i, 0) * 55ms); will-change: transform; }
+  .split.split-in .wi { transform: none; }
+  .split .pt .wi, .split .w > .pt { -webkit-text-fill-color: var(--red); }
+  .split.hero-in, .split.reveal { opacity: 1; transform: none; animation: none; transition: none; }
   /* ---------- Eva around the site ---------- */
   .eva-peek { position: absolute; pointer-events: none; height: auto; }
   .hero-eva { width: 104px; right: -62px; bottom: -26px; z-index: 2; animation: eva-wave 3.2s ease-in-out infinite; transform-origin: 50% 100%; }
@@ -1186,7 +1194,26 @@ function renderProject(slug) {
 const io = new IntersectionObserver(entries => {
   entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
 }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
-const observe = scope => scope.querySelectorAll('.reveal:not(.in)').forEach(el => io.observe(el));
+const splitIO = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('split-in'); splitIO.unobserve(e.target); } });
+}, { threshold: 0.4 });
+function splitHeadings(scope) {
+  if (reduceMotion.matches) return;
+  scope.querySelectorAll('.h-xl:not(.split), .h-lg:not(.split)').forEach(h => {
+    let i = 0;
+    const unit = node => { const w = document.createElement('span'); w.className = 'w'; const wi = document.createElement('span'); wi.className = 'wi'; wi.style.setProperty('--i', i++); wi.append(node); w.append(wi); return w; };
+    const out = [];
+    h.childNodes.forEach(n => {
+      if (n.nodeType === 3) {
+        n.textContent.split(/(\s+)/).forEach(t => { if (!t) return; out.push(/^\s+$/.test(t) ? document.createTextNode(' ') : unit(document.createTextNode(t))); });
+      } else out.push(unit(n));
+    });
+    h.replaceChildren(...out);
+    h.classList.add('split');
+    splitIO.observe(h);
+  });
+}
+const observe = scope => { splitHeadings(scope); scope.querySelectorAll('.reveal:not(.in)').forEach(el => io.observe(el)); };
 
 /* ---------- Mobile menu ---------- */
 const nav = document.getElementById('nav'), burger = document.getElementById('burger'), menu = document.getElementById('mobileMenu');
