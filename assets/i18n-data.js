@@ -234,7 +234,11 @@ window.I18N_DATA = {
 "Websites, products and brand identities designed by Meryl Agnikpe.": "Sites web, produits et identités de marque conçus par Meryl Agnikpe.",
 "Language": "Langue",
 "Switch to dark theme": "Passer au thème sombre",
-"Switch to light theme": "Passer au thème clair"
+"Switch to light theme": "Passer au thème clair",
+"Backdrop": "Fond",
+"Light": "Clair",
+"Blue": "Bleu",
+"Dark": "Sombre"
 },
 "es": {
 "UX Designer & Digital Innovation Strategy Consultant": "Diseño UX y consultoría en estrategia de innovación digital",
@@ -470,7 +474,11 @@ window.I18N_DATA = {
 "Websites, products and brand identities designed by Meryl Agnikpe.": "Sitios web, productos e identidades de marca diseñados por Meryl Agnikpe.",
 "Language": "Idioma",
 "Switch to dark theme": "Cambiar al tema oscuro",
-"Switch to light theme": "Cambiar al tema claro"
+"Switch to light theme": "Cambiar al tema claro",
+"Backdrop": "Fondo",
+"Light": "Claro",
+"Blue": "Azul",
+"Dark": "Oscuro"
 },
 "ru": {
 "UX Designer & Digital Innovation Strategy Consultant": "UX-дизайн и консалтинг по стратегии цифровых инноваций",
@@ -706,6 +714,10 @@ window.I18N_DATA = {
 "Websites, products and brand identities designed by Meryl Agnikpe.": "Сайты, продукты и айдентика, созданные Мерил Агникпе.",
 "Language": "Язык",
 "Switch to dark theme": "Включить тёмную тему",
-"Switch to light theme": "Включить светлую тему"
+"Switch to light theme": "Включить светлую тему",
+"Backdrop": "Фон",
+"Light": "Светлый",
+"Blue": "Синий",
+"Dark": "Тёмный"
 }
 };

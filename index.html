@@ -739,6 +739,80 @@ html[data-theme="dark"] .mobile-menu a:not(.btn):hover { background: rgba(255,25
 }
 </style>
 <noscript><style>.loader{display:none}html.loading{overflow:auto}html.loading .nav .wrap{transform:none;opacity:1}#scene{display:none}</style></noscript>
+<style id="hero-css">
+/* ---------- Hero: portrait cut-out in front of a giant name ---------- */
+.hero.hx { display: block; padding: 0; min-height: 100vh; min-height: 100svh; position: relative; overflow: hidden; isolation: isolate; --hb-ink: #0b1f4f; --hb-text: rgba(11,31,79,.30); --hb-near: #e5383b; --btn: #0b1f4f; --btn-fg: #fff; --ghost-line: rgba(11,31,79,.28); --ghost-fg: #0b1f4f; --chip-a: #e5383b; --fh: min(68vh, 54vw); --fw: calc(var(--fh) * 1.222); }
+.hx::before { content: none; }
+.hx[data-bd="blue"] { --hb-ink: #fff; --hb-text: rgba(255,255,255,.34); --hb-near: #0b1f4f; --btn: #0b1f4f; --btn-fg: #fff; --ghost-line: rgba(255,255,255,.55); --ghost-fg: #fff; }
+.hx[data-bd="dark"] { --hb-ink: #fff; --hb-text: rgba(255,255,255,.2); --hb-near: #7aa2ff; --btn: #fff; --btn-fg: #0b1f4f; --ghost-line: rgba(255,255,255,.32); --ghost-fg: #fff; }
+.hx-bg { position: absolute; inset: 0; z-index: -1; }
+.hx-layer { position: absolute; inset: 0; opacity: 0; transition: opacity 700ms ease; }
+.l-light { background: linear-gradient(180deg, #f6f8ff 0%, #e4ebfb 100%); }
+.l-blue { background: linear-gradient(160deg, #2f66e8 0%, #013b9a 100%); }
+.l-dark { background: radial-gradient(80% 70% at 50% 40%, #0b1b4d 0%, #050a1c 70%); }
+.hx[data-bd="light"] .l-light, .hx[data-bd="blue"] .l-blue, .hx[data-bd="dark"] .l-dark { opacity: 1; }
+.hx-glow { position: absolute; left: 50%; top: 52%; width: min(86vw, 1100px); aspect-ratio: 1; translate: -50% -50%; border-radius: 50%; transition: background 700ms ease;
+  background: radial-gradient(closest-side, rgba(255,255,255,.95), rgba(255,255,255,.35) 55%, transparent 75%); }
+.hx[data-bd="blue"] .hx-glow { background: radial-gradient(closest-side, rgba(150,200,255,.8), rgba(101,172,255,.25) 55%, transparent 75%); }
+.hx[data-bd="dark"] .hx-glow { background: radial-gradient(closest-side, rgba(56,102,241,.55), rgba(56,102,241,.15) 55%, transparent 75%); }
+
+.hx-copy { position: absolute; z-index: 5; left: clamp(20px, 3vw, 44px); top: clamp(96px, 15vh, 150px); max-width: 420px; }
+.hx-h1 { font-size: clamp(22px, 2.3vw, 34px); line-height: 1.08; letter-spacing: -.03em; font-weight: 700; color: var(--hb-ink); transition: color 500ms ease; text-wrap: balance; }
+.hx-ctas { display: grid; gap: 12px; justify-items: start; margin-top: 26px; }
+.hx-btn { display: inline-flex; align-items: center; gap: 22px; padding: 8px 8px 8px 22px; min-height: 52px; border-radius: 14px; font-size: 15px; font-weight: 500; transition: transform 200ms var(--ease-out), background 300ms ease, color 300ms ease; }
+.hx-solid { background: var(--btn); color: var(--btn-fg); }
+.hx-ghost { border: 1px solid var(--ghost-line); color: var(--ghost-fg); background: rgba(255,255,255,.08); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+.hx-arr { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 10px; background: var(--chip-a); color: #fff; }
+.hx-ghost .hx-arr { background: rgba(11,31,79,.10); color: inherit; }
+.hx[data-bd="blue"] .hx-ghost .hx-arr, .hx[data-bd="dark"] .hx-ghost .hx-arr { background: rgba(255,255,255,.16); }
+.hx-arr svg { width: 17px; height: 17px; }
+@media (hover: hover) and (pointer: fine) { .hx-btn:hover { transform: translateY(-2px); } .hx-btn:active:hover { transform: scale(.97); } }
+
+/* The giant name sits behind the portrait */
+.hx-name { position: absolute; z-index: 2; left: 0; right: 0; top: 56%; display: flex; justify-content: center; gap: calc(var(--fw) * .46); font-size: clamp(48px, 8vw, 150px); line-height: .8; font-weight: 800; letter-spacing: -.035em; text-transform: uppercase; user-select: none; translate: 0 calc(var(--sc, 0) * -50px); }
+.hx-word { display: inline-flex; }
+.hx-l { display: inline-block; color: color-mix(in srgb, var(--hb-near) calc(var(--p, 0) * 100%), var(--hb-text)); translate: 0 calc(var(--p, 0) * -.07em); transition: color 160ms linear, translate 160ms var(--ease-out);
+  animation: hx-rise 900ms var(--ease-out) both; animation-delay: calc(var(--i) * 45ms + 150ms); }
+@keyframes hx-rise { from { opacity: 0; transform: translateY(.5em); } }
+html.loading .hx-l { animation-play-state: paused; }
+
+/* Portrait: cut-out, soft fade at the bottom, cast shadow on the "wall" */
+.hx-fig { position: absolute; z-index: 3; left: 50%; bottom: 0; height: var(--fh); aspect-ratio: 941 / 770; translate: calc(-50% + var(--hx, 0) * -16px) calc(var(--hy, 0) * -8px + var(--sc, 0) * 60px); pointer-events: none; }
+.hx-fig img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; object-position: bottom; }
+.hx-photo { -webkit-mask-image: linear-gradient(#000 60%, transparent 100%); mask-image: linear-gradient(#000 60%, transparent 100%); filter: contrast(1.03); }
+.hx-shadow { filter: brightness(0) blur(10px); opacity: .17; transform: translate(-10%, -2%) scale(1.02); transform-origin: bottom; z-index: -1; translate: calc(var(--hx, 0) * -10px) 0; -webkit-mask-image: linear-gradient(#000 40%, transparent 92%); mask-image: linear-gradient(#000 40%, transparent 92%); }
+.hx[data-bd="dark"] .hx-shadow { opacity: .3; }
+.hx .chip { z-index: 6; }
+.hx .chip-1 { left: clamp(20px, 22vw, 380px); top: 34%; }
+.hx .chip-2 { right: clamp(20px, 6vw, 130px); top: 31%; }
+.hx .chip-3 { right: clamp(20px, 11vw, 220px); bottom: 24%; left: auto; }
+.hx .hero-eva { position: absolute; z-index: 6; right: clamp(8px, 3vw, 56px); bottom: 5%; width: 96px; }
+.hx-lead { position: absolute; z-index: 5; left: clamp(20px, 3vw, 44px); bottom: 118px; max-width: 280px; font-size: 14px; line-height: 1.5; color: var(--hb-ink); opacity: .78; transition: color 500ms ease; text-shadow: none; }
+.hx-bdsw { position: absolute; z-index: 7; left: clamp(20px, 3vw, 44px); bottom: 34px; display: inline-flex; align-items: center; gap: 8px; padding: 7px 10px 7px 14px; border-radius: 14px; font-family: var(--mono); font-size: 11px; letter-spacing: .08em; color: var(--hb-ink); background: rgba(255,255,255,.3); border: 1px solid rgba(11,31,79,.12); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
+.hx[data-bd="blue"] .hx-bdsw, .hx[data-bd="dark"] .hx-bdsw { background: rgba(255,255,255,.1); border-color: rgba(255,255,255,.22); }
+.hx-bdsw button { width: 26px; height: 26px; border-radius: 8px; border: 2px solid transparent; outline: 1px solid rgba(11,31,79,.18); transition: transform 160ms var(--ease-out); }
+.hx-bdsw button[data-bd="light"] { background: #e8eefc; } .hx-bdsw button[data-bd="blue"] { background: #2f66e8; } .hx-bdsw button[data-bd="dark"] { background: #0b1b4d; }
+.hx-bdsw button[aria-pressed="true"] { border-color: #fff; outline: 2px solid var(--btn); transform: scale(1.06); }
+.hx-bdsw button:active { transform: scale(.94); }
+html[data-theme="dark"] .hx-lead { text-shadow: none; }
+@media (max-width: 1080px) {
+  .hx .chip-1 { left: 3%; top: 52%; } .hx .chip-2 { right: 3%; top: 40%; } .hx .chip-3 { display: none; }
+}
+@media (max-width: 760px) {
+  .hx-copy { top: 92px; max-width: none; right: 20px; }
+  .hx-h1 { font-size: 21px; }
+  .hx-ctas { grid-auto-flow: column; gap: 10px; margin-top: 18px; }
+  .hx-btn { min-height: 46px; padding: 6px 6px 6px 16px; gap: 14px; font-size: 14px; }
+  .hx-arr { width: 32px; height: 32px; }
+  .hero.hx { --fh: min(54svh, 80vw); }
+  .hx-name { flex-direction: column; align-items: center; gap: .02em; font-size: 19.5vw; top: 36%; line-height: .86; }
+  .hx .chip-1, .hx .chip-2 { display: none; }
+  .hx .hero-eva { width: 70px; bottom: 11%; }
+  .hx-lead { display: none; }
+  .hx-bdsw { bottom: auto; top: 236px; left: 20px; }
+}
+@media (prefers-reduced-motion: reduce) { .hx-l { animation: none; transition: none; } .hx-fig, .hx-name { translate: none; } }
+</style>
 </head>
 <body>
 <canvas id="scene" aria-hidden="true"></canvas>
@@ -793,27 +867,29 @@ html[data-theme="dark"] .mobile-menu a:not(.btn):hover { background: rgba(255,25
 <!-- ================= HOME ================= -->
 <div class="page" data-page="home">
 
-  <div class="hero">
-    <div class="wrap">
-      <div class="hero-copy-drift">
-        <div class="badge hero-in"><b>Hello</b> I’m Meryl, UX Designer &amp; Digital Innovation Strategy Consultant</div>
-        <h1 class="h-xl grad-text hero-in d1" tabindex="-1">Websites, Products &amp; Brands Designed to Stand Out<span class="pt">.</span></h1>
-        <p class="lead hero-in d2">I’m Meryl Agnikpe. I design digital products and websites in Figma, build them without code in Framer, and help businesses plan their digital innovation.</p>
-        <div class="hero-ctas hero-in d3">
-          <a href="#/contact" class="btn btn-grad">Start a project
-            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-          </a>
-          <a href="#/work" class="btn btn-ghost">See my work</a>
-        </div>
+  <div class="hero hx" data-bd="light">
+    <div class="hx-bg" aria-hidden="true"><i class="hx-layer l-light"></i><i class="hx-layer l-blue"></i><i class="hx-layer l-dark"></i><i class="hx-glow"></i></div>
+    <div class="hx-copy hero-in">
+      <h1 class="hx-h1" tabindex="-1"><span class="sr-only">Meryl Agnikpe, </span>UX Designer &amp; Digital Innovation Strategy Consultant</h1>
+      <div class="hx-ctas">
+        <a href="#/work" class="hx-btn hx-solid">See my work<span class="hx-arr"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M8 7h9v9"/></svg></span></a>
+        <a href="#/contact" class="hx-btn hx-ghost">Start a project<span class="hx-arr"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M8 7h9v9"/></svg></span></a>
       </div>
-      <div class="hero-visual depth hero-in d2">
-        <div class="rings" aria-hidden="true"></div>
-        <img class="eva-peek hero-eva" src="assets/img/eva-hero.svg" alt="" width="300" height="580">
-        <div class="portrait"><img src="assets/img/meryl-portrait.jpg" alt="Portrait of Meryl Agnikpe" width="470" height="540"></div>
+    </div>
+    <div class="hx-name" aria-hidden="true"><span class="hx-word"><span class="hx-l" style="--i:0">M</span><span class="hx-l" style="--i:1">E</span><span class="hx-l" style="--i:2">R</span><span class="hx-l" style="--i:3">Y</span><span class="hx-l" style="--i:4">L</span></span><span class="hx-word"><span class="hx-l" style="--i:5">A</span><span class="hx-l" style="--i:6">G</span><span class="hx-l" style="--i:7">N</span><span class="hx-l" style="--i:8">I</span><span class="hx-l" style="--i:9">K</span><span class="hx-l" style="--i:10">P</span><span class="hx-l" style="--i:11">E</span></span></div>
+    <div class="hx-fig hero-in d1">
+      <img class="hx-shadow" src="assets/img/meryl-cutout.webp" alt="" aria-hidden="true" width="941" height="770">
+      <img class="hx-photo" src="assets/img/meryl-cutout.webp" alt="Portrait of Meryl Agnikpe" width="941" height="770" fetchpriority="high">
+    </div>
         <div class="chip chip-1" aria-hidden="true"><span class="ico logo" title="Framer"><svg viewBox="0 0 14 21"><path fill="#000" d="M0 0h14v7H7zm0 7h7l7 7H7v7l-7-7z"/></svg></span><span>Website Design<small>Framer · No-code</small></span></div>
         <div class="chip chip-2" aria-hidden="true"><span class="ico logo" title="Figma"><svg viewBox="0 0 38 57"><path fill="#1abcfe" d="M19 28.5a9.5 9.5 0 1 1 19 0 9.5 9.5 0 0 1-19 0z"/><path fill="#0acf83" d="M0 47.5A9.5 9.5 0 0 1 9.5 38H19v9.5a9.5 9.5 0 1 1-19 0z"/><path fill="#ff7262" d="M19 0v19h9.5a9.5 9.5 0 1 0 0-19H19z"/><path fill="#f24e1e" d="M0 9.5A9.5 9.5 0 0 0 9.5 19H19V0H9.5A9.5 9.5 0 0 0 0 9.5z"/><path fill="#a259ff" d="M0 28.5A9.5 9.5 0 0 0 9.5 38H19V19H9.5A9.5 9.5 0 0 0 0 28.5z"/></svg></span><span>UI/UX Design<small>Figma</small></span></div>
         <div class="chip chip-3" aria-hidden="true"><span class="ico logo-ai" title="Adobe Illustrator"><svg viewBox="0 0 36 36"><text x="18" y="24.5" text-anchor="middle" fill="#ff9a00" font-family="Red Hat Display, Helvetica, Arial, sans-serif" font-size="17" font-weight="700" letter-spacing="-.3">Ai</text></svg></span><span>Logo &amp; Branding<small>Visual identity</small></span></div>
-      </div>
+    <img class="eva-peek hero-eva" src="assets/img/eva-hero.svg" alt="" width="300" height="580">
+    <p class="hx-lead hero-in d3">I’m Meryl Agnikpe. I design digital products and websites in Figma, build them without code in Framer, and help businesses plan their digital innovation.</p>
+    <div class="hx-bdsw hero-in d3" role="group" aria-label="Backdrop"><span aria-hidden="true">Backdrop</span>
+      <button type="button" data-bd="light" aria-label="Light" aria-pressed="true"></button>
+      <button type="button" data-bd="blue" aria-label="Blue" aria-pressed="false"></button>
+      <button type="button" data-bd="dark" aria-label="Dark" aria-pressed="false"></button>
     </div>
   </div>
 
@@ -1633,6 +1709,7 @@ document.getElementById('contactForm').addEventListener('submit', e => {
 syncFromUrl();
 observe(document.querySelector('footer'));
 </script>
+<script src="assets/hero.js"></script>
 <script src="assets/immersive.js"></script>
 </body>
 </html>
