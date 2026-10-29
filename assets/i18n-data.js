@@ -238,7 +238,9 @@ window.I18N_DATA = {
 "Backdrop": "Fond",
 "Light": "Clair",
 "Blue": "Bleu",
-"Dark": "Sombre"
+"Dark": "Sombre",
+"Play music": "Lancer la musique",
+"Pause music": "Couper la musique"
 },
 "es": {
 "UX Designer & Digital Innovation Strategy Consultant": "Diseño UX y consultoría en estrategia de innovación digital",
@@ -478,7 +480,9 @@ window.I18N_DATA = {
 "Backdrop": "Fondo",
 "Light": "Claro",
 "Blue": "Azul",
-"Dark": "Oscuro"
+"Dark": "Oscuro",
+"Play music": "Reproducir música",
+"Pause music": "Pausar música"
 },
 "ru": {
 "UX Designer & Digital Innovation Strategy Consultant": "UX-дизайн и консалтинг по стратегии цифровых инноваций",
@@ -718,6 +722,8 @@ window.I18N_DATA = {
 "Backdrop": "Фон",
 "Light": "Светлый",
 "Blue": "Синий",
-"Dark": "Тёмный"
+"Dark": "Тёмный",
+"Play music": "Включить музыку",
+"Pause music": "Выключить музыку"
 }
 };
