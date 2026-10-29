@@ -155,10 +155,10 @@
     geo.setAttribute('aA', aA); geo.setAttribute('aB', aB); geo.setAttribute('aR', new THREE.BufferAttribute(rnd, 3));
     const mat = new THREE.ShaderMaterial({
       transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
-      uniforms: { uMix: { value: 1 }, uTime: { value: 0 }, uPx: { value: 1 }, uAlpha: { value: 1 } },
+      uniforms: { uMix: { value: 1 }, uTime: { value: 0 }, uPx: { value: 1 }, uAlpha: { value: 1 }, uLight: { value: 0 } },
       vertexShader: `
         attribute vec4 aA; attribute vec4 aB; attribute vec3 aR;
-        uniform float uMix, uTime, uPx;
+        uniform float uMix, uTime, uPx, uLight;
         varying vec3 vCol; varying float vA;
         void main(){
           float m = smoothstep(aR.x * .45, aR.x * .45 + .55, uMix);
@@ -169,8 +169,8 @@
           vec4 mv = modelViewMatrix * vec4(p, 1.);
           gl_Position = projectionMatrix * mv;
           float red = mix(aA.w, aB.w, m);
-          vec3 base = mix(vec3(.38, .62, 1.), vec3(1.), aR.y * aR.y);
-          vCol = mix(base, vec3(.95, .2, .22), red);
+          vec3 base = mix(mix(vec3(.38, .62, 1.), vec3(1.), aR.y * aR.y), mix(vec3(.04, .17, .52), vec3(.22, .42, .96), aR.y), uLight);
+          vCol = mix(base, vec3(.9, .16, .2), red);
           gl_PointSize = (2.2 + aR.z * 2.8) * uPx * (10. / -mv.z) * (1. + arc * .5);
           vA = .7 + .3 * aR.y;
         }`,
@@ -190,6 +190,16 @@
     const dg = new THREE.BufferGeometry(); dg.setAttribute('position', new THREE.BufferAttribute(dust, 3));
     const dm = new THREE.PointsMaterial({ color: 0x7aa2ff, size: .06, transparent: true, opacity: .55, depthWrite: false, blending: THREE.AdditiveBlending });
     const dustPts = new THREE.Points(dg, dm); scene.add(dustPts);
+    let light = true;
+    function applyTheme() {
+      light = document.documentElement.dataset.theme !== 'dark';
+      mat.blending = light ? THREE.NormalBlending : THREE.AdditiveBlending; mat.needsUpdate = true;
+      mat.uniforms.uLight.value = light ? 1 : 0;
+      dm.color.set(light ? 0x3866f1 : 0x7aa2ff); dm.opacity = light ? .4 : .55;
+      dm.blending = light ? THREE.NormalBlending : THREE.AdditiveBlending; dm.needsUpdate = true;
+    }
+    applyTheme();
+    new MutationObserver(applyTheme).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
 
     /* --- which shape for which part of the page --- */
     const sectionShapes = () => {
@@ -266,7 +276,7 @@
       group.position.y = (phone ? hh * .62 : layY * hh) + Math.sin(t * .5) * .12;
       group.rotation.y = smx * .6 + Math.sin(t * .25) * .16 + Math.sin(ssy * .0021) * .38;
       group.rotation.x = -smy * .4;
-      const pg = currentPageName(), want = phone ? .5 : pg === 'project' ? .38 : pg === 'contact' ? .6 : 1.0;
+      const pg = currentPageName(), k = light ? .78 : 1, want = k * (phone ? .5 : pg === 'project' ? (light ? .22 : .38) : pg === 'contact' ? .6 : 1.0);
       mat.uniforms.uAlpha.value += (want - mat.uniforms.uAlpha.value) * .06;
       dustPts.position.y = (ssy * .004) % 6;
       dustPts.rotation.y = t * .01;
