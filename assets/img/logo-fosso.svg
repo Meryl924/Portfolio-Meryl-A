@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-label="Fosso">
+  <defs>
+    <linearGradient id="fb" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2358d6"/><stop offset="1" stop-color="#0b1f4f"/></linearGradient>
+  </defs>
+  <rect width="256" height="256" rx="60" fill="url(#fb)"/>
+  <!-- F as a level gauge: stem, two arms, coloured indicator caps -->
+  <rect x="76" y="58" width="40" height="140" rx="20" fill="#fff"/>
+  <rect x="76" y="58" width="108" height="40" rx="20" fill="#fff"/>
+  <rect x="76" y="112" width="76" height="40" rx="20" fill="#fff"/>
+  <circle cx="164" cy="78" r="20" fill="#ff7a3d"/>
+  <circle cx="132" cy="132" r="20" fill="#8fb3ff"/>
+</svg>

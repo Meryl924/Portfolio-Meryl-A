@@ -813,6 +813,52 @@ html[data-theme="dark"] .hx-lead { text-shadow: none; }
 }
 @media (prefers-reduced-motion: reduce) { .hx-l { animation: none; transition: none; } .hx-fig, .hx-name { translate: none; } }
 </style>
+<style id="work-css">
+/* ---------- Work: stacked project cards ---------- */
+.work-head { display: flex; align-items: end; justify-content: space-between; gap: 24px; margin-bottom: 40px; }
+.work-count { font-family: var(--mono); font-size: 12px; letter-spacing: .14em; color: var(--muted); white-space: nowrap; padding-bottom: 14px; }
+.work-count b { color: var(--ink); font-weight: 500; }
+.pstack { display: grid; gap: 28px; padding-bottom: 12px; }
+.pcard { position: sticky; top: calc(84px + var(--i) * 12px); --pw: min(1060px, calc((100vh - 410px) * 1.7778)); }
+.pcard-in { width: min(100%, max(var(--pw), 640px)); margin: 0 auto; padding: 22px 22px 16px; border-radius: 28px; transform-origin: 50% 0;
+  transform: scale(calc(1 - var(--o, 0) * .06)); filter: brightness(calc(1 - var(--o, 0) * .1)); transition: filter 120ms linear;
+  background: rgba(255,255,255,.74); border: 1px solid rgba(255,255,255,.9); box-shadow: 0 30px 80px rgba(16,42,110,.14), 0 0 0 1px rgba(56,102,241,.07);
+  -webkit-backdrop-filter: blur(22px) saturate(1.4); backdrop-filter: blur(22px) saturate(1.4); will-change: transform; }
+html[data-theme="dark"] .pcard-in { background: rgba(14,24,62,.72); border-color: rgba(255,255,255,.14); box-shadow: 0 30px 80px rgba(0,0,0,.45); }
+.pcard-head { display: grid; grid-template-columns: auto minmax(0, 1fr) minmax(0, 1.25fr); gap: 16px 20px; align-items: start; margin-bottom: 18px; }
+.pcard-ico { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 14px; background: var(--ib, #fff); overflow: hidden; box-shadow: 0 8px 20px color-mix(in srgb, var(--c) 28%, transparent), 0 0 0 1px rgba(11,31,79,.08); }
+.pcard-ico img { width: 100%; height: 100%; padding: var(--ip, 7px); object-fit: contain; }
+.pcard-ico.wide { width: auto; min-width: 48px; }
+.pcard-ico.wide img { width: auto; max-width: 150px; padding: var(--ip, 8px) 12px; }
+.pcard-t h3 { font-size: clamp(20px, 2vw, 26px); font-weight: 600; letter-spacing: -.02em; line-height: 1.15; color: var(--ink); }
+.pcard-t .accent { color: var(--navy); }
+.pcard-t .yr { color: var(--muted); font-weight: 400; }
+.pcard-tag { display: inline-block; margin-top: 8px; padding: 4px 11px; border-radius: 8px; font-size: 12.5px; font-weight: 500; background: var(--soft-2); color: var(--ink); }
+.pcard-d { font-size: 14.5px; line-height: 1.55; color: var(--muted); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.pcard .case-media { display: block; position: relative; aspect-ratio: auto; border-radius: 20px; overflow: hidden; background: var(--soft); }
+.pcard .case-media .stage.sq { display: none; }
+.pcard .case-media .stage.wide { display: block; margin: 0; border-radius: 0; aspect-ratio: 16 / 9; }
+.pcard .case-media:hover .stage .layer { translate: calc(var(--mx, 0) * var(--d, 0) * 1cqw) calc(var(--my, 0) * var(--d, 0) * 1cqw); }
+.pcard-foot { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 14px; font-family: var(--mono); font-size: 12px; letter-spacing: .1em; color: var(--muted); }
+.pcard-c { text-transform: uppercase; }
+.pcard-go { display: inline-flex; align-items: center; gap: 12px; padding: 6px 6px 6px 18px; border-radius: 999px; background: var(--ink); color: var(--bg, #fff); font-family: var(--font); font-size: 14px; font-weight: 500; letter-spacing: 0; transition: transform 200ms var(--ease-out); }
+html[data-theme="dark"] .pcard-go { background: #fff; color: #0b1f4f; }
+.pcard-go i { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; background: var(--c); color: #fff; }
+.pcard-go svg { width: 15px; height: 15px; }
+@media (hover: hover) and (pointer: fine) { .pcard-go:hover { transform: translateX(3px); } .pcard-go:active:hover { transform: scale(.97); } }
+@media (max-width: 1080px) { .pcard-head { grid-template-columns: auto minmax(0, 1fr); } .pcard-d { grid-column: 1 / -1; -webkit-line-clamp: 2; } }
+@media (max-width: 760px) {
+  .work-head { align-items: start; } .work-count { display: none; }
+  .pcard { top: calc(72px + var(--i) * 8px); }
+  .pcard-in { padding: 14px 14px 12px; border-radius: 22px; width: 100%; }
+  .pcard-ico { width: 40px; height: 40px; min-width: 40px; }
+  .pcard-ico.wide img { max-width: 112px; }
+  .pcard-d { display: none; }
+  .pcard .case-media { border-radius: 14px; }
+  .pcard-c { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { .pcard-in { transform: none; filter: none; } }
+</style>
 </head>
 <body>
 <canvas id="scene" aria-hidden="true"></canvas>
@@ -896,18 +942,14 @@ html[data-theme="dark"] .hx-lead { text-shadow: none; }
   <!-- Work -->
   <section id="work" aria-labelledby="work-title">
     <div class="wrap">
-      <p class="eyebrow reveal" style="margin-bottom:16px">Selected work</p>
-      <h2 class="h-lg grad-text reveal d1" id="work-title" tabindex="-1" style="max-width:640px;margin-bottom:40px">Real Projects for Real Brands</h2>
-      <div class="carousel reveal d2">
-        <div class="track" id="track"></div>
-        <div class="car-ctrl">
-          <div class="progress" aria-hidden="true"><i id="progress"></i></div>
-          <div class="arrows">
-            <button id="prev" aria-label="Previous project"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg></button>
-            <button id="next" aria-label="Next project"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg></button>
-          </div>
+      <div class="work-head">
+        <div>
+          <p class="eyebrow reveal" style="margin-bottom:16px">Selected work</p>
+          <h2 class="h-lg grad-text reveal d1" id="work-title" tabindex="-1" style="max-width:640px">Real Projects for Real Brands</h2>
         </div>
+        <p class="work-count reveal d2" aria-hidden="true"><b>0001</b> — <span>0005</span></p>
       </div>
+      <div class="pstack" id="track"></div>
     </div>
   </section>
 
@@ -1332,30 +1374,49 @@ const coverStage = p => COVERS[p.slug] ? `
   : `<img src="${IMG + p.cover}" alt="" loading="lazy">`;
 
 const track = document.getElementById('track');
-track.innerHTML = PROJECTS.map(p => `
-  <article class="case">
-    <div class="case-body">
-      <p class="eyebrow">${esc(p.category)}</p>
-      <h3 class="h-md">${twoTone(p)}</h3>
-      <p>${esc(p.desc)}</p>
-      <a href="#/project/${p.slug}" class="btn btn-navy">View project<span class="sr-only">: ${esc(p.title)}</span></a>
+// [file, tile background, padding px, wide?]
+const PLOGO = { fosso: ['logo-fosso.svg', 'transparent', 0], sodeco: ['logo-sodeco.png', '#fff', 8, 1], 'nyouz-media': ['logo-nyouz.png', '#fff', 5, 1], greentech: ['logo-greentech.png', '#fff', 8], 'chill-groove': ['logo-chill-groove.png', '#3f0060', 4] };
+const PCOLOR = { fosso: '#2f63d6', sodeco: '#268ba0', 'nyouz-media': '#ff2d3a', greentech: '#4c9854', 'chill-groove': '#7a28be' };
+const pad4 = n => String(n).padStart(4, '0');
+track.innerHTML = PROJECTS.map((p, i) => `
+  <article class="pcard" style="--i:${i};--c:${PCOLOR[p.slug] || '#3866f1'}">
+    <div class="pcard-in">
+      <div class="pcard-head">
+        <span class="pcard-ico${PLOGO[p.slug][3] ? ' wide' : ''}" aria-hidden="true" style="--ib:${PLOGO[p.slug][1]};--ip:${PLOGO[p.slug][2]}px"><img src="${IMG + PLOGO[p.slug][0]}" alt="" width="46" height="46"></span>
+        <div class="pcard-t">
+          <h3>${twoTone(p)} <span class="yr">· ${esc(p.year)}</span></h3>
+          <span class="pcard-tag">${esc(p.category)}</span>
+        </div>
+        <p class="pcard-d">${esc(p.desc)}</p>
+      </div>
+      <a class="case-media" href="#/project/${p.slug}" tabindex="-1" aria-hidden="true">${coverStage(p)}</a>
+      <div class="pcard-foot">
+        <span class="pcard-n">${pad4(i + 1)} / ${pad4(PROJECTS.length)}</span>
+        <span class="pcard-c">${esc(p.client)}</span>
+        <a href="#/project/${p.slug}" class="pcard-go">View project<span class="sr-only">: ${esc(p.title)}</span><i aria-hidden="true">${arrow}</i></a>
+      </div>
     </div>
-    <a class="case-media" href="#/project/${p.slug}" tabindex="-1" aria-hidden="true">${coverStage(p)}</a>
   </article>`).join('');
-const prevBtn = document.getElementById('prev'), nextBtn = document.getElementById('next'), bar = document.getElementById('progress');
-function cardStep() { const c = track.querySelector('.case'); return c.getBoundingClientRect().width + 20; }
-function updateCarousel() {
-  const max = track.scrollWidth - track.clientWidth;
-  const ratio = max > 0 ? track.scrollLeft / max : 0;
-  const w = Math.max(track.clientWidth / track.scrollWidth, .15);
-  bar.style.transform = `translateX(${ratio * (1 - w) * 100}%) scaleX(${w})`;
-  prevBtn.disabled = track.scrollLeft < 4;
-  nextBtn.disabled = track.scrollLeft > max - 4;
-}
-prevBtn.onclick = () => track.scrollBy({ left: -cardStep(), behavior: smooth() });
-nextBtn.onclick = () => track.scrollBy({ left: cardStep(), behavior: smooth() });
-track.addEventListener('scroll', updateCarousel, { passive: true });
-window.addEventListener('resize', updateCarousel);
+
+/* Stacked cards: each card slides over the previous one, which steps back */
+(() => {
+  const cards = [...track.querySelectorAll('.pcard')];
+  let tick = false;
+  const run = () => {
+    tick = false;
+    cards.forEach((c, i) => {
+      const nx = cards[i + 1]; if (!nx) return;
+      const stick = parseFloat(getComputedStyle(c).top) || 0;
+      const h = c.offsetHeight || 1;
+      const o = Math.min(1, Math.max(0, 1 - (nx.getBoundingClientRect().top - stick) / h));
+      c.style.setProperty('--o', reduceMotion.matches ? 0 : o.toFixed(3));
+    });
+  };
+  const req = () => { if (!tick) { tick = true; requestAnimationFrame(run); } };
+  addEventListener('scroll', req, { passive: true });
+  addEventListener('resize', req);
+  req();
+})();
 
 /* ---------- Stats count-up (runs once, when the band comes into view) ---------- */
 const counters = document.querySelectorAll('.stat strong[data-count]');
@@ -1577,7 +1638,6 @@ function route(userInitiated) {
   const el = document.querySelector(`.page[data-page="${r.page}"]`);
   observe(el);
   setMenu(false);
-  if (r.page === 'home') updateCarousel();
 
   if (r.section) {
     // The page is already displayed, so layout is up to date: scroll right away
