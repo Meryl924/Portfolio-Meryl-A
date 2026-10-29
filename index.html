@@ -876,6 +876,66 @@ html[data-theme="dark"] .music-btn.on { background: #7195ff; color: #0b1f4f; }
 #ytMusicHost { position: fixed; left: -300px; top: 0; width: 200px; height: 200px; overflow: hidden; pointer-events: none; opacity: 0; }
 @media (prefers-reduced-motion: reduce) { .music-btn .eq i { animation: none; height: 10px; } }
 </style>
+<style id="idb-css">
+/* ---------- Experience: ID badges hanging in a 3D row ---------- */
+.bd { position: relative; padding: 0 0 8px; }
+.bd-board { position: absolute; inset: -20px 0 56px; border-radius: 34px; background-image: radial-gradient(rgba(56,102,241,.22) 1.6px, transparent 2px); background-size: 26px 26px; background-color: rgba(255,255,255,.35); border: 1px solid rgba(255,255,255,.8); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); -webkit-mask-image: linear-gradient(#000 78%, transparent); mask-image: linear-gradient(#000 78%, transparent); }
+html[data-theme="dark"] .bd-board { background-image: radial-gradient(rgba(156,188,255,.22) 1.6px, transparent 2px); background-color: rgba(255,255,255,.04); border-color: rgba(255,255,255,.1); }
+.bd-stage { position: relative; height: 700px; perspective: 1500px; perspective-origin: 50% 20%; overflow: visible; touch-action: pan-y; }
+.idb { --w: min(300px, 74vw); position: absolute; left: 50%; top: 70px; width: var(--w); margin-left: calc(var(--w) / -2);
+  transform: translateX(calc(var(--o) * 68%)) translateZ(calc(var(--a) * -150px)) rotateY(calc(var(--o) * -16deg)); transform-style: preserve-3d;
+  opacity: calc(1 - var(--a) * .28); transition: transform 800ms var(--ease-out), opacity 500ms ease; z-index: calc(10 - var(--a)); cursor: pointer; }
+.idb.is-active { cursor: default; }
+.idb.is-far { opacity: 0; pointer-events: none; }
+.idb-swing { transform-origin: 50% 0; animation: bd-swing 5.4s ease-in-out infinite; transform-style: preserve-3d; }
+.idb:nth-child(2n) .idb-swing { animation-delay: -1.7s; } .idb:nth-child(3n) .idb-swing { animation-delay: -3.1s; }
+.idb.kick .idb-swing { animation: bd-kick 1.6s cubic-bezier(.2,.7,.3,1), bd-swing 5.4s ease-in-out 1.6s infinite; }
+@keyframes bd-swing { 0%, 100% { transform: rotate(-1.2deg); } 50% { transform: rotate(1.2deg); } }
+@keyframes bd-kick { 0% { transform: rotate(-5deg); } 30% { transform: rotate(3.2deg); } 60% { transform: rotate(-1.8deg); } 100% { transform: rotate(-1.2deg); } }
+.idb-strap { position: absolute; left: 50%; top: -90px; width: 30px; height: 130px; margin-left: -15px; background: linear-gradient(90deg, #0b1f4f, #1c3a8f 50%, #0b1f4f); border-radius: 0 0 4px 4px; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 14px; padding-bottom: 14px; overflow: hidden; box-shadow: 0 0 0 1px rgba(255,255,255,.08) inset; }
+.idb-strap span:nth-child(2) { display: none; }
+.idb-strap span { writing-mode: vertical-rl; transform: rotate(180deg); font-family: var(--mono); font-size: 9px; letter-spacing: .24em; color: rgba(255,255,255,.85); white-space: nowrap; }
+.idb-card { position: relative; perspective: 1400px; }
+.idb-inner { position: relative; height: 452px; transform-style: preserve-3d; transition: transform 800ms cubic-bezier(.3,.8,.2,1); }
+.idb.flipped .idb-inner { transform: rotateY(180deg); }
+.idb-face { position: absolute; inset: 0; border-radius: 20px; overflow: hidden; backface-visibility: hidden; -webkit-backface-visibility: hidden; background: #f4f6fb; color: #0b1f4f; box-shadow: 0 30px 70px rgba(16,42,110,.26), 0 0 0 1px rgba(11,31,79,.08); }
+.idb-back { transform: rotateY(180deg); background: var(--band); color: #fff; padding: 52px 24px 22px; display: flex; flex-direction: column; }
+.idb-slot { position: absolute; left: 50%; top: 14px; width: 62px; height: 14px; margin-left: -31px; border-radius: 8px; background: rgba(11,31,79,.18); box-shadow: inset 0 2px 4px rgba(0,0,0,.25); z-index: 2; }
+.idb-back .idb-slot { background: rgba(255,255,255,.25); }
+.idb-band { background: var(--band); color: #fff; padding: 54px 18px 22px; text-align: center; }
+.idb-band h3 { font-size: clamp(22px, 7vw, 28px); font-weight: 800; letter-spacing: -.02em; line-height: 1.05; color: #fff; text-wrap: balance; }
+.idb-body { padding: 18px 20px 16px; display: grid; justify-items: center; text-align: center; gap: 4px; }
+.idb-av { width: 74px; height: 74px; border-radius: 50%; margin-top: -2px; background: url(assets/img/meryl-portrait.jpg) 46% 35% / 182% auto no-repeat; box-shadow: 0 0 0 4px #fff, 0 6px 16px rgba(11,31,79,.22); filter: grayscale(1); margin-bottom: 8px; }
+.idb-name { font-size: 12px; font-family: var(--mono); letter-spacing: .14em; text-transform: uppercase; color: #5b6475; }
+.idb-role { font-size: 17px; font-weight: 700; line-height: 1.2; color: #0b1f4f; margin-top: 2px; text-wrap: balance; min-height: 2.4em; display: grid; align-items: center; }
+.idb-dates { font-family: var(--mono); font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--band); font-weight: 600; margin-top: 4px; }
+.idb-bar { width: 76%; height: 34px; margin-top: 14px; color: #0b1f4f; } .idb-bar svg { width: 100%; height: 100%; display: block; }
+.idb-flip { margin-top: 10px; font-family: var(--mono); font-size: 10.5px; letter-spacing: .2em; text-transform: uppercase; color: #8b95ab; padding: 6px 10px; border-radius: 8px; }
+.idb.is-active .idb-flip:hover { background: rgba(11,31,79,.07); color: #0b1f4f; }
+.idb:not(.is-active) .idb-flip { visibility: hidden; }
+.idb-no { font-size: 76px; font-weight: 800; letter-spacing: -.04em; line-height: .9; opacity: .95; }
+.idb-co { font-size: 15px; font-family: var(--mono); letter-spacing: .12em; text-transform: uppercase; opacity: .85; margin: 6px 0 22px; }
+.idb-back dl { display: grid; gap: 14px; }
+.idb-back dt { font-family: var(--mono); font-size: 10px; letter-spacing: .2em; text-transform: uppercase; opacity: .65; }
+.idb-back dd { font-size: 17px; font-weight: 600; line-height: 1.25; margin-top: 2px; }
+.idb-tag { margin-top: auto; font-size: 11px; line-height: 1.4; opacity: .75; font-family: var(--mono); letter-spacing: .06em; text-transform: uppercase; }
+.bd-ctrl { position: relative; z-index: 12; display: flex; align-items: center; justify-content: center; gap: 14px; margin-top: 6px; }
+.bd-ctrl button { display: grid; place-items: center; width: 46px; height: 42px; border-radius: 12px; background: rgba(255,255,255,.7); border: 1px solid rgba(56,102,241,.16); color: var(--ink); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); transition: transform 200ms var(--ease-out), opacity 200ms; }
+.bd-ctrl button:active { transform: scale(.95); } .bd-ctrl button:disabled { opacity: .35; }
+.bd-ctrl svg { width: 18px; height: 18px; }
+.bd-count { font-family: var(--mono); font-size: 13px; letter-spacing: .14em; padding: 10px 16px; border-radius: 12px; background: rgba(255,255,255,.7); border: 1px solid rgba(56,102,241,.16); color: var(--ink); min-width: 96px; text-align: center; }
+html[data-theme="dark"] .bd-ctrl button, html[data-theme="dark"] .bd-count { background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.16); color: #fff; }
+.bd-years { position: absolute; right: 18px; top: 28px; z-index: 12; list-style: none; display: grid; gap: 4px; justify-items: end; }
+.bd-years button { font-family: var(--mono); font-size: 12px; letter-spacing: .16em; color: var(--muted); padding: 4px 0 4px 18px; position: relative; transition: color 200ms; }
+.bd-years button::before { content: ""; position: absolute; left: 0; top: 50%; width: 10px; height: 1px; background: currentColor; transition: width 250ms var(--ease-out); }
+.bd-years button.on { color: var(--ink); } .bd-years button.on::before { width: 18px; background: var(--red); }
+.bd :focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; border-radius: 10px; }
+@media (max-width: 760px) {
+  .bd-stage { height: 650px; } .idb { --w: min(280px, 72vw); transform: translateX(calc(var(--o) * 82%)) translateZ(calc(var(--a) * -120px)) rotateY(calc(var(--o) * -12deg)); }
+  .bd-years { display: none; } .idb-inner { height: 430px; }
+}
+@media (prefers-reduced-motion: reduce) { .idb-swing, .idb.kick .idb-swing { animation: none; } .idb, .idb-inner { transition-duration: 1ms; } }
+</style>
 </head>
 <body>
 <canvas id="scene" aria-hidden="true"></canvas>
@@ -1005,11 +1065,17 @@ html[data-theme="dark"] .music-btn.on { background: #7195ff; color: #0b1f4f; }
     <div class="wrap">
       <div class="sec-head">
         <p class="eyebrow reveal">Experience</p>
-        <h2 class="h-lg grad-text reveal d1" id="experience-title" tabindex="-1">Where I’ve Designed and Delivered</h2>
+        <h2 class="h-lg grad-text reveal d1" id="experience-title" tabindex="-1">My Experiences</h2>
       </div>
-      <div class="exp reveal d2">
-        <div class="exp-nav" id="expNav" role="tablist" aria-label="Companies"></div>
-        <div class="exp-card" id="expCard" role="tabpanel" tabindex="0"></div>
+      <div class="bd reveal d2" id="badges" role="region" aria-roledescription="carousel" aria-label="Experience">
+        <div class="bd-board" aria-hidden="true"></div>
+        <div class="bd-stage" id="bdStage"></div>
+        <ol class="bd-years" id="bdYears"></ol>
+        <div class="bd-ctrl">
+          <button type="button" id="bdPrev" aria-label="Previous"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button>
+          <span class="bd-count" id="bdCount" aria-live="polite"></span>
+          <button type="button" id="bdNext" aria-label="Next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
+        </div>
       </div>
     </div>
   </section>
@@ -1456,38 +1522,112 @@ const countIO = new IntersectionObserver(entries => {
 }, { threshold: 0.6 });
 counters.forEach(c => countIO.observe(c));
 
-/* ---------- Experience tabs ---------- */
-const expNav = document.getElementById('expNav'), expCard = document.getElementById('expCard');
-expNav.innerHTML = EXPERIENCE.map((e, i) => `<button role="tab" id="exp-tab-${i}" aria-controls="expCard" data-i="${i}"><span>${esc(e.company)}</span><span>${esc(e.dates.split(' – ')[0])}</span></button>`).join('');
-const expTabs = [...expNav.querySelectorAll('[role="tab"]')];
-function showExp(i, focus) {
-  const e = EXPERIENCE[i];
-  expTabs.forEach((b, k) => {
-    const on = k === i;
-    b.classList.toggle('active', on);
-    b.setAttribute('aria-selected', String(on));
-    b.tabIndex = on ? 0 : -1;
+/* ---------- Experience: ID badges on lanyards ---------- */
+(() => {
+  const stage = document.getElementById('bdStage'), yearsEl = document.getElementById('bdYears'), countEl = document.getElementById('bdCount');
+  const prevB = document.getElementById('bdPrev'), nextB = document.getElementById('bdNext');
+  const BAND = ['#0b1f4f', '#2f63d6', '#e5383b', '#013b9a', '#268ba0', '#7a28be', '#4c9854'];
+  const MON = { Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5, Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10, Dec: 11 };
+  const UNITS = { en: ['yr', 'mo'], fr: ['an', 'mois'], es: ['año', 'meses'], ru: ['г.', 'мес.'] };
+  const parse = s => { const m = s.match(/([A-Z][a-z]{2}) (\d{4})/); return m ? +m[2] * 12 + MON[m[1]] : null; };
+  const span = e => {
+    const [a, b] = e.dates.split(' – ');
+    const start = parse(a), now = new Date();
+    const end = /Present/.test(b) ? now.getFullYear() * 12 + now.getMonth() : parse(b);
+    return { start, months: Math.max(1, end - start + 1), year: Math.floor(start / 12) };
+  };
+  const duration = n => {
+    const u = UNITS[(window.I18N && I18N.lang) || 'en'], y = Math.floor(n / 12), m = n % 12;
+    return [y ? `${y} ${u[0]}` : '', m ? `${m} ${u[1]}` : ''].filter(Boolean).join(' ');
+  };
+  const barcode = seed => {
+    let x = 0; for (const c of seed) x = (x * 31 + c.charCodeAt(0)) >>> 0;
+    let out = '', pos = 0;
+    for (let i = 0; i < 38; i++) { x = (x * 1664525 + 1013904223) >>> 0; const w = 1 + (x % 3); if (i % 2 === 0) out += `<rect x="${pos}" width="${w}" height="30"/>`; pos += w + 1; }
+    return `<svg viewBox="0 0 ${pos} 30" preserveAspectRatio="none" aria-hidden="true" fill="currentColor">${out}</svg>`;
+  };
+  let cur = 0, N = EXPERIENCE.length, flipped = -1;
+  const pad2 = n => String(n).padStart(2, '0');
+
+  function build() {
+    stage.innerHTML = EXPERIENCE.map((e, i) => {
+      const sp = span(e);
+      return `
+      <article class="idb" data-i="${i}" style="--band:${BAND[i % BAND.length]}">
+        <div class="idb-swing"><div class="idb-strap" aria-hidden="true"><span>MERYL AGNIKPE</span><span>MERYL AGNIKPE</span></div>
+        <div class="idb-card"><div class="idb-inner">
+          <div class="idb-face idb-front">
+            <i class="idb-slot" aria-hidden="true"></i>
+            <div class="idb-band"><h3>${esc(e.company)}</h3></div>
+            <div class="idb-body">
+              <span class="idb-av" aria-hidden="true"></span>
+              <p class="idb-name">Meryl Agnikpe</p>
+              <p class="idb-role">${esc(e.role)}</p>
+              <p class="idb-dates">${esc(e.dates)}</p>
+              <div class="idb-bar">${barcode(e.company + e.dates)}</div>
+              <button type="button" class="idb-flip" data-flip="${i}">Click to flip</button>
+            </div>
+          </div>
+          <div class="idb-face idb-back" aria-hidden="true">
+            <i class="idb-slot" aria-hidden="true"></i>
+            <p class="idb-no">${pad2(i + 1)}</p>
+            <p class="idb-co">${esc(e.company)}</p>
+            <dl>
+              <div><dt>Role</dt><dd>${esc(e.role)}</dd></div>
+              <div><dt>Period</dt><dd>${esc(e.dates)}</dd></div>
+              <div><dt>Duration</dt><dd class="dur" data-m="${sp.months}">${duration(sp.months)}</dd></div>
+            </dl>
+            <p class="idb-tag">UX Designer &amp; Digital Innovation Strategy Consultant</p>
+          </div>
+        </div></div></div>
+      </article>`;
+    }).join('');
+    const ys = [...new Set(EXPERIENCE.map(e => span(e).year))];
+    yearsEl.innerHTML = ys.map(y => `<li><button type="button" data-y="${y}">${y}</button></li>`).join('');
+  }
+  function layout() {
+    [...stage.children].forEach((el, i) => {
+      const o = i - cur, a = Math.abs(o);
+      el.style.setProperty('--o', o); el.style.setProperty('--a', a);
+      el.classList.toggle('is-active', o === 0);
+      el.classList.toggle('is-far', a > 2);
+      el.classList.toggle('flipped', i === flipped);
+      el.setAttribute('aria-hidden', o === 0 ? 'false' : 'true');
+      el.querySelectorAll('button').forEach(b => { b.tabIndex = o === 0 ? 0 : -1; });
+    });
+    countEl.textContent = `${pad2(cur + 1)} / ${pad2(N)}`;
+    prevB.disabled = cur === 0; nextB.disabled = cur === N - 1;
+    const y = span(EXPERIENCE[cur]).year;
+    yearsEl.querySelectorAll('button').forEach(b => b.classList.toggle('on', +b.dataset.y === y));
+  }
+  function go(i, swing) {
+    i = Math.max(0, Math.min(N - 1, i));
+    if (i === cur) return;
+    flipped = -1; cur = i; layout();
+    const el = stage.children[cur]; el.classList.remove('kick'); void el.offsetWidth; el.classList.add('kick');
+  }
+  build(); layout();
+  // Flip: only the active badge; a click on a neighbour brings it to the front
+  stage.addEventListener('click', e => {
+    const art = e.target.closest('.idb'); if (!art) return;
+    const i = +art.dataset.i;
+    if (i !== cur) { go(i); return; }
+    flipped = flipped === i ? -1 : i; layout();
+    art.querySelector('.idb-back').setAttribute('aria-hidden', String(flipped !== i));
   });
-  if (focus) expTabs[i].focus();
-  expCard.setAttribute('aria-labelledby', `exp-tab-${i}`);
-  expCard.innerHTML = `
-    <div class="fade">
-      <p class="eyebrow">${esc(e.company)}</p>
-      <h3 class="grad-text">${esc(e.role)}</h3>
-      <span class="dates"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>${esc(e.dates)}</span>
-    </div>
-    <div class="num fade" aria-hidden="true">${String(i + 1).padStart(2, '0')}</div>`;
-}
-expNav.addEventListener('click', e => { const b = e.target.closest('button'); if (b) showExp(+b.dataset.i); });
-expNav.addEventListener('keydown', e => {
-  const i = expTabs.indexOf(document.activeElement); if (i < 0) return;
-  const n = expTabs.length;
-  const to = { ArrowRight: i + 1, ArrowDown: i + 1, ArrowLeft: i - 1, ArrowUp: i - 1, Home: 0, End: n - 1 }[e.key];
-  if (to === undefined) return;
-  e.preventDefault();
-  showExp((to + n) % n, true);
-});
-showExp(0);
+  prevB.addEventListener('click', () => go(cur - 1));
+  nextB.addEventListener('click', () => go(cur + 1));
+  yearsEl.addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; const i = EXPERIENCE.findIndex(x => span(x).year === +b.dataset.y); if (i >= 0) go(i); });
+  document.getElementById('badges').addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight') { e.preventDefault(); go(cur + 1); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); go(cur - 1); }
+  });
+  // Swipe
+  let sx = null;
+  stage.addEventListener('pointerdown', e => { sx = e.clientX; });
+  stage.addEventListener('pointerup', e => { if (sx === null) return; const d = e.clientX - sx; sx = null; if (Math.abs(d) > 50) go(cur + (d < 0 ? 1 : -1)); });
+  document.addEventListener('langchange', () => { stage.querySelectorAll('.dur').forEach(d => { d.textContent = duration(+d.dataset.m); }); });
+})();
 
 /* ---------- Footer projects ---------- */
 document.getElementById('footProjects').innerHTML = PROJECTS.map(p => `<a href="#/project/${p.slug}">${esc(p.title)}</a>`).join('');

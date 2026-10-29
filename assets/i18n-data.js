@@ -42,7 +42,7 @@ window.I18N_DATA = {
 "I’ve worked with": "avec lesquels j’ai travaillé",
 "Featured projects": "Projets phares",
 "delivered": "livrés",
-"Where I’ve Designed and Delivered": "Là où j’ai conçu et livré",
+"My Experiences": "Mes expériences",
 "Senior Website Designer": "Web designer senior",
 "Graphic Designer": "Graphiste",
 "UI/UX Designer": "Designer UI/UX",
@@ -240,7 +240,13 @@ window.I18N_DATA = {
 "Blue": "Bleu",
 "Dark": "Sombre",
 "Play music": "Lancer la musique",
-"Pause music": "Couper la musique"
+"Pause music": "Couper la musique",
+"Previous": "Précédent",
+"Next": "Suivant",
+"Click to flip": "Cliquer pour retourner",
+"Role": "Rôle",
+"Period": "Période",
+"Duration": "Durée"
 },
 "es": {
 "UX Designer & Digital Innovation Strategy Consultant": "Diseño UX y consultoría en estrategia de innovación digital",
@@ -284,7 +290,7 @@ window.I18N_DATA = {
 "I’ve worked with": "con los que he trabajado",
 "Featured projects": "Proyectos destacados",
 "delivered": "entregados",
-"Where I’ve Designed and Delivered": "Donde he diseñado y entregado",
+"My Experiences": "Mis experiencias",
 "Senior Website Designer": "Diseñador web sénior",
 "Graphic Designer": "Diseñador gráfico",
 "UI/UX Designer": "Diseñador UI/UX",
@@ -482,7 +488,13 @@ window.I18N_DATA = {
 "Blue": "Azul",
 "Dark": "Oscuro",
 "Play music": "Reproducir música",
-"Pause music": "Pausar música"
+"Pause music": "Pausar música",
+"Previous": "Anterior",
+"Next": "Siguiente",
+"Click to flip": "Clic para girar",
+"Role": "Rol",
+"Period": "Periodo",
+"Duration": "Duración"
 },
 "ru": {
 "UX Designer & Digital Innovation Strategy Consultant": "UX-дизайн и консалтинг по стратегии цифровых инноваций",
@@ -526,7 +538,7 @@ window.I18N_DATA = {
 "I’ve worked with": "с которыми я сотрудничаю",
 "Featured projects": "Ключевые проекты",
 "delivered": "сдано",
-"Where I’ve Designed and Delivered": "Мой опыт: от идеи до результата",
+"My Experiences": "Мой опыт",
 "Senior Website Designer": "Ведущий веб-дизайнер",
 "Graphic Designer": "Графический дизайнер",
 "UI/UX Designer": "UI/UX-дизайнер",
@@ -724,6 +736,12 @@ window.I18N_DATA = {
 "Blue": "Синий",
 "Dark": "Тёмный",
 "Play music": "Включить музыку",
-"Pause music": "Выключить музыку"
+"Pause music": "Выключить музыку",
+"Previous": "Назад",
+"Next": "Далее",
+"Click to flip": "Нажмите, чтобы перевернуть",
+"Role": "Роль",
+"Period": "Период",
+"Duration": "Срок"
 }
 };
