@@ -31,16 +31,28 @@
     if (target - shown < .002) shown = target;
     if (num) num.textContent = String(Math.round(shown * 100)).padStart(3, '0') + '%';
     if (loader) loader.style.setProperty('--ld', shown.toFixed(3));
-    if (shown >= 1) { setTimeout(open, reduce.matches ? 0 : 500); return; }
+    if (shown >= 1) { askSound(); return; }
     requestAnimationFrame(tick);
   })();
+  // Once loaded, ask whether to enter with or without the music, so the sound only ever starts on purpose
+  function askSound() {
+    const box = document.getElementById('ldChoice');
+    if (!box) { setTimeout(open, 500); return; }
+    box.classList.add('show');
+    loader.removeAttribute('aria-hidden'); loader.setAttribute('role', 'dialog'); loader.setAttribute('aria-modal', 'true');
+    const first = box.querySelector('button'); if (first) setTimeout(() => first.focus({ preventScroll: true }), 50);
+    box.addEventListener('click', e => {
+      const b = e.target.closest('[data-snd]'); if (!b) return;
+      if (window.SiteMusic) window.SiteMusic.set(b.dataset.snd === '1');   // inside the click, so the browser lets sound play
+      open();
+    }, { once: true });
+  }
   setProgress(.12);
   const fonts = document.fonts ? document.fonts.ready : Promise.resolve();
   const loaded = new Promise(r => { if (document.readyState === 'complete') r(); else addEventListener('load', r, { once: true }); });
   const minWait = new Promise(r => setTimeout(r, seen ? 0 : 1500));
   Promise.all([fonts.then(() => setProgress(.35)), loaded.then(() => setProgress(.6))]);
   setTimeout(() => { if (!finished) setProgress(1); }, 6000);   // safety: never trap the visitor
-  setTimeout(open, 9000);
 
   /* ---------- Scene ---------- */
   const THREE_URL = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';

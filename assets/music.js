@@ -55,6 +55,7 @@
     if (wants) player.playVideo(); else player.pauseVideo();
   }
   btn.addEventListener('click', () => toggle());
+  window.SiteMusic = { set: v => toggle(!!v) };   // used by the entry screen
 
   // Pause while the tab is hidden, resume when it comes back
   document.addEventListener('visibilitychange', () => {

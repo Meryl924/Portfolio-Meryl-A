@@ -246,7 +246,9 @@ window.I18N_DATA = {
 "Click to flip": "Cliquer pour retourner",
 "Role": "Rôle",
 "Period": "Période",
-"Duration": "Durée"
+"Duration": "Durée",
+"Enter with sound": "Entrer avec le son",
+"Enter without sound": "Entrer sans le son"
 },
 "es": {
 "UX Designer & Digital Innovation Strategy Consultant": "Diseño UX y consultoría en estrategia de innovación digital",
@@ -494,7 +496,9 @@ window.I18N_DATA = {
 "Click to flip": "Clic para girar",
 "Role": "Rol",
 "Period": "Periodo",
-"Duration": "Duración"
+"Duration": "Duración",
+"Enter with sound": "Entrar con sonido",
+"Enter without sound": "Entrar sin sonido"
 },
 "ru": {
 "UX Designer & Digital Innovation Strategy Consultant": "UX-дизайн и консалтинг по стратегии цифровых инноваций",
@@ -742,6 +746,8 @@ window.I18N_DATA = {
 "Click to flip": "Нажмите, чтобы перевернуть",
 "Role": "Роль",
 "Period": "Период",
-"Duration": "Срок"
+"Duration": "Срок",
+"Enter with sound": "Войти со звуком",
+"Enter without sound": "Войти без звука"
 }
 };
