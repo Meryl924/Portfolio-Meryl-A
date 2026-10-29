@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="loading">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -535,8 +535,179 @@
     footer { border-radius: 28px 28px 0 0; }
   }
 </style>
+<style id="immersive-css">
+/* =====================================================================
+   Immersive skin: dark scene, glass surfaces, pill menu, loader.
+   The WebGL canvas sits behind everything (z-index 0). If it cannot run,
+   the dark gradient below still gives a finished page.
+   ===================================================================== */
+:root {
+  --ink: #f4f7ff;
+  --text: #cfd9f2;
+  --muted: #92a2c9;
+  --navy: #9cbcff;
+  --blue: #7195ff;
+  --bg: #050a1c;
+  --soft: rgba(255,255,255,.055);
+  --soft-2: rgba(255,255,255,.10);
+  --line: rgba(255,255,255,.13);
+  --shadow: 0 10px 40px rgba(0,0,0,.35);
+  --shadow-lg: 0 24px 60px rgba(0,0,0,.45);
+  --mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+  --serif: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Georgia, serif;
+}
+html { color-scheme: dark; }
+body {
+  background:
+    radial-gradient(70% 55% at 80% 8%, rgba(56,102,241,.28), transparent 70%),
+    radial-gradient(60% 50% at 10% 90%, rgba(229,56,59,.10), transparent 70%),
+    linear-gradient(180deg, #060c24 0%, #050a1c 55%, #04081a 100%);
+  background-attachment: fixed;
+}
+::selection { background: rgba(113,149,255,.45); color: #fff; }
+#scene { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; display: block; opacity: 0; transition: opacity 1.6s ease .2s; }
+html.scene-on #scene { opacity: 1; }
+main, footer { position: relative; z-index: 1; }
+
+/* Surfaces that were white are now glass */
+.case, .exp-card, .acc-item.open, .form-card, .badge, .next-proj, .arrows button, .burger, .btn-ghost, .contact-list .ico, .acc-icon {
+  background: rgba(255,255,255,.06);
+  -webkit-backdrop-filter: blur(18px) saturate(1.3); backdrop-filter: blur(18px) saturate(1.3);
+  border-color: rgba(255,255,255,.14);
+}
+.case, .exp-card, .form-card, .next-proj { border: 1px solid rgba(255,255,255,.14); box-shadow: 0 30px 80px rgba(0,0,0,.35); }
+.acc-item { background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.09); }
+.acc-item.open { box-shadow: none; }
+.acc-icon { color: #fff; box-shadow: none; border: 1px solid rgba(255,255,255,.16); }
+.arrows button { color: #fff; box-shadow: none; border: 1px solid rgba(255,255,255,.16); }
+.btn-ghost { background: rgba(255,255,255,.06); color: #fff; border: 1px solid rgba(255,255,255,.22); box-shadow: none; }
+.btn-white { color: #0b1f4f; }
+.badge { color: #dbe6ff; box-shadow: none; }
+.contact-list .ico { color: #cfe0ff; }
+.next-proj { background: linear-gradient(160deg, rgba(255,255,255,.07), rgba(113,149,255,.08)); }
+.tile-list { border-top-color: rgba(255,255,255,.14); }
+.form-card input:focus, .form-card textarea:focus, .form-card select:focus { background: rgba(255,255,255,.1); }
+.form-card option { background: #0b1430; color: #fff; }
+.proc-steps ul li::before { background: #060c24; }
+.proc-video, .gallery figure { box-shadow: 0 24px 60px rgba(0,0,0,.4); }
+.hero::before { background: radial-gradient(closest-side, rgba(101,172,255,.16), rgba(56,102,241,.06) 55%, transparent 75%); }
+.cursor-light { background: radial-gradient(closest-side, rgba(113,149,255,.18), rgba(101,172,255,.06) 55%, transparent 75%); mix-blend-mode: screen; }
+.nf { background: radial-gradient(60% 60% at 75% 45%, rgba(56,102,241,.25), transparent 70%); }
+
+/* Light components keep their own palette (they sit on dark as bright "screens") */
+.stage, .chip, .skip, .win, .scard, .stag {
+  --ink: #0b1f4f; --text: #1c2a4a; --muted: #5b6475; --navy: #013b9a; --blue: #3866f1;
+  --soft: #f4f7fe; --soft-2: #eaf0fe; --line: #e3e8f4;
+}
+.chip { background: rgba(255,255,255,.96); }
+
+/* Type */
+.grad-text { background: linear-gradient(180deg, #ffffff 25%, #a9c3ff 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.split, .split.grad-text { background: none; -webkit-text-fill-color: currentColor; color: #fff; }
+.h-xl { font-size: clamp(42px, 6vw, 88px); line-height: 1.02; letter-spacing: -.035em; font-weight: 500; }
+.h-lg { font-size: clamp(34px, 4.6vw, 66px); line-height: 1.04; letter-spacing: -.03em; }
+.h-md .accent, .h-lg .accent { color: var(--navy); }
+.lead { color: #aebbd9; }
+.eyebrow { font-family: var(--mono); font-size: 12px; letter-spacing: .14em; color: #bcd0ff; }
+.eyebrow::before { width: 7px; height: 7px; box-shadow: 0 0 14px 2px rgba(229,56,59,.7); }
+.case-body .eyebrow, .proc-head .eyebrow, .exp-card .eyebrow { color: #9cbcff; }
+.tile .tile-num, .proc-steps .num { font-family: var(--mono); color: #9cbcff; }
+em, .serif { font-family: var(--serif); font-style: italic; font-weight: 400; letter-spacing: -.01em; }
+section { padding-top: 150px; }
+#work { padding-top: 90px; }
+
+/* Hero: the particle logo glows behind the portrait */
+.hero { padding: 150px 0 120px; min-height: 100vh; display: flex; align-items: center; }
+.hero .wrap { width: 100%; }
+.hero-visual .rings { border-color: rgba(156,188,255,.22); }
+.hero-visual .rings::before, .hero-visual .rings::after { border-color: rgba(156,188,255,.16); }
+.portrait { box-shadow: 0 40px 100px rgba(0,0,0,.5), 0 0 0 1px rgba(255,255,255,.14); }
+
+/* Stats band, footer: translucent so the scene shows through */
+.band { background: linear-gradient(135deg, rgba(19,49,127,.55), rgba(42,90,216,.22)); -webkit-backdrop-filter: blur(22px); backdrop-filter: blur(22px); border: 1px solid rgba(255,255,255,.14); }
+footer { background: linear-gradient(180deg, rgba(5,10,28,.35), rgba(5,10,28,.88)); -webkit-backdrop-filter: blur(24px); backdrop-filter: blur(24px); border-top: 1px solid rgba(255,255,255,.12); }
+footer { padding-bottom: 104px; }
+.foot-bottom { font-family: var(--mono); font-size: 12px; letter-spacing: .04em; }
+
+/* ---------- Pill menu (bottom centre, like a floating dock) ---------- */
+.nav { inset: auto 0 22px 0; pointer-events: none; z-index: 70; }
+.nav.scrolled, .nav.open { background: none; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
+.nav .wrap {
+  width: fit-content; max-width: calc(100% - 24px); margin: 0 auto; height: 58px; padding: 0 8px 0 18px; gap: 26px; pointer-events: auto;
+  border-radius: 999px; background: rgba(12,22,58,.58); border: 1px solid rgba(255,255,255,.16);
+  -webkit-backdrop-filter: blur(22px) saturate(1.5); backdrop-filter: blur(22px) saturate(1.5);
+  box-shadow: 0 18px 50px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.12);
+  transition: transform 500ms var(--ease-out), opacity 400ms ease;
+}
+html.loading .nav .wrap { transform: translateY(120px); opacity: 0; }
+.nav .logo { width: 30px; overflow: hidden; flex: none; }
+.nav .logo-svg { height: 30px; width: auto; max-width: none; flex: none; }
+.logo-svg path[fill="#0B1F4F"] { fill: #fff; }
+.logo-svg path[fill="#3866F1"] { fill: #7a9bff; }
+.nav-links { gap: 6px; font-family: var(--mono); font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: #fff; }
+.nav-links a { padding: 10px 14px; border-radius: 999px; transition: background 200ms ease; }
+.nav-links a::after { display: none; }
+.nav-links a:hover, .nav-links a.active { background: rgba(255,255,255,.12); }
+.nav .btn { height: 42px; padding: 0 20px; font-size: 13px; }
+.mobile-menu { background: rgba(10,18,48,.92); -webkit-backdrop-filter: blur(24px); backdrop-filter: blur(24px); border: 1px solid rgba(255,255,255,.14); }
+.mobile-menu .btn { color: #fff; }
+.scroll-bar { height: 2px; }
+
+/* ---------- Loader ---------- */
+.loader { position: fixed; inset: 0; z-index: 200; display: flex; flex-direction: column; justify-content: space-between; padding: 26px clamp(18px, 3vw, 40px); color: #e9efff; font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
+  background: radial-gradient(60% 50% at 50% 45%, #0d1a4a 0%, #050a1c 70%); transition: transform 1100ms cubic-bezier(.76, 0, .24, 1); }
+.loader.done { transform: translateY(-100%); }
+.loader.gone { display: none; }
+.ld-top, .ld-bot { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; }
+.ld-mid { display: grid; justify-items: center; gap: 22px; text-align: center; }
+.ld-mark { width: 74px; height: 70px; }
+.ld-mark path:nth-child(-n+2) { fill: #fff; }
+.ld-mark path:nth-child(2) { fill: #7a9bff; }
+.ld-mid p { max-width: 320px; line-height: 1.7; opacity: .8; }
+.ld-num { font-size: 15px; color: #9cbcff; min-width: 4ch; }
+.ld-bar { position: relative; flex: 1; height: 1px; background: rgba(255,255,255,.16); overflow: hidden; }
+.ld-bar u { position: absolute; inset: 0; background: linear-gradient(90deg, #3866f1, #9cbcff); transform-origin: left; transform: scaleX(var(--ld, 0)); }
+html.loading { overflow: hidden; }
+html.loading .hero-in { animation-play-state: paused; }
+.hero-copy-drift { will-change: transform; }
+
+/* Word reveal reads well on dark */
+.split .pt .wi, .split .w > .pt { -webkit-text-fill-color: var(--red); }
+
+/* Reading comfort over moving particles */
+.lead, .case-body p, .tile p, .acc-body p { text-shadow: 0 1px 12px rgba(5,10,28,.65); }
+
+@media (max-width: 1080px) {
+  .nav .wrap { gap: 14px; padding: 0 8px 0 16px; }
+  .nav .logo { width: 28px; }
+  .burger { display: flex; margin-left: 4px; }
+  .mobile-menu { top: auto; bottom: 94px; left: 14px; right: 14px; transform-origin: bottom center; transform: translateY(8px) scale(.97); }
+  .nav.open + .mobile-menu { transform: none; }
+  .mobile-menu a { color: #fff; }
+  .mobile-menu a:not(.btn):hover { background: rgba(255,255,255,.08); }
+  .hero { min-height: 0; padding-top: 120px; }
+}
+@media (max-width: 760px) {
+  section { padding-top: 96px; }
+  .nav { bottom: 14px; }
+  .nav .wrap { height: 54px; }
+  .loader { padding: 20px 16px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .loader { transition: opacity 300ms ease; }
+  .loader.done { transform: none; opacity: 0; }
+  #scene { transition: none; }
+}
+</style>
+<noscript><style>.loader{display:none}html.loading{overflow:auto}html.loading .nav .wrap{transform:none;opacity:1}#scene{display:none}</style></noscript>
 </head>
 <body>
+<canvas id="scene" aria-hidden="true"></canvas>
+<div class="loader" id="loader" aria-hidden="true">
+  <div class="ld-top"><span>Meryl Agnikpe</span><span>Portfolio 2026</span></div>
+  <div class="ld-mid"><p>UX Designer &amp; Digital Innovation Strategy Consultant</p></div>
+  <div class="ld-bot"><span>Experience is loading</span><i class="ld-bar"><u></u></i><b class="ld-num" id="ldNum">000%</b></div>
+</div>
 <div class="scroll-bar" id="scrollBar" aria-hidden="true"></div>
 <div class="cursor-light" id="cursorLight" aria-hidden="true"></div>
 
@@ -1404,5 +1575,6 @@ document.getElementById('contactForm').addEventListener('submit', e => {
 syncFromUrl();
 observe(document.querySelector('footer'));
 </script>
+<script src="assets/immersive.js"></script>
 </body>
 </html>
