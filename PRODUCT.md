@@ -12,7 +12,7 @@ Primary: recruiters and hiring managers at agencies, studios and product compani
 Secondary (not the priority): prospective freelance clients. The current copy is largely written for them (see Open decisions).
 
 ## Product Purpose
-A personal portfolio for Meryl Agnikpe, Web & UI/UX Designer. It exists to get Meryl hired: show selected work, prove experience across companies, and make contact effortless. Success means a recruiter understands her level and range within a minute and reaches out (email, phone or LinkedIn).
+A personal portfolio for Meryl Agnikpe, UX Designer & Digital Innovation Strategy Consultant. It exists to get Meryl hired: show selected work, prove experience across companies, and make contact effortless. Success means a recruiter understands her level and range within a minute and reaches out (email, phone or LinkedIn).
 
 ## Positioning
 - **End-to-end designer.** Brand identity, UI/UX and the website itself, delivered by one person (logo and guidelines → interface → shipped site).
@@ -26,7 +26,7 @@ A personal portfolio for Meryl Agnikpe, Web & UI/UX Designer. It exists to get M
 
 ## Capabilities and Constraints
 - Single-page static HTML/CSS/JS site with hash routes: home, project detail (`#/project/<slug>`), contact. No build step, no backend.
-- Hosted on GitHub Pages: https://meryl924.github.io/Portfolio-Meryl-A/ (repo Meryl924/Portfolio-Meryl-A, branch main). `site-github/` is the deploy clone; edits are made in `portfolio-v2/` then copied over.
+- Main address (Render, static site, auto-deploys from main): https://portfolio-meryl.onrender.com/ . GitHub Pages stays as a mirror: https://meryl924.github.io/Portfolio-Meryl-A/ (repo Meryl924/Portfolio-Meryl-A, branch main). `site-github/` is the deploy clone; edits are made in `portfolio-v2/` then copied over.
 - The contact form opens the visitor's email app (mailto); nothing is stored or sent by the site.
 - Tools: Figma, Framer, Spline 3D. Services offered: website design, UI/UX design, logo & branding, no-code development.
 - Language: English only for now.
@@ -37,7 +37,7 @@ A personal portfolio for Meryl Agnikpe, Web & UI/UX Designer. It exists to get M
 
 ## Brand Commitments
 - Name: Meryl Agnikpe, signed "MERYL A." with an "M" mark.
-- Title: "Web & UI/UX Designer".
+- Title: "UX Designer & Digital Innovation Strategy Consultant".
 - Voice: warm, direct, first person ("I help…", "Let's work together").
 
 ## Evidence on Hand
