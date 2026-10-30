@@ -1,0 +1,15 @@
+# Render Blueprint: publishes this repository as a static site (no build step).
+# New > Blueprint on https://dashboard.render.com, pick this repository, then Apply.
+services:
+  - type: web
+    name: portfolio-meryl
+    runtime: static
+    staticPublishPath: .
+    pullRequestPreviewsEnabled: false
+    headers:
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff
+      - path: /assets/*
+        name: Cache-Control
+        value: public, max-age=3600
