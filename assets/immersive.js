@@ -218,6 +218,7 @@
       if (currentPageName() === 'contact') return [[document.querySelector('.page.active'), 'sphere']];
       if (currentPageName() === 'project') return [[document.querySelector('.page.active'), 'screen']];
       if (currentPageName() === 'notfound') return [[document.querySelector('.page.active'), 'question']];
+      if (currentPageName() === 'eva') return [[document.querySelector('.page.active'), 'bulb']];
       const bandSec = document.querySelector('.band')?.closest('section');
       return [
         [document.querySelector('.hero'), 'logo'],
