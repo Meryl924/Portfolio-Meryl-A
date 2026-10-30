@@ -307,7 +307,8 @@ window.I18N_DATA = {
 "The comics are written in French.": "Les BD sont écrites en français.",
 "Eva explains the prototype, slide 1 of 5": "Eva explique le prototype, diapositive 1 sur 5",
 "Like Eva? Let’s talk about your project": "Eva vous plaît ? Parlons de votre projet",
-"She is part of the way I explain things. I would be glad to do the same for your brand.": "Elle fait partie de ma façon d’expliquer les choses. Je serais ravi de faire de même pour votre marque."
+"She is part of the way I explain things. I would be glad to do the same for your brand.": "Elle fait partie de ma façon d’expliquer les choses. Je serais ravi de faire de même pour votre marque.",
+"Meet Eva": "Rencontrer Eva"
 },
 "es": {
 "UX Designer & Digital Innovation Strategy Consultant": "Diseño UX y consultoría en estrategia de innovación digital",
@@ -616,7 +617,8 @@ window.I18N_DATA = {
 "The comics are written in French.": "Los cómics están escritos en francés.",
 "Eva explains the prototype, slide 1 of 5": "Eva explica el prototipo, diapositiva 1 de 5",
 "Like Eva? Let’s talk about your project": "¿Te gusta Eva? Hablemos de tu proyecto",
-"She is part of the way I explain things. I would be glad to do the same for your brand.": "Es parte de mi forma de explicar las cosas. Me encantaría hacer lo mismo por tu marca."
+"She is part of the way I explain things. I would be glad to do the same for your brand.": "Es parte de mi forma de explicar las cosas. Me encantaría hacer lo mismo por tu marca.",
+"Meet Eva": "Conocer a Eva"
 },
 "ru": {
 "UX Designer & Digital Innovation Strategy Consultant": "UX-дизайн и консалтинг по стратегии цифровых инноваций",
@@ -925,6 +927,7 @@ window.I18N_DATA = {
 "The comics are written in French.": "Комиксы написаны на французском.",
 "Eva explains the prototype, slide 1 of 5": "Эва объясняет прототип, слайд 1 из 5",
 "Like Eva? Let’s talk about your project": "Нравится Эва? Давайте обсудим ваш проект",
-"She is part of the way I explain things. I would be glad to do the same for your brand.": "Она часть моего способа объяснять вещи. Буду рад сделать то же самое для вашего бренда."
+"She is part of the way I explain things. I would be glad to do the same for your brand.": "Она часть моего способа объяснять вещи. Буду рад сделать то же самое для вашего бренда.",
+"Meet Eva": "Познакомиться с Эвой"
 }
 };

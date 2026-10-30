@@ -1008,6 +1008,32 @@ html[data-theme="dark"] .ev-tag { background: rgba(255,255,255,.95); }
 @media (max-width: 760px) { .ev-hero { padding-top: 110px; } .ev-sec { padding-top: 84px; } .ev-dl { grid-template-columns: 1fr; } .ev-poses { grid-template-columns: repeat(2, 1fr); } .ev-poses li { height: 290px; } .ev-poses img { height: 200px; } .ev-taste-head { flex-direction: column; align-items: start; } .ev-tag.t1 { left: 0; } .ev-tag.t2 { right: 0; } }
 @media (prefers-reduced-motion: reduce) { .ev-big, .ev-tag { animation: none; } }
 </style>
+<style id="eva-btn-css">
+/* ---------- Special Eva button: her face, blinking, antenna wobbling ---------- */
+.nav-links a.nav-eva, .mobile-menu a.nav-eva { display: inline-flex; align-items: center; gap: 9px; padding: 5px 15px 5px 6px; border-radius: 999px; color: #fff; background: linear-gradient(135deg, #4a7bff, #2f56d8); box-shadow: 0 8px 20px rgba(56,102,241,.38), inset 0 1px 0 rgba(255,255,255,.35); position: relative; transition: transform 220ms var(--ease-out), box-shadow 220ms ease; }
+.nav-eva .eva-face { width: 30px; height: 33px; flex: none; margin: -7px 0 -3px; color: #fff; overflow: visible; filter: drop-shadow(0 3px 4px rgba(11,31,79,.28)); }
+.nav-eva .eva-face .ef-eyes ellipse { fill: #3866f1; } .nav-eva .eva-face .ef-eyes circle { fill: #0b1f4f; }
+.nav-eva .eva-face path[stroke="#fff"] { stroke: #3866f1; }
+.nav-eva .eva-face g.ef-eyes { transform-box: fill-box; transform-origin: 50% 55%; animation: ef-blink 5.2s infinite; }
+.nav-eva .eva-face g.ef-ant { transform-box: fill-box; transform-origin: 20% 100%; animation: ef-ant 3.4s ease-in-out infinite; }
+.nav-eva .eva-face .ef-p { transition: transform 200ms var(--ease-out); }
+@keyframes ef-blink { 0%, 93%, 100% { transform: scaleY(1); } 96% { transform: scaleY(.1); } }
+@keyframes ef-ant { 0%, 100% { transform: rotate(-5deg); } 50% { transform: rotate(7deg); } }
+.nav-eva::before { content: ""; position: absolute; right: 6px; top: -3px; width: 9px; height: 9px; border-radius: 50%; background: var(--red); box-shadow: 0 0 0 3px rgba(255,255,255,.9); animation: ef-ping 2.6s ease-out infinite; }
+@keyframes ef-ping { 0% { box-shadow: 0 0 0 0 rgba(229,56,59,.6), 0 0 0 3px rgba(255,255,255,.9); } 70%, 100% { box-shadow: 0 0 0 10px rgba(229,56,59,0), 0 0 0 3px rgba(255,255,255,.9); } }
+.nav-links a.nav-eva span { font-family: var(--mono); font-size: 12px; letter-spacing: .1em; text-transform: uppercase; font-weight: 700; }
+.nav-links a.nav-eva:hover, .nav-links a.nav-eva.active, .mobile-menu a.nav-eva:hover { background: linear-gradient(135deg, #4a7bff, #2f56d8); transform: translateY(-2px); box-shadow: 0 12px 26px rgba(56,102,241,.5), inset 0 1px 0 rgba(255,255,255,.35); }
+.nav-links a.nav-eva.active { box-shadow: 0 0 0 3px rgba(56,102,241,.25), 0 12px 26px rgba(56,102,241,.5); }
+.nav-eva:hover .ef-p { transform: translate(1.4px, -.6px); }
+.nav-eva:hover .eva-face { animation: ef-hop 600ms var(--ease-out); }
+@keyframes ef-hop { 40% { transform: translateY(-4px) rotate(-6deg); } }
+.mobile-menu a.nav-eva { justify-self: start; margin: 4px 0 2px 8px; font-size: 15px; }
+.mobile-menu a.nav-eva span { font-size: 13px; letter-spacing: .06em; text-transform: none; }
+html[data-theme="dark"] .nav-links a.nav-eva, html[data-theme="dark"] .mobile-menu a.nav-eva { background: linear-gradient(135deg, #6f93ff, #4a6fe0); color: #fff; }
+html[data-theme="dark"] .nav-eva::before { box-shadow: 0 0 0 3px #0c163a; }
+@media (max-width: 1080px) { .nav-eva::before { right: 4px; } }
+@media (prefers-reduced-motion: reduce) { .nav-eva .eva-face g, .nav-eva::before { animation: none; } .nav-eva:hover .eva-face { animation: none; } }
+</style>
 </head>
 <body>
 <canvas id="scene" aria-hidden="true"></canvas>
@@ -1034,7 +1060,7 @@ html[data-theme="dark"] .ev-tag { background: rgba(255,255,255,.95); }
       <a href="#/experience">Experience</a>
       <a href="#/services">Services</a>
       <a href="#/faq">FAQ</a>
-      <a href="#/eva">Eva</a>
+      <a href="#/eva" class="nav-eva" aria-label="Eva"><svg class="eva-face" viewBox="0 0 44 48" aria-hidden="true"><g class="ef-ant"><path d="M25 14L28 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/><circle cx="28.5" cy="3.6" r="3" fill="#e5383b"/></g><path d="M10 17L13 6l4 8 4-9 3 9 4-7 2 10z" fill="currentColor"/><path d="M7 21a5 5 0 0 1 5-5h20a5 5 0 0 1 5 5v14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2z" fill="currentColor"/><g class="ef-eyes"><ellipse cx="16.5" cy="26" rx="4" ry="4.6" fill="#fff"/><ellipse cx="27.5" cy="26" rx="4" ry="4.6" fill="#fff"/><circle class="ef-p" cx="16.8" cy="26.4" r="2" fill="#0b1f4f"/><circle class="ef-p" cx="27.8" cy="26.4" r="2" fill="#0b1f4f"/></g><path d="M19 33.2q3 2.2 6 0" stroke="#fff" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg><span>Eva</span></a>
     </nav>
     <div class="nav-tools">
       <div class="lang">
@@ -1060,7 +1086,7 @@ html[data-theme="dark"] .ev-tag { background: rgba(255,255,255,.95); }
   <a href="#/experience">Experience</a>
   <a href="#/services">Services</a>
   <a href="#/faq">FAQ</a>
-  <a href="#/eva">Eva</a>
+  <a href="#/eva" class="nav-eva" aria-label="Eva"><svg class="eva-face" viewBox="0 0 44 48" aria-hidden="true"><g class="ef-ant"><path d="M25 14L28 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/><circle cx="28.5" cy="3.6" r="3" fill="#e5383b"/></g><path d="M10 17L13 6l4 8 4-9 3 9 4-7 2 10z" fill="currentColor"/><path d="M7 21a5 5 0 0 1 5-5h20a5 5 0 0 1 5 5v14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2z" fill="currentColor"/><g class="ef-eyes"><ellipse cx="16.5" cy="26" rx="4" ry="4.6" fill="#fff"/><ellipse cx="27.5" cy="26" rx="4" ry="4.6" fill="#fff"/><circle class="ef-p" cx="16.8" cy="26.4" r="2" fill="#0b1f4f"/><circle class="ef-p" cx="27.8" cy="26.4" r="2" fill="#0b1f4f"/></g><path d="M19 33.2q3 2.2 6 0" stroke="#fff" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg><span>Meet Eva</span></a>
   <a href="#/contact" class="btn btn-grad">Start a project</a>
 </nav>
 
@@ -1440,7 +1466,7 @@ html[data-theme="dark"] .ev-tag { background: rgba(255,255,255,.95); }
         <a href="#/experience">Experience</a>
         <a href="#/services">Services</a>
         <a href="#/faq">FAQ</a>
-        <a href="#/eva">Eva</a>
+        <a href="#/eva" class="foot-eva-link">Eva</a>
         <a href="#/contact">Contact</a>
       </nav>
       <div class="foot-col">
