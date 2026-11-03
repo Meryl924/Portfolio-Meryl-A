@@ -167,16 +167,25 @@
     geo.setAttribute('aA', aA); geo.setAttribute('aB', aB); geo.setAttribute('aR', new THREE.BufferAttribute(rnd, 3));
     const mat = new THREE.ShaderMaterial({
       transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
-      uniforms: { uMix: { value: 1 }, uTime: { value: 0 }, uPx: { value: 1 }, uAlpha: { value: 1 }, uLight: { value: 0 } },
+      uniforms: { uMix: { value: 1 }, uTime: { value: 0 }, uPx: { value: 1 }, uAlpha: { value: 1 }, uLight: { value: 0 },
+        uMouse: { value: new THREE.Vector3(99, 99, 99) }, uMR: { value: 0 }, uPulse: { value: new THREE.Vector4(0, 0, 0, 99) }, uVel: { value: 0 } },
       vertexShader: `
         attribute vec4 aA; attribute vec4 aB; attribute vec3 aR;
-        uniform float uMix, uTime, uPx, uLight;
+        uniform float uMix, uTime, uPx, uLight, uMR, uVel; uniform vec3 uMouse; uniform vec4 uPulse;
         varying vec3 vCol; varying float vA;
         void main(){
           float m = smoothstep(aR.x * .45, aR.x * .45 + .55, uMix);
           vec3 p = mix(aA.xyz, aB.xyz, m);
           float arc = sin(3.14159 * m);
           p += normalize(vec3(aR.y - .5, aR.z - .5, aR.x - .5) + 1e-3) * arc * 2.6;
+          // the cloud parts around the pointer, ripples out from a click, and stretches with scroll speed
+          vec2 dm = p.xy - uMouse.xy; float dl = length(dm);
+          float rep = exp(-dl * dl * .5) * uMR;
+          p.xy += dm / (dl + .001) * rep * 1.1; p.z += rep * (aR.z - .5) * 2.2;
+          vec2 dp = p.xy - uPulse.xy; float pd = length(dp);
+          float wv = sin(pd * 4.5 - uPulse.w * 8.) * exp(-uPulse.w * 1.4) * exp(-pd * .3);
+          p.xy += dp / (pd + .001) * wv * .55; p.z += wv * .9;
+          p.y += (aR.x - .5) * uVel * 2.2; p.x += sin(p.y * 2. + uTime) * abs(uVel) * .12;
           p += .05 * vec3(sin(uTime * .8 + aR.x * 40.), cos(uTime * .7 + aR.y * 40.), sin(uTime * .6 + aR.z * 40.));
           vec4 mv = modelViewMatrix * vec4(p, 1.);
           gl_Position = projectionMatrix * mv;
@@ -263,6 +272,17 @@
     addEventListener('scroll', () => { sy = scrollY; }, { passive: true });
     addEventListener('hashchange', () => setTimeout(() => morph(pick()), 60));
 
+    /* pointer, click and scroll speed feed the shader */
+    const _v = new THREE.Vector3(), _w = new THREE.Vector3(), local = new THREE.Vector3(99, 99, 99);
+    let ptX = -1, ptY = -1, lastMove = -99, pAge = 99, lastSy = scrollY, velS = 0, mouseish = false;
+    const toLocal = (cx, cy) => {
+      _v.set(cx / innerWidth * 2 - 1, -(cy / innerHeight * 2 - 1), .5).unproject(camera);
+      _v.sub(camera.position).normalize();
+      _w.copy(camera.position).addScaledVector(_v, -camera.position.z / _v.z);
+      return group.worldToLocal(_w);
+    };
+    addEventListener('pointermove', e => { ptX = e.clientX; ptY = e.clientY; lastMove = clock.elapsedTime; mouseish = e.pointerType === 'mouse'; }, { passive: true });
+    addEventListener('pointerdown', e => { if (reduce.matches) return; group.updateMatrixWorld(true); const p = toLocal(e.clientX, e.clientY); mat.uniforms.uPulse.value.set(p.x, p.y, p.z, 0); pAge = 0; }, { passive: true });
     function resize() {
       const w = innerWidth, h = innerHeight, dpr = Math.min(devicePixelRatio || 1, small.matches ? 1.5 : 1.75);
       renderer.setPixelRatio(dpr); renderer.setSize(w, h, false);
@@ -293,6 +313,13 @@
       mat.uniforms.uAlpha.value += (want - mat.uniforms.uAlpha.value) * .06;
       dustPts.position.y = (ssy * .004) % 6;
       dustPts.rotation.y = t * .01;
+      group.updateMatrixWorld(true);
+      const idle = t - lastMove, wantR = mouseish && idle < 2.6 && ptX >= 0 ? 1 : 0;
+      mat.uniforms.uMR.value += (wantR - mat.uniforms.uMR.value) * .08;
+      if (ptX >= 0) mat.uniforms.uMouse.value.copy(toLocal(ptX, ptY));
+      pAge += dt; mat.uniforms.uPulse.value.w = pAge;
+      const rawV = dt > 0 ? (sy - lastSy) / (dt * 1000) : 0; lastSy = sy;
+      velS += (rawV * .35 - velS) * .12; mat.uniforms.uVel.value = Math.max(-1.2, Math.min(1.2, velS));
       renderer.render(scene, camera);
     }
     if (reduce.matches) { mixV = 1; resize(); morph(pick()); mixV = 1; aA.array.set(aB.array); renderer.render(scene, camera); addEventListener('scroll', () => { morph(pick()); mixV = 1; renderer.render(scene, camera); }); }

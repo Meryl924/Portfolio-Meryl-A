@@ -1,0 +1,45 @@
+/* Scroll story: chapter rail, scroll-driven hero, chapter numerals and section entrances.
+   Everything here is progressive: no JS, reduced motion or a phone leaves the page exactly as it was. */
+
+/* Chapter rail (desktop only) */
+.story-rail { position: fixed; right: clamp(12px, 1.8vw, 30px); top: 50%; translate: 0 -50%; z-index: 40; display: none; flex-direction: column; gap: 6px; align-items: flex-end; }
+.story-rail.on { display: flex; }
+.sr-track { position: absolute; right: 4px; top: 8px; bottom: 8px; width: 2px; border-radius: 2px; background: rgba(56,102,241,.18); }
+.sr-fill { position: absolute; inset: 0; border-radius: inherit; background: linear-gradient(#3866f1, #e5383b); transform-origin: top; transform: scaleY(var(--sp, 0)); }
+.sr-dot { position: relative; display: flex; align-items: center; gap: 12px; padding: 7px 0 7px 10px; border: 0; background: none; cursor: pointer; font: 600 11px/1 var(--mono, ui-monospace, Menlo, monospace); letter-spacing: .12em; text-transform: uppercase; color: var(--ink); }
+.sr-dot span { opacity: 0; translate: 8px 0; transition: opacity 240ms ease, translate 240ms var(--ease-out, ease); white-space: nowrap; }
+.sr-dot i { width: 10px; height: 10px; border-radius: 50%; margin-right: 0; background: var(--bg, #fff); border: 2px solid rgba(56,102,241,.45); transition: transform 260ms var(--ease-out, ease), background 260ms ease, border-color 260ms ease; z-index: 1; }
+.sr-dot:hover span, .sr-dot:focus-visible span, .sr-dot[aria-current="true"] span { opacity: 1; translate: 0 0; }
+.sr-dot[aria-current="true"] i { background: var(--blue, #3866f1); border-color: var(--blue, #3866f1); transform: scale(1.5); }
+.sr-dot.past i { border-color: var(--blue, #3866f1); }
+.sr-dot:focus-visible { outline: 2px solid var(--blue, #3866f1); outline-offset: 2px; border-radius: 8px; }
+@media (max-width: 1100px) { .story-rail { display: none !important; } }
+
+/* Scroll-driven hero: the name swells and dissolves, the portrait leans in, the copy lifts away */
+.hx { --hp: 0; }
+.hx-name { scale: calc(1 + var(--hp) * .34); opacity: calc(1 - var(--hp) * .9); filter: blur(calc(var(--hp) * 12px)); transform-origin: 50% 50%; }
+.hx-fig { scale: calc(1 + var(--hp) * .16); transform-origin: 50% 100%; filter: blur(calc(var(--hp) * 3px)); }
+.hx-copy { translate: 0 calc(var(--hp) * -60px); opacity: calc(1 - var(--hp) * 1.6); }
+.hx-lead, .hx-bdsw { opacity: calc(.78 - var(--hp) * 1.2); }
+.hx .chip, .hx .hero-eva { scale: calc(1 + var(--hp) * .25); opacity: calc(1 - var(--hp) * 1.1); }
+
+/* Chapter numerals behind each section title */
+section.chapter > .wrap { position: relative; }
+.ch-num { position: absolute; right: 0; top: -.28em; z-index: 0; pointer-events: none; user-select: none; font-weight: 800; font-size: clamp(120px, 19vw, 300px); line-height: 1; letter-spacing: -.05em;
+  color: transparent; -webkit-text-stroke: 1.5px rgba(56,102,241,.22); translate: 0 calc(var(--np, 0) * -90px); opacity: var(--no, 0); }
+html[data-theme="dark"] .ch-num { -webkit-text-stroke-color: rgba(156,188,255,.22); }
+section.chapter > .wrap > *:not(.ch-num) { position: relative; z-index: 1; }
+
+/* A thin light sweep when a chapter opens */
+.ch-sweep { position: fixed; inset: 0; z-index: 30; pointer-events: none; opacity: 0; background: linear-gradient(100deg, transparent 30%, rgba(56,102,241,.14) 50%, transparent 70%); background-size: 260% 100%; }
+.ch-sweep.go { animation: chSweep 900ms var(--ease-out, ease-out); }
+@keyframes chSweep { 0% { opacity: 0; background-position: 130% 0; } 20% { opacity: 1; } 100% { opacity: 0; background-position: -30% 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .hx-name, .hx-fig, .hx-copy, .hx-lead, .hx-bdsw, .hx .chip, .hx .hero-eva { scale: none; opacity: revert; filter: none; translate: revert; }
+  .ch-num, .ch-sweep { display: none; }
+}
+@media (max-width: 760px) {
+  .hx-name, .hx-fig { filter: none; }
+  .ch-num { font-size: 36vw; opacity: .5; }
+}
