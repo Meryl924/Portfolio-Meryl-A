@@ -3,6 +3,7 @@
    logo's red point as its moon, shooting stars, and constellations that draw themselves around the pointer.
    Dark theme: the full sky. Light theme: a pale daytime version in the brand blue. */
 (() => {
+  const CALM = true; // a quiet starfield only: no nebulae, planet, constellations or shooting stars
   const reduce = matchMedia('(prefers-reduced-motion: reduce)');
   const small = matchMedia('(max-width: 760px)');
   const cv = document.createElement('canvas');
@@ -16,7 +17,7 @@
   let mx = 0, my = 0, smx = 0, smy = 0, px = -999, py = -999, pTouch = 0, sy = scrollY, ssy = scrollY;
   let shoot = null, nextShoot = 2.5, t0 = performance.now(), last = 0;
 
-  const LAYERS = [{ n: 260, depth: .12, size: [.6, 1.2], a: [.4, .8] }, { n: 130, depth: .3, size: [1, 1.9], a: [.55, 1] }, { n: 50, depth: .62, size: [1.5, 3], a: [.75, 1] }];
+  const LAYERS = [{ n: 110, depth: .12, size: [.6, 1.2], a: [.4, .8] }, { n: 45, depth: .3, size: [1, 1.9], a: [.55, 1] }, { n: 12, depth: .62, size: [1.5, 3], a: [.75, 1] }];
   function seed() {
     const k = small.matches ? .45 : 1;
     stars = [];
@@ -51,9 +52,9 @@
   function draw(t) {
     g.clearRect(0, 0, W, H);
     // nebulae drift slowly against the scroll
-    if (neb) { g.globalAlpha = dark ? .95 : .85; const ox = smx * -14, oy = -ssy * .03 % (H * .1) + smy * -10; g.drawImage(neb, -20 + ox, -20 + oy, W + 40, H + 40); g.globalAlpha = 1; }
+    if (neb && !CALM) { g.globalAlpha = dark ? .32 : .22; const ox = smx * -14, oy = -ssy * .03 % (H * .1) + smy * -10; g.drawImage(neb, -20 + ox, -20 + oy, W + 40, H + 40); g.globalAlpha = 1; }
     // planet and its moon, far away in the lower right
-    planet(t);
+    if (!CALM) { g.globalAlpha = .45; planet(t); g.globalAlpha = 1; }
     // stars
     const near = [];
     for (const s of stars) {
@@ -68,7 +69,7 @@
       if (s.l === 2) near.push(x, y);
     }
     // constellations around the pointer
-    if (!reduce.matches && px > -900) {
+    if (!CALM && !reduce.matches && px > -900) {
       const R = 190, pts = [];
       for (let i = 0; i < near.length; i += 2) { const d = Math.hypot(near[i] - px, near[i + 1] - py); if (d < R) pts.push([near[i], near[i + 1], 1 - d / R]); }
       for (let i = 0; i < pts.length; i++) for (let j = i + 1; j < pts.length; j++) {
@@ -117,7 +118,7 @@
     if (small.matches && now - last < 33) return;
     last = now;
     smx += (mx - smx) * .05; smy += (my - smy) * .05; ssy += (sy - ssy) * .08;
-    if (!shoot && t > nextShoot) { const ang = rnd(.25, .6), len = rnd(260, 420), dir = Math.random() < .5 ? 1 : -1; shoot = { t, d: rnd(.7, 1.1), x: rnd(W * .15, W * .85), y: rnd(0, H * .4), dx: Math.cos(ang) * len * dir, dy: Math.sin(ang) * len }; nextShoot = t + rnd(5, 10); }
+    if (!shoot && t > nextShoot) { const ang = rnd(.25, .6), len = rnd(260, 420), dir = Math.random() < .5 ? 1 : -1; if (!CALM) shoot = { t, d: rnd(.7, 1.1), x: rnd(W * .15, W * .85), y: rnd(0, H * .4), dx: Math.cos(ang) * len * dir, dy: Math.sin(ang) * len }; nextShoot = t + rnd(5, 10); }
     draw(t);
   }
   addEventListener('pointermove', e => { mx = e.clientX / innerWidth - .5; my = e.clientY / innerHeight - .5; if (e.pointerType === 'mouse') { px = e.clientX; py = e.clientY; } }, { passive: true });

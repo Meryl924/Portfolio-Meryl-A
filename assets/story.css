@@ -43,3 +43,6 @@ section.chapter > .wrap > *:not(.ch-num) { position: relative; z-index: 1; }
   .hx-name, .hx-fig { filter: none; }
   .ch-num { font-size: 36vw; opacity: .5; }
 }
+
+/* Calmer page: no giant chapter numerals, no floating tool cards on the hero */
+.ch-num, .hx .chip { display: none !important; }
