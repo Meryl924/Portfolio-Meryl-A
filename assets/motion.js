@@ -11,21 +11,28 @@
   // Load a preview only when it is close to the screen, play it while it is visible
   const io = new IntersectionObserver(entries => {
     entries.forEach(e => {
-      const v = e.target.querySelector('video');
+      const v = e.target.querySelector('video'); if (!v) return;
       if (e.isIntersecting) {
         if (!v.src && v.dataset.src) { v.src = v.dataset.src; v.load(); }
         if (!reduce.matches) { const p = v.play(); if (p && p.catch) p.catch(() => {}); }
       } else if (v.src) v.pause();
     });
   }, { rootMargin: '120px 0px', threshold: 0.25 });
-  cards.forEach(c => io.observe(c));
+  cards.filter(c => c.querySelector('video')).forEach(c => io.observe(c));
 
   function open(card) {
     opener = card;
-    const src = card.querySelector('video').dataset.src;
-    player.src = src;
+    const isImg = !!card.dataset.img;
+    dlg.classList.toggle('is-img', isImg);
+    cap.textContent = card.querySelector('.mo-cap strong').textContent + ' · ' + card.querySelector('.mo-cap small').textContent;   // what the visitor reads, already translated
+    if (isImg) {
+      const img = document.getElementById('moImg');
+      img.src = card.dataset.img; img.alt = card.dataset.title;
+      if (dlg.showModal) dlg.showModal(); else dlg.setAttribute('open', '');
+      return;
+    }
+    player.src = card.querySelector('video').dataset.src;
     player.poster = card.querySelector('video').poster || '';
-    cap.textContent = card.dataset.title + ' · ' + card.dataset.meta;
     // Pause the site's background music while a video with sound plays
     musicWasOn = !!(document.getElementById('musicBtn') && document.getElementById('musicBtn').classList.contains('on'));
     if (musicWasOn && window.SiteMusic) window.SiteMusic.set(false);
@@ -34,6 +41,7 @@
   }
   function close() {
     player.pause(); player.removeAttribute('src'); player.load();
+    document.getElementById('moImg').removeAttribute('src');
     if (dlg.open) dlg.close();
     if (musicWasOn && window.SiteMusic) window.SiteMusic.set(true);
     musicWasOn = false;

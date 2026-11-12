@@ -862,17 +862,24 @@ html[data-theme="dark"] .pcard-go { background: #fff; color: #0b1f4f; }
 @media (prefers-reduced-motion: reduce) { .pcard-in { transform: none; filter: none; } }
 </style>
 <style id="filters-css">
-.work-filters { display: flex; flex-wrap: wrap; gap: 10px; margin: 0 0 28px; }
-.wf { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 999px; font: inherit; font-size: 14px; font-weight: 500; color: var(--ink); background: #fff; border: 1px solid rgba(56,102,241,.18); cursor: pointer; text-decoration: none; transition: background .2s, color .2s, border-color .2s, transform .15s; }
-.wf i { font-style: normal; font-size: 12px; opacity: .6; }
-.wf:hover { background: rgba(56,102,241,.1); }
+.work-filters-wrap { margin: 0 0 34px; }
+.wf-label { font-size: 13px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+.work-filters { display: flex; flex-wrap: wrap; gap: 12px; }
+.wf { --g: #3866f1; display: inline-flex; align-items: center; gap: 10px; padding: 14px 22px; border-radius: 999px; font: inherit; font-size: 16px; font-weight: 600; color: var(--ink); background: #fff; border: 2px solid color-mix(in srgb, var(--g) 35%, transparent); cursor: pointer; text-decoration: none; box-shadow: 0 8px 24px rgba(11,31,79,.08); transition: background .2s, color .2s, border-color .2s, transform .15s, box-shadow .2s; }
+.wf::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--g); flex: none; }
+.wf i { font-style: normal; font-size: 13px; font-weight: 600; min-width: 22px; text-align: center; padding: 2px 7px; border-radius: 999px; background: color-mix(in srgb, var(--g) 14%, transparent); }
+.wf:hover { border-color: var(--g); transform: translateY(-2px); box-shadow: 0 12px 28px rgba(11,31,79,.14); }
 .wf:active { transform: scale(.97); }
-.wf[aria-pressed="true"] { background: var(--ink); color: #fff; border-color: var(--ink); }
-.wf:focus-visible { outline: 3px solid var(--blue, #3866f1); outline-offset: 2px; }
-.wf-link svg { width: 14px; height: 14px; }
-html[data-theme="dark"] .wf { color: #fff; background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.2); }
-html[data-theme="dark"] .wf:hover { background: rgba(255,255,255,.16); }
-html[data-theme="dark"] .wf[aria-pressed="true"] { background: #7195ff; color: #0b1f4f; border-color: #7195ff; }
+.wf[aria-pressed="true"] { background: var(--g); border-color: var(--g); color: #fff; }
+.wf[aria-pressed="true"]::before { background: #fff; }
+.wf[aria-pressed="true"] i { background: rgba(255,255,255,.25); }
+.wf:focus-visible { outline: 3px solid var(--blue, #3866f1); outline-offset: 3px; }
+.wf-link svg { width: 16px; height: 16px; }
+html[data-theme="dark"] .wf { color: #fff; background: rgba(255,255,255,.06); box-shadow: none; }
+html[data-theme="dark"] .wf[aria-pressed="true"] { color: #fff; }
+@media (max-width: 560px) { .wf { padding: 11px 16px; font-size: 15px; } .work-filters { gap: 8px; } }
+.pcard-tag { background: color-mix(in srgb, var(--g, #3866f1) 14%, transparent) !important; color: var(--ink); border: 1px solid color-mix(in srgb, var(--g, #3866f1) 45%, transparent); padding: 5px 12px !important; font-weight: 600 !important; }
+html[data-theme="dark"] .pcard-tag { color: #fff; }
 .pcard[hidden] { display: none; }
 </style>
 <style id="motion-css">
@@ -911,6 +918,15 @@ html[data-theme="dark"] .wf[aria-pressed="true"] { background: #7195ff; color: #
   .mo-grid.g-ars .tall { grid-column: 1 / span 2; grid-row: auto; aspect-ratio: 9 / 12; }
 }
 @media (max-width: 560px) { .mo-grid.g-std { grid-template-columns: 1fr; } }
+.mo-grid.g-mm { grid-template-columns: repeat(2, minmax(0, 420px)); justify-content: start; gap: 18px; }
+.mo-grid.g-mm .mo-card { aspect-ratio: 2 / 3; }
+.mo-card > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .6s cubic-bezier(.2,.7,.2,1); background: #fefaf0; }
+@media (hover: hover) { .mo-card:hover > img { transform: scale(1.03); } }
+@media (max-width: 700px) { .mo-grid.g-mm { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 480px) { .mo-grid.g-mm { grid-template-columns: 1fr; } }
+.mo-dlg img#moImg { max-width: 100%; max-height: 82vh; width: auto; border-radius: 12px; background: #fefaf0; display: none; }
+.mo-dlg.is-img img#moImg { display: block; }
+.mo-dlg.is-img video { display: none; }
 @media (prefers-reduced-motion: reduce) { .mo-card video { transition: none; } }
 </style>
 <style id="music-css">
@@ -1190,7 +1206,7 @@ html[data-theme="dark"] .nav-eva::before { box-shadow: 0 0 0 3px #0c163a; }
         </div>
         <p class="work-count reveal d2" aria-hidden="true"><b>0001</b> — <span>0005</span></p>
       </div>
-      <div class="work-filters reveal d2" id="workFilters" role="group" aria-label="Filter projects"></div>
+      <div class="work-filters-wrap reveal d2"><p class="wf-label">Browse by category</p><div class="work-filters" id="workFilters" role="group" aria-label="Filter projects"></div></div>
       <div class="pstack" id="track"></div>
     </div>
   </section>
@@ -1503,6 +1519,28 @@ html[data-theme="dark"] .nav-eva::before { box-shadow: 0 0 0 3px #0c163a; }
       </div>
     </div>
   </section>
+  <section class="mo-sec" aria-labelledby="mo-mm">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <p class="eyebrow">Character design</p>
+        <div><h2 class="h-lg" id="mo-mm">Mister M</h2><p class="lead" style="margin-top:14px">An original cartoon narrator: a know-it-all in a stained lab coat who loves explaining the world, always followed by his lab rat. The model sheet and one finished episode.</p></div>
+      </div>
+      <div class="mo-grid g-mm reveal d1">
+      <button type="button" class="mo-card" data-img="assets/motion/mm-sheet.jpg" data-title="Mister M model sheet" data-meta="Views, action pose, palette and companion" aria-label="View: Mister M model sheet">
+        <img src="assets/motion/mm-sheet.jpg" alt="" loading="lazy" width="1024" height="1536">
+        <span class="mo-badge">Character design</span>
+        <span class="mo-cap"><strong>Mister M model sheet</strong><small>Views, action pose, palette and companion</small></span>
+        <span class="mo-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></span>
+      </button>
+      <button type="button" class="mo-card" data-mo="mm-episode" data-title="Why you can’t run in your dreams" data-meta="Episode 3 · 0:51" data-ratio="9/16" aria-label="Watch: Why you can’t run in your dreams">
+        <video muted loop playsinline preload="none" poster="assets/motion/mm-episode.jpg" data-src="assets/motion/mm-episode.mp4" aria-hidden="true"></video>
+        <span class="mo-badge">Cartoon</span>
+        <span class="mo-cap"><strong>Why you can’t run in your dreams</strong><small>Episode 3 · 0:51</small></span>
+        <span class="mo-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg></span>
+      </button>
+      </div>
+    </div>
+  </section>
   <section class="mo-sec" aria-labelledby="mo-brand">
     <div class="wrap">
       <div class="sec-head reveal">
@@ -1575,6 +1613,7 @@ html[data-theme="dark"] .nav-eva::before { box-shadow: 0 0 0 3px #0c163a; }
     <div class="mo-dlg-in">
       <button type="button" class="mo-x" id="moClose" aria-label="Close video"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
       <video id="moVideo" controls playsinline preload="metadata"></video>
+      <img id="moImg" alt="">
       <p class="mo-dlg-cap" id="moCap"></p>
     </div>
   </dialog>
@@ -1678,7 +1717,7 @@ const PROJECTS = [
     gallery: ['fosso-1.png', 'fosso-2.png', 'fosso-3.png', 'fosso-4.png']
   },
   {
-    group: 'Workshop', slug: 'situated-ai', title: 'Situated AI Workshop', accent: 'AI Workshop',
+    group: 'Co-design', slug: 'situated-ai', title: 'Situated AI Workshop', accent: 'AI Workshop',
     category: 'Co-design workshop · Situated AI', client: 'Africa Design School', year: '2026',
     cover: 'ia-situee-1.jpg', layout: ['full', '', '', 'full', '', '', 'full', '', '', 'full', '', ''],
     desc: 'A co-creation workshop on situated AI for Benin’s market-garden farmers, prepared for the Master International Design Strategy 2026 to 2027 at Africa Design School. The question: how could AI help Beninese farmers predict when crops are ripe, given local soils, climate change and the farmers’ own digital skills? Between 20 and 30% of the annual harvest is lost, and judging ripeness by eye varies from one farmer to the next. The session ran in four steps: introduction and icebreakers, a brainwriting round (19 min) to list the cues farmers rely on, an energizer, then a “Yes, and” round (28 min) to define the key features, and a first prototype proposal. I worked on it with Rayanath ABDOU and Gloria DAGBA.',
@@ -1918,12 +1957,14 @@ let requestStack = () => {};
 (() => {
   const box = document.getElementById('workFilters');
   if (!box) return;
-  const ORDER = ['Product & AI', 'Web design', 'Brand identity', 'Workshop'];
+  const ORDER = ['Product & AI', 'Web design', 'Brand identity', 'Co-design'];
   const groups = [...new Set(PROJECTS.map(p => p.group))].sort((a, b) => ORDER.indexOf(a) - ORDER.indexOf(b));
   const count = g => g === 'all' ? PROJECTS.length : PROJECTS.filter(p => p.group === g).length;
+  const GCOL = { all: '#0b1f4f', 'Product & AI': '#6d3fd1', 'Web design': '#3866f1', 'Brand identity': '#2f9e57', 'Co-design': '#e8912d' };
   box.innerHTML = ['all', ...groups].map((g, i) =>
-    `<button type="button" class="wf" data-f="${esc(g)}" aria-pressed="${i === 0}">${g === 'all' ? 'All' : esc(g)} <i>${count(g)}</i></button>`).join('')
-    + `<a class="wf wf-link" href="#/motion">Motion ${arrow}</a>`;
+    `<button type="button" class="wf" data-f="${esc(g)}" style="--g:${GCOL[g] || '#3866f1'}" aria-pressed="${i === 0}">${g === 'all' ? 'All' : esc(g)} <i>${count(g)}</i></button>`).join('')
+    + `<a class="wf wf-link" href="#/motion" style="--g:#e5383b">Motion ${arrow}</a>`;
+  workCards.forEach((c, i) => c.style.setProperty('--g', GCOL[PROJECTS[i].group] || '#3866f1'));
   const wc = document.querySelector('.work-count');
   function apply(g) {
     let n = 0;
