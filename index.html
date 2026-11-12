@@ -861,6 +861,58 @@ html[data-theme="dark"] .pcard-go { background: #fff; color: #0b1f4f; }
 }
 @media (prefers-reduced-motion: reduce) { .pcard-in { transform: none; filter: none; } }
 </style>
+<style id="filters-css">
+.work-filters { display: flex; flex-wrap: wrap; gap: 10px; margin: 0 0 28px; }
+.wf { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 999px; font: inherit; font-size: 14px; font-weight: 500; color: var(--ink); background: #fff; border: 1px solid rgba(56,102,241,.18); cursor: pointer; text-decoration: none; transition: background .2s, color .2s, border-color .2s, transform .15s; }
+.wf i { font-style: normal; font-size: 12px; opacity: .6; }
+.wf:hover { background: rgba(56,102,241,.1); }
+.wf:active { transform: scale(.97); }
+.wf[aria-pressed="true"] { background: var(--ink); color: #fff; border-color: var(--ink); }
+.wf:focus-visible { outline: 3px solid var(--blue, #3866f1); outline-offset: 2px; }
+.wf-link svg { width: 14px; height: 14px; }
+html[data-theme="dark"] .wf { color: #fff; background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.2); }
+html[data-theme="dark"] .wf:hover { background: rgba(255,255,255,.16); }
+html[data-theme="dark"] .wf[aria-pressed="true"] { background: #7195ff; color: #0b1f4f; border-color: #7195ff; }
+.pcard[hidden] { display: none; }
+</style>
+<style id="motion-css">
+.mo-hero { padding: 150px 0 40px; }
+.mo-hero .h-xl { margin-bottom: 22px; }
+.mo-hero .lead { max-width: 640px; }
+.mo-sec { padding: 56px 0 24px; }
+.mo-grid { display: grid; gap: 18px; }
+.mo-grid.g-ars { grid-template-columns: repeat(3, 1fr); }
+.mo-grid.g-ars .wide { grid-column: span 2; }
+.mo-grid.g-ars .tall { grid-column: 3; grid-row: 1 / span 2; }
+.mo-grid.g-std { grid-template-columns: repeat(3, 1fr); }
+.mo-card { position: relative; display: block; width: 100%; padding: 0; border: 0; border-radius: 20px; overflow: hidden; cursor: pointer; background: #0b1430; aspect-ratio: 16 / 9; text-align: left; color: #fff; font: inherit; box-shadow: 0 20px 50px rgba(11,31,79,.18); isolation: isolate; }
+.mo-grid.g-ars .tall { aspect-ratio: auto; }
+.mo-card video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .6s cubic-bezier(.2,.7,.2,1); }
+.mo-card::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(5,10,28,0) 45%, rgba(5,10,28,.78) 100%); z-index: 1; pointer-events: none; }
+.mo-cap { position: absolute; left: 18px; right: 18px; bottom: 16px; z-index: 2; display: grid; gap: 3px; }
+.mo-cap strong { font-size: 17px; font-weight: 600; letter-spacing: -.01em; }
+.mo-cap small { font-size: 13px; opacity: .8; }
+.mo-badge { position: absolute; top: 14px; left: 14px; z-index: 2; font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; padding: 6px 10px; border-radius: 999px; background: rgba(255,255,255,.92); color: #0b1f4f; }
+.mo-play { position: absolute; top: 14px; right: 14px; z-index: 2; width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; background: rgba(255,255,255,.18); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,.35); }
+.mo-play svg { width: 16px; height: 16px; margin-left: 2px; }
+.mo-card:focus-visible { outline: 3px solid var(--blue, #3866f1); outline-offset: 3px; }
+@media (hover: hover) { .mo-card:hover video { transform: scale(1.04); } .mo-card:hover .mo-play { background: #3866f1; border-color: transparent; } }
+.mo-dlg { border: 0; padding: 0; background: transparent; max-width: min(1100px, 94vw); width: 100%; margin: auto; overflow: visible; }
+.mo-dlg::backdrop { background: rgba(3,7,20,.82); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+.mo-dlg-in { position: relative; display: grid; gap: 12px; justify-items: center; }
+.mo-dlg video { width: 100%; max-height: 80vh; border-radius: 16px; background: #000; }
+.mo-dlg-cap { color: #fff; font-size: 15px; text-align: center; }
+.mo-x { position: absolute; top: -48px; right: 0; width: 40px; height: 40px; border-radius: 50%; border: 1px solid rgba(255,255,255,.4); background: rgba(255,255,255,.1); color: #fff; cursor: pointer; display: grid; place-items: center; }
+.mo-x svg { width: 18px; height: 18px; }
+@media (max-width: 900px) {
+  .mo-hero { padding-top: 120px; }
+  .mo-grid.g-ars, .mo-grid.g-std { grid-template-columns: 1fr 1fr; }
+  .mo-grid.g-ars .wide { grid-column: span 2; }
+  .mo-grid.g-ars .tall { grid-column: 1 / span 2; grid-row: auto; aspect-ratio: 9 / 12; }
+}
+@media (max-width: 560px) { .mo-grid.g-std { grid-template-columns: 1fr; } }
+@media (prefers-reduced-motion: reduce) { .mo-card video { transition: none; } }
+</style>
 <style id="music-css">
 .music-btn { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 999px; color: var(--ink); border: 1px solid rgba(56,102,241,.18); background: rgba(255,255,255,.5); transition: background 200ms ease, transform 160ms var(--ease-out); }
 .music-btn:hover { background: rgba(56,102,241,.14); }
@@ -1062,6 +1114,7 @@ html[data-theme="dark"] .nav-eva::before { box-shadow: 0 0 0 3px #0c163a; }
     <a href="#/" class="logo" aria-label="Meryl Agnikpe, home"><svg class="logo-svg" viewBox="26 30 900 196" aria-hidden="true"><g><path d="M57.21 46.70L30.21 196.70Q29.98 197.96 30.00 199.24Q30.03 200.52 30.30 201.77Q30.57 203.02 31.08 204.19Q31.59 205.37 32.32 206.42Q33.06 207.47 33.98 208.36Q34.90 209.25 35.98 209.94Q37.05 210.63 38.25 211.10Q39.44 211.57 40.70 211.79Q41.96 212.02 43.24 212.00Q44.52 211.97 45.77 211.70Q47.02 211.43 48.19 210.92Q49.37 210.41 50.42 209.68Q51.47 208.94 52.36 208.02Q53.25 207.10 53.94 206.02Q54.63 204.95 55.10 203.75Q55.57 202.56 55.79 201.30L82.79 51.30Q83.25 48.76 82.70 46.23Q82.15 43.70 80.68 41.58Q79.20 39.46 77.02 38.06Q74.85 36.66 72.30 36.21Q71.04 35.98 69.76 36.00Q68.48 36.03 67.23 36.30Q65.98 36.57 64.81 37.08Q63.63 37.59 62.58 38.32Q61.53 39.06 60.64 39.98Q59.75 40.90 59.06 41.98Q58.37 43.05 57.90 44.25Q57.43 45.44 57.21 46.70ZM140.17 74.70L118.21 196.70Q117.98 197.96 118.00 199.24Q118.03 200.52 118.30 201.77Q118.57 203.02 119.08 204.19Q119.59 205.37 120.32 206.42Q121.06 207.47 121.98 208.36Q122.90 209.25 123.98 209.94Q125.05 210.63 126.25 211.10Q127.44 211.57 128.70 211.79Q129.96 212.02 131.24 212.00Q132.52 211.97 133.77 211.70Q135.02 211.43 136.19 210.92Q137.37 210.41 138.42 209.68Q139.47 208.94 140.36 208.02Q141.25 207.10 141.94 206.02Q142.63 204.95 143.10 203.75Q143.57 202.56 143.79 201.30L165.75 79.30Q165.98 78.04 165.96 76.76Q165.93 75.48 165.66 74.23Q165.39 72.98 164.88 71.81Q164.37 70.63 163.64 69.58Q162.90 68.53 161.98 67.64Q161.06 66.75 159.98 66.06Q158.91 65.37 157.71 64.90Q156.52 64.43 155.26 64.21Q152.72 63.75 150.19 64.30Q147.66 64.85 145.54 66.32Q143.42 67.80 142.02 69.98Q140.62 72.15 140.17 74.70Z" fill="#0B1F4F"/><path d="M87.89 120.70L74.21 196.70Q73.98 197.96 74.00 199.24Q74.03 200.52 74.30 201.77Q74.57 203.02 75.08 204.19Q75.59 205.37 76.32 206.42Q77.06 207.47 77.98 208.36Q78.90 209.25 79.98 209.94Q81.05 210.63 82.25 211.10Q83.44 211.57 84.70 211.79Q85.96 212.02 87.24 212.00Q88.52 211.97 89.77 211.70Q91.02 211.43 92.19 210.92Q93.37 210.41 94.42 209.68Q95.47 208.94 96.36 208.02Q97.25 207.10 97.94 206.02Q98.63 204.95 99.10 203.75Q99.57 202.56 99.79 201.30L113.47 125.30Q113.93 122.76 113.38 120.23Q112.83 117.70 111.36 115.58Q109.88 113.46 107.70 112.06Q105.53 110.66 102.98 110.21Q100.44 109.75 97.91 110.30Q95.38 110.85 93.26 112.32Q91.14 113.80 89.74 115.98Q88.34 118.15 87.89 120.70ZM173.73 132.70L162.21 196.70Q161.98 197.96 162.00 199.24Q162.03 200.52 162.30 201.77Q162.57 203.02 163.08 204.19Q163.59 205.37 164.32 206.42Q165.06 207.47 165.98 208.36Q166.90 209.25 167.98 209.94Q169.05 210.63 170.25 211.10Q171.44 211.57 172.70 211.79Q173.96 212.02 175.24 212.00Q176.52 211.97 177.77 211.70Q179.02 211.43 180.19 210.92Q181.37 210.41 182.42 209.68Q183.47 208.94 184.36 208.02Q185.25 207.10 185.94 206.02Q186.63 204.95 187.10 203.75Q187.57 202.56 187.79 201.30L199.31 137.30Q199.54 136.04 199.52 134.76Q199.49 133.48 199.22 132.23Q198.95 130.98 198.44 129.81Q197.93 128.63 197.20 127.58Q196.46 126.53 195.54 125.64Q194.62 124.75 193.54 124.06Q192.47 123.37 191.27 122.90Q190.08 122.43 188.82 122.21Q186.28 121.75 183.75 122.30Q181.22 122.85 179.10 124.32Q176.98 125.80 175.58 127.98Q174.18 130.15 173.73 132.70Z" fill="#3866F1"/><path d="M226.00 199.00Q226.00 201.59 225.01 203.97Q224.02 206.36 222.19 208.19Q220.36 210.02 217.97 211.01Q215.59 212.00 213.00 212.00Q210.41 212.00 208.03 211.01Q205.64 210.02 203.81 208.19Q201.98 206.36 200.99 203.97Q200.00 201.59 200.00 199.00Q200.00 196.41 200.99 194.03Q201.98 191.64 203.81 189.81Q205.64 187.98 208.03 186.99Q210.41 186.00 213.00 186.00Q215.59 186.00 217.97 186.99Q220.36 187.98 222.19 189.81Q224.02 191.64 225.01 194.03Q226.00 196.41 226.00 199.00Z" fill="#E5383B"/></g><g transform="translate(270 160.8)"><path d="M37.419921875 0.0 16.92431640625 -56.47802734375H16.5537109375Q16.7109375 -54.63623046875 16.862548828125 -51.721923828125Q17.01416015625 -48.8076171875 17.12646484375 -45.421630859375Q17.23876953125 -42.03564453125 17.23876953125 -38.767578125V0.0H8.8046875V-65.67578125H22.0341796875L41.51904296875 -12.1513671875H41.822265625L61.77880859375 -65.67578125H74.94091796875V0.0H66.03515625V-39.306640625Q66.03515625 -42.271484375 66.130615234375 -45.489013671875Q66.22607421875 -48.70654296875 66.3720703125 -51.5927734375Q66.51806640625 -54.47900390625 66.6416015625 -56.38818359375H66.27099609375L45.29248046875 0.0ZM110.822265625 -50.39111328125Q117.27978515625 -50.39111328125 121.90673828125 -47.634033203125Q126.53369140625 -44.876953125 129.00439453125 -39.851318359375Q131.47509765625 -34.82568359375 131.47509765625 -27.97509765625V-22.8427734375H97.87353515625Q98.03076171875 -14.8916015625 101.978271484375 -10.663330078125Q105.92578125 -6.43505859375 113.068359375 -6.43505859375Q117.77392578125 -6.43505859375 121.46875 -7.322265625Q125.16357421875 -8.20947265625 129.11669921875 -9.9501953125V-2.380859375Q125.38818359375 -0.673828125 121.6259765625 0.1123046875Q117.86376953125 0.8984375 112.67529296875 0.8984375Q105.46533203125 0.8984375 100.05224609375 -1.970947265625Q94.63916015625 -4.84033203125 91.623779296875 -10.47802734375Q88.6083984375 -16.11572265625 88.6083984375 -24.38134765625Q88.6083984375 -32.5458984375 91.35986328125 -38.37451171875Q94.111328125 -44.203125 99.103271484375 -47.297119140625Q104.09521484375 -50.39111328125 110.822265625 -50.39111328125ZM110.77734375 -43.3720703125Q105.296875 -43.3720703125 101.978271484375 -39.80078125Q98.65966796875 -36.2294921875 98.05322265625 -29.603515625H122.40087890625Q122.35595703125 -33.6689453125 121.09814453125 -36.774169921875Q119.84033203125 -39.87939453125 117.296630859375 -41.625732421875Q114.7529296875 -43.3720703125 110.77734375 -43.3720703125ZM167.54736328125 -50.39111328125Q168.91748046875 -50.39111328125 170.472900390625 -50.2451171875Q172.0283203125 -50.09912109375 173.18505859375 -49.85205078125L172.21923828125 -41.45166015625Q171.14111328125 -41.74365234375 169.720458984375 -41.906494140625Q168.2998046875 -42.0693359375 167.09814453125 -42.0693359375Q164.2119140625 -42.0693359375 161.61767578125 -41.008056640625Q159.0234375 -39.94677734375 157.046875 -37.90283203125Q155.0703125 -35.85888671875 153.941650390625 -32.9052734375Q152.81298828125 -29.95166015625 152.81298828125 -26.20068359375V0.0H143.76123046875V-49.4814453125H151.0048828125L152.11669921875 -40.564453125H152.52099609375Q154.037109375 -43.259765625 156.210205078125 -45.49462890625Q158.38330078125 -47.7294921875 161.23583984375 -49.060302734375Q164.08837890625 -50.39111328125 167.54736328125 -50.39111328125ZM174.7685546875 -49.4814453125H184.5166015625L195.03955078125 -20.98974609375Q195.859375 -18.76611328125 196.54443359375 -16.682861328125Q197.2294921875 -14.599609375 197.75732421875 -12.6455078125Q198.28515625 -10.69140625 198.58837890625 -8.8046875H198.8916015625Q199.4306640625 -11.095703125 200.424560546875 -14.369384765625Q201.41845703125 -17.64306640625 202.60888671875 -21.0234375L212.64892578125 -49.4814453125H222.35205078125L200.96923828125 7.0302734375Q199.2060546875 11.73583984375 196.729736328125 15.133056640625Q194.25341796875 18.5302734375 190.822509765625 20.332763671875Q187.3916015625 22.13525390625 182.75341796875 22.13525390625Q180.5859375 22.13525390625 178.9462890625 21.88818359375Q177.306640625 21.64111328125 176.12744140625 21.337890625V14.13916015625Q177.1044921875 14.36376953125 178.525146484375 14.54345703125Q179.94580078125 14.72314453125 181.484375 14.72314453125Q184.2919921875 14.72314453125 186.341552734375 13.628173828125Q188.39111328125 12.533203125 189.85107421875 10.506103515625Q191.31103515625 8.47900390625 192.32177734375 5.78369140625L194.54541015625 -0.0224609375ZM239.10791015625 0.0H230.05615234375V-69.8984375H239.10791015625Z" fill="#0B1F4F"/><path transform="translate(270.7 0)" d="M41.684804687500005 0.0 37.589726562500005 -13.444218750000001H16.9984375L12.903359375 0.0H0.0L19.934531250000003 -56.71296875H34.576367187500004L54.588164062500006 0.0ZM34.7308984375 -23.488750000000003 30.6358203125 -36.623906250000005Q30.249492187500003 -37.937421875000005 29.61205078125 -40.004277343750005Q28.974609375 -42.071132812500004 28.337167968750002 -44.21525390625Q27.6997265625 -46.359375 27.313398437500002 -47.943320312500006Q26.927070312500003 -46.359375 26.250996093750004 -44.02208984375Q25.574921875 -41.684804687500005 24.956796875000002 -39.5986328125Q24.338671875000003 -37.5124609375 24.0682421875 -36.623906250000005L20.011796875 -23.488750000000003ZM87.8850125 -31.717539062500002H110.29204375V-2.4338671875Q105.84927031250001 -0.9658203125 101.05880156250001 -0.09658203124999998Q96.2683328125 0.77265625 90.20298125000001 0.77265625Q81.781028125 0.77265625 75.90884062500001 -2.5497656250000005Q70.036653125 -5.872187500000001 66.9846609375 -12.3625Q63.932668750000005 -18.852812500000002 63.932668750000005 -28.317851562500003Q63.932668750000005 -37.2033984375 67.35167265625 -43.6937109375Q70.7706765625 -50.1840234375 77.35757109375001 -53.738242187500006Q83.944465625 -57.2924609375 93.4481375 -57.2924609375Q97.92954375000001 -57.2924609375 102.2950515625 -56.326640625Q106.660559375 -55.3608203125 110.21477812500001 -53.8155078125L106.23559843750002 -44.234570312500004Q103.6472 -45.548085937500005 100.324778125 -46.436640625Q97.00235625 -47.3251953125 93.370871875 -47.3251953125Q88.1554421875 -47.3251953125 84.31147734375 -44.9299609375Q80.4675125 -42.534726562500005 78.36202421875001 -38.22716796875Q76.2565359375 -33.919609375 76.2565359375 -28.086054687500003Q76.2565359375 -22.5615625 77.76321562500002 -18.29263671875Q79.26989531250001 -14.0237109375 82.5150515625 -11.60916015625Q85.7602078125 -9.194609375 90.9756375 -9.194609375Q93.525403125 -9.194609375 95.28319609375 -9.445722656250002Q97.04098906250002 -9.696835937500001 98.58630156250001 -9.967265625000001V-21.750273437500002H87.8850125ZM178.5902203125 0.0H163.36889218750002L138.79842343750002 -42.727890625H138.450728125Q138.605259375 -40.0622265625 138.7211578125 -37.357929687500004Q138.83705625000002 -34.6536328125 138.9529546875 -31.96865234375Q139.068853125 -29.283671875000003 139.1847515625 -26.579375000000002V0.0H128.4834625V-56.481171875H143.5888921875L168.12072812500003 -14.1782421875H168.3911578125Q168.31389218750002 -16.805273437500002 168.19799375000002 -19.393671875000003Q168.0820953125 -21.982070312500003 167.98551328125 -24.570468750000003Q167.88893125 -27.1588671875 167.81166562500002 -29.747265625V-56.481171875H178.5902203125ZM197.55429531250005 0.0V-56.481171875H209.53046718750005V0.0ZM273.9267296875 0.0H260.32797968750003L245.53161250000005 -23.797812500000003L240.47071406250006 -20.166328125V0.0H228.49454218750006V-56.481171875H240.47071406250006V-30.6358203125Q241.66833125000005 -32.29703125 242.82731562500004 -33.958242187500005Q243.98630000000006 -35.619453125 245.18391718750004 -37.2806640625L260.4825109375 -56.481171875H273.77219843750004L254.06946406250006 -31.4857421875ZM303.82389062500005 -56.481171875Q314.75697656250003 -56.481171875 319.7792421875 -51.78728515625Q324.80150781250006 -47.0933984375 324.80150781250006 -38.864609375Q324.80150781250006 -35.155859375 323.6811562500001 -31.77548828125Q322.5608046875001 -28.395117187500002 320.03035546875003 -25.768085937500004Q317.49990625000004 -23.141054687500002 313.28892968750006 -21.61505859375Q309.077953125 -20.0890625 302.89670312500004 -20.0890625H297.75853906250006V0.0H285.78236718750003V-56.481171875ZM303.205765625 -46.6684375H297.75853906250006V-29.901796875000002H301.69908593750006Q305.06014062500003 -29.901796875000002 307.53264062500006 -30.7903515625Q310.0051406250001 -31.67890625 311.35728906250006 -33.5719140625Q312.70943750000004 -35.464921875 312.70943750000004 -38.439648437500004Q312.70943750000004 -42.6119921875 310.39146875000006 -44.64021484375Q308.0735000000001 -46.6684375 303.205765625 -46.6684375ZM372.74019218750004 0.0H340.2113640625V-56.481171875H372.74019218750004V-46.6684375H352.18753593750006V-34.2673046875H371.31077812500007V-24.454570312500003H352.18753593750006V-9.89H372.74019218750004Z" fill="#3866F1"/></g></svg></a>
     <nav class="nav-links" aria-label="Main">
       <a href="#/work">Work</a>
+      <a href="#/motion">Motion</a>
       <a href="#/experience">Experience</a>
       <a href="#/services">Services</a>
       <a href="#/faq">FAQ</a>
@@ -1088,6 +1141,7 @@ html[data-theme="dark"] .nav-eva::before { box-shadow: 0 0 0 3px #0c163a; }
 </header>
 <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile" inert>
   <a href="#/work">Work</a>
+  <a href="#/motion">Motion</a>
   <a href="#/experience">Experience</a>
   <a href="#/services">Services</a>
   <a href="#/faq">FAQ</a>
@@ -1136,6 +1190,7 @@ html[data-theme="dark"] .nav-eva::before { box-shadow: 0 0 0 3px #0c163a; }
         </div>
         <p class="work-count reveal d2" aria-hidden="true"><b>0001</b> — <span>0005</span></p>
       </div>
+      <div class="work-filters reveal d2" id="workFilters" role="group" aria-label="Filter projects"></div>
       <div class="pstack" id="track"></div>
     </div>
   </section>
@@ -1412,6 +1467,119 @@ html[data-theme="dark"] .nav-eva::before { box-shadow: 0 0 0 3px #0c163a; }
 </div>
 
 <!-- ================= CONTACT ================= -->
+<div class="page" data-page="motion">
+  <div class="mo-hero">
+    <div class="wrap">
+      <p class="eyebrow hero-in">Motion design</p>
+      <h1 class="h-xl grad-text hero-in d1" tabindex="-1">Motion<span class="pt">.</span></h1>
+      <p class="lead hero-in d2">Promo videos, logo animations and film ideas I made for brands and for my own projects. Select a video to watch it with sound.</p>
+    </div>
+  </div>
+  <section class="mo-sec" aria-labelledby="mo-ars">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <p class="eyebrow">ARS Expertise</p>
+        <div><h2 class="h-lg" id="mo-ars">Promo videos</h2><p class="lead" style="margin-top:14px">Animated offers for ARS Expertise: creating a company online and tax support, in widescreen and vertical formats.</p></div>
+      </div>
+      <div class="mo-grid g-ars reveal d1">
+      <button type="button" class="mo-card wide" data-mo="ars-creation" data-title="Create your company online" data-meta="ARS Expertise · Promo · 1:01" data-ratio="16/9" aria-label="Watch: Create your company online">
+        <video muted loop playsinline preload="none" poster="assets/motion/ars-creation.jpg" data-src="assets/motion/ars-creation.mp4" aria-hidden="true"></video>
+        <span class="mo-badge">Motion design</span>
+        <span class="mo-cap"><strong>Create your company online</strong><small>ARS Expertise · Promo · 1:01</small></span>
+        <span class="mo-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg></span>
+      </button>
+      <button type="button" class="mo-card tall" data-mo="ars-vertical" data-title="Vertical cut for social" data-meta="ARS Expertise · 9:16 · 1:01" data-ratio="9/16" aria-label="Watch: Vertical cut for social">
+        <video muted loop playsinline preload="none" poster="assets/motion/ars-vertical.jpg" data-src="assets/motion/ars-vertical.mp4" aria-hidden="true"></video>
+        <span class="mo-badge">Motion design</span>
+        <span class="mo-cap"><strong>Vertical cut for social</strong><small>ARS Expertise · 9:16 · 1:01</small></span>
+        <span class="mo-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg></span>
+      </button>
+      <button type="button" class="mo-card wide" data-mo="ars-fiscal" data-title="Tax expert offer" data-meta="ARS Expertise · Promo · 0:54" data-ratio="16/9" aria-label="Watch: Tax expert offer">
+        <video muted loop playsinline preload="none" poster="assets/motion/ars-fiscal.jpg" data-src="assets/motion/ars-fiscal.mp4" aria-hidden="true"></video>
+        <span class="mo-badge">Motion design</span>
+        <span class="mo-cap"><strong>Tax expert offer</strong><small>ARS Expertise · Promo · 0:54</small></span>
+        <span class="mo-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg></span>
+      </button>
+      </div>
+    </div>
+  </section>
+  <section class="mo-sec" aria-labelledby="mo-brand">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <p class="eyebrow">Brand and events</p>
+        <div><h2 class="h-lg" id="mo-brand">Logos, intros and event visuals</h2><p class="lead" style="margin-top:14px">Short pieces built around a name, a logo or an event.</p></div>
+      </div>
+      <div class="mo-grid g-std reveal d1">
+      <button type="button" class="mo-card" data-mo="sprint-kart" data-title="Sprint Kart logo reveal" data-meta="Logo animation · 0:08" data-ratio="16/9" aria-label="Watch: Sprint Kart logo reveal">
+        <video muted loop playsinline preload="none" poster="assets/motion/sprint-kart.jpg" data-src="assets/motion/sprint-kart.mp4" aria-hidden="true"></video>
+        <span class="mo-badge">AI-assisted</span>
+        <span class="mo-cap"><strong>Sprint Kart logo reveal</strong><small>Logo animation · 0:08</small></span>
+        <span class="mo-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg></span>
+      </button>
+      <button type="button" class="mo-card" data-mo="meryl-intro" data-title="Meryl A. intro" data-meta="Personal title animation · 0:10" data-ratio="16/9" aria-label="Watch: Meryl A. intro">
+        <video muted loop playsinline preload="none" poster="assets/motion/meryl-intro.jpg" data-src="assets/motion/meryl-intro.mp4" aria-hidden="true"></video>
+        <span class="mo-badge">Motion design</span>
+        <span class="mo-cap"><strong>Meryl A. intro</strong><small>Personal title animation · 0:10</small></span>
+        <span class="mo-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg></span>
+      </button>
+      <button type="button" class="mo-card" data-mo="chill-vitalor" data-title="Chill &amp; Groove night" data-meta="Event visuals for Vitalor · 0:08" data-ratio="16/9" aria-label="Watch: Chill &amp; Groove night">
+        <video muted loop playsinline preload="none" poster="assets/motion/chill-vitalor.jpg" data-src="assets/motion/chill-vitalor.mp4" aria-hidden="true"></video>
+        <span class="mo-badge">AI-generated</span>
+        <span class="mo-cap"><strong>Chill &amp; Groove night</strong><small>Event visuals for Vitalor · 0:08</small></span>
+        <span class="mo-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg></span>
+      </button>
+      </div>
+    </div>
+  </section>
+  <section class="mo-sec" aria-labelledby="mo-film">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <p class="eyebrow">Film concept</p>
+        <div><h2 class="h-lg" id="mo-film">Parc W</h2><p class="lead" style="margin-top:14px">Scenes for a film idea set around Parc W, generated with Adobe Firefly to test mood, light and pace.</p></div>
+      </div>
+      <div class="mo-grid g-std reveal d1">
+      <button type="button" class="mo-card" data-mo="parcw-1" data-title="Riders at sunset" data-meta="Parc W · Film concept · 0:08" data-ratio="16/9" aria-label="Watch: Riders at sunset">
+        <video muted loop playsinline preload="none" poster="assets/motion/parcw-1.jpg" data-src="assets/motion/parcw-1.mp4" aria-hidden="true"></video>
+        <span class="mo-badge">AI-generated</span>
+        <span class="mo-cap"><strong>Riders at sunset</strong><small>Parc W · Film concept · 0:08</small></span>
+        <span class="mo-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg></span>
+      </button>
+      <button type="button" class="mo-card" data-mo="parcw-2" data-title="The map of Parc W" data-meta="Parc W · Film concept · 0:08" data-ratio="16/9" aria-label="Watch: The map of Parc W">
+        <video muted loop playsinline preload="none" poster="assets/motion/parcw-2.jpg" data-src="assets/motion/parcw-2.mp4" aria-hidden="true"></video>
+        <span class="mo-badge">AI-generated</span>
+        <span class="mo-cap"><strong>The map of Parc W</strong><small>Parc W · Film concept · 0:08</small></span>
+        <span class="mo-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg></span>
+      </button>
+      <button type="button" class="mo-card" data-mo="parcw-3" data-title="Banikoara, 2037" data-meta="Parc W · Film concept · 0:08" data-ratio="16/9" aria-label="Watch: Banikoara, 2037">
+        <video muted loop playsinline preload="none" poster="assets/motion/parcw-3.jpg" data-src="assets/motion/parcw-3.mp4" aria-hidden="true"></video>
+        <span class="mo-badge">AI-generated</span>
+        <span class="mo-cap"><strong>Banikoara, 2037</strong><small>Parc W · Film concept · 0:08</small></span>
+        <span class="mo-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg></span>
+      </button>
+      <button type="button" class="mo-card" data-mo="parcw-4" data-title="The roofless school" data-meta="Parc W · Film concept · 0:08" data-ratio="16/9" aria-label="Watch: The roofless school">
+        <video muted loop playsinline preload="none" poster="assets/motion/parcw-4.jpg" data-src="assets/motion/parcw-4.mp4" aria-hidden="true"></video>
+        <span class="mo-badge">AI-generated</span>
+        <span class="mo-cap"><strong>The roofless school</strong><small>Parc W · Film concept · 0:08</small></span>
+        <span class="mo-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg></span>
+      </button>
+      <button type="button" class="mo-card" data-mo="parcw-5" data-title="The abandoned ambulance" data-meta="Parc W · Film concept · 0:08" data-ratio="16/9" aria-label="Watch: The abandoned ambulance">
+        <video muted loop playsinline preload="none" poster="assets/motion/parcw-5.jpg" data-src="assets/motion/parcw-5.mp4" aria-hidden="true"></video>
+        <span class="mo-badge">AI-generated</span>
+        <span class="mo-cap"><strong>The abandoned ambulance</strong><small>Parc W · Film concept · 0:08</small></span>
+        <span class="mo-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg></span>
+      </button>
+      </div>
+    </div>
+  </section>
+  <dialog class="mo-dlg" id="moDlg" aria-label="Video player">
+    <div class="mo-dlg-in">
+      <button type="button" class="mo-x" id="moClose" aria-label="Close video"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+      <video id="moVideo" controls playsinline preload="metadata"></video>
+      <p class="mo-dlg-cap" id="moCap"></p>
+    </div>
+  </dialog>
+</div>
+
 <div class="page" data-page="contact">
   <div class="contact">
     <div class="wrap">
@@ -1468,6 +1636,7 @@ html[data-theme="dark"] .nav-eva::before { box-shadow: 0 0 0 3px #0c163a; }
       <nav class="foot-col" aria-labelledby="foot-nav">
         <h2 id="foot-nav">Navigation</h2>
         <a href="#/work">Work</a>
+        <a href="#/motion">Motion</a>
         <a href="#/experience">Experience</a>
         <a href="#/services">Services</a>
         <a href="#/faq">FAQ</a>
@@ -1494,14 +1663,14 @@ const IMG = 'assets/img/';
 const VIDEO = 'assets/video/';
 const PROJECTS = [
   {
-    slug: 'lisa', title: 'Lisa AI Assistant', accent: 'AI Assistant',
+    group: 'Product & AI', slug: 'lisa', title: 'Lisa AI Assistant', accent: 'AI Assistant',
     category: 'AI assistant · Product design', client: 'Personal project', year: '2026',
     cover: 'lisa-1.png',
     desc: 'Lisa is a personal AI assistant with a mascot, built as a single web page. She chats, keeps a daily task list, reads photos and files, remembers what matters to the person using her, and can ask a human for help. The interface has a day and a night mode, and the mascot changes mood as the conversation goes.',
     gallery: ['lisa-1.png', 'lisa-2.png', 'lisa-3.png', 'lisa-4.png']
   },
   {
-    slug: 'fosso', title: 'Fosso Septic Monitoring', accent: 'Monitoring',
+    group: 'Product & AI', slug: 'fosso', title: 'Fosso Septic Monitoring', accent: 'Monitoring',
     category: 'Product design · UI/UX', client: 'Africa Design School × FIC', year: '2026',
     cover: 'fosso-1.png', layout: ['full', 'full', 'full', 'full'],
     desc: 'In Greater Cotonou, no household is connected to a sewer: every home relies on a septic tank, often emptied too late. Fosso puts a level sensor in the tank and alerts the household and the SGDS before it overflows. The household pays by mobile money, in one go or in instalments, and the SGDS schedules the emptying within 48 hours. A student concept from the Africa Design School M2 × FIC 2026 workshop: a presentation site, a household app and a supervision dashboard.',
@@ -1509,7 +1678,15 @@ const PROJECTS = [
     gallery: ['fosso-1.png', 'fosso-2.png', 'fosso-3.png', 'fosso-4.png']
   },
   {
-    slug: 'sodeco', title: 'SODECO Website', accent: 'Website',
+    group: 'Workshop', slug: 'situated-ai', title: 'Situated AI Workshop', accent: 'AI Workshop',
+    category: 'Co-design workshop · Situated AI', client: 'Africa Design School', year: '2026',
+    cover: 'ia-situee-1.jpg', layout: ['full', '', '', 'full', '', '', 'full', '', '', 'full', '', ''],
+    desc: 'A co-creation workshop on situated AI for Benin’s market-garden farmers, prepared for the Master International Design Strategy 2026 to 2027 at Africa Design School. The question: how could AI help Beninese farmers predict when crops are ripe, given local soils, climate change and the farmers’ own digital skills? Between 20 and 30% of the annual harvest is lost, and judging ripeness by eye varies from one farmer to the next. The session ran in four steps: introduction and icebreakers, a brainwriting round (19 min) to list the cues farmers rely on, an energizer, then a “Yes, and” round (28 min) to define the key features, and a first prototype proposal. I worked on it with Rayanath ABDOU and Gloria DAGBA.',
+    credits: [{ name: 'Rayanath ABDOU', role: 'Workshop team' }, { name: 'Gloria DAGBA', role: 'Workshop team' }],
+    gallery: ['ia-situee-1.jpg', 'ia-situee-2.jpg', 'ia-situee-3.jpg', 'ia-situee-4.jpg', 'ia-situee-5.jpg', 'ia-situee-6.jpg', 'ia-situee-7.jpg', 'ia-situee-8.jpg', 'ia-situee-9.jpg', 'ia-situee-10.jpg', 'ia-situee-11.jpg', 'ia-situee-12.jpg']
+  },
+  {
+    group: 'Web design', slug: 'sodeco', title: 'SODECO Website', accent: 'Website',
     category: 'Website design', client: 'SODECO (with SFP)', year: '2025',
     thumb: 'sodeco-thumb.png', cover: 'sodeco-1.png',
     desc: 'The Cotton Development Company (SODECO) is the leading cotton ginner in Africa. It controls the whole cotton value chain, which makes it a major player in Benin’s agriculture and industry.',
@@ -1518,7 +1695,7 @@ const PROJECTS = [
     gallery: ['sodeco-1.png', 'sodeco-2.png', 'sodeco-3.png', 'sodeco-4.png']
   },
   {
-    slug: 'nyouz-media', title: 'Nyouz Media', accent: 'Media',
+    group: 'Web design', slug: 'nyouz-media', title: 'Nyouz Media', accent: 'Media',
     category: 'Web design · UI/UX', client: 'Emily', year: '2025',
     thumb: 'nyouz-thumb.png', cover: 'nyouz-1.png',
     desc: 'Nyouz is a news website for Gen Z. The interface is simple, articles are easy to share, and the news comes in a format young readers are used to.',
@@ -1527,7 +1704,7 @@ const PROJECTS = [
     gallery: ['nyouz-1.png', 'nyouz-2.png', 'nyouz-3.png', 'nyouz-4.png']
   },
   {
-    slug: 'greentech', title: 'GreenTech Brand Guidelines', accent: 'Brand Guidelines',
+    group: 'Brand identity', slug: 'greentech', title: 'GreenTech Brand Guidelines', accent: 'Brand Guidelines',
     credits: [{ name: 'Herman ZINZINDOHOUE', role: 'Graphic Designer' }],
     category: 'Brand identity', client: 'Greentech Holland', year: '2024',
     thumb: 'greentech-thumb.png', cover: 'greentech-2.png', containFirst: true, layout: ['full', 'full', '', ''],
@@ -1536,7 +1713,7 @@ const PROJECTS = [
     gallery: ['greentech-1.png', 'greentech-2.png', 'greentech-3.png', 'greentech-4.png']
   },
   {
-    slug: 'chill-groove', title: 'Chill & Groove', accent: 'Groove',
+    group: 'Web design', slug: 'chill-groove', title: 'Chill & Groove', accent: 'Groove',
     credits: [{ name: 'Alex Maurel CHEKETE', role: 'Graphic Designer' }],
     category: 'Event website', client: 'Vitalor', year: '2026',
     thumb: 'chill-groove-thumb.png', cover: 'chill-groove-1.png',
@@ -1691,8 +1868,8 @@ const coverStage = p => COVERS[p.slug] ? `
 
 const track = document.getElementById('track');
 // [file, tile background, padding px, wide?]
-const PLOGO = { lisa: ['logo-lisa.png', '#0b0714', 0], fosso: ['logo-fosso.svg', 'transparent', 0], sodeco: ['logo-sodeco.png', '#fff', 8, 1], 'nyouz-media': ['logo-nyouz.png', '#fff', 5, 1], greentech: ['logo-greentech.png', '#fff', 8], 'chill-groove': ['logo-chill-groove.png', '#3f0060', 4] };
-const PCOLOR = { lisa: '#6d3fd1', fosso: '#2f63d6', sodeco: '#268ba0', 'nyouz-media': '#ff2d3a', greentech: '#4c9854', 'chill-groove': '#7a28be' };
+const PLOGO = { 'situated-ai': ['logo-ia-situee.svg', 'transparent', 0], lisa: ['logo-lisa.png', '#0b0714', 0], fosso: ['logo-fosso.svg', 'transparent', 0], sodeco: ['logo-sodeco.png', '#fff', 8, 1], 'nyouz-media': ['logo-nyouz.png', '#fff', 5, 1], greentech: ['logo-greentech.png', '#fff', 8], 'chill-groove': ['logo-chill-groove.png', '#3f0060', 4] };
+const PCOLOR = { 'situated-ai': '#3f8f5f', lisa: '#6d3fd1', fosso: '#2f63d6', sodeco: '#268ba0', 'nyouz-media': '#ff2d3a', greentech: '#4c9854', 'chill-groove': '#7a28be' };
 const pad4 = n => String(n).padStart(4, '0');
 track.innerHTML = PROJECTS.map((p, i) => `
   <article class="pcard" style="--i:${i};--c:${PCOLOR[p.slug] || '#3866f1'}">
@@ -1715,23 +1892,52 @@ track.innerHTML = PROJECTS.map((p, i) => `
   </article>`).join('');
 
 /* Stacked cards: each card slides over the previous one, which steps back */
+const workCards = [...track.querySelectorAll('.pcard')];
+let requestStack = () => {};
 (() => {
-  const cards = [...track.querySelectorAll('.pcard')];
   let tick = false;
   const run = () => {
     tick = false;
+    const cards = workCards.filter(c => !c.hidden);
     cards.forEach((c, i) => {
-      const nx = cards[i + 1]; if (!nx) return;
+      const nx = cards[i + 1];
+      if (!nx) { c.style.setProperty('--o', 0); return; }
       const stick = parseFloat(getComputedStyle(c).top) || 0;
       const h = c.offsetHeight || 1;
       const o = Math.min(1, Math.max(0, 1 - (nx.getBoundingClientRect().top - stick) / h));
       c.style.setProperty('--o', reduceMotion.matches ? 0 : o.toFixed(3));
     });
   };
-  const req = () => { if (!tick) { tick = true; requestAnimationFrame(run); } };
+  const req = requestStack = () => { if (!tick) { tick = true; requestAnimationFrame(run); } };
   addEventListener('scroll', req, { passive: true });
   addEventListener('resize', req);
   req();
+})();
+
+/* Project categories: filter chips above the stack */
+(() => {
+  const box = document.getElementById('workFilters');
+  if (!box) return;
+  const ORDER = ['Product & AI', 'Web design', 'Brand identity', 'Workshop'];
+  const groups = [...new Set(PROJECTS.map(p => p.group))].sort((a, b) => ORDER.indexOf(a) - ORDER.indexOf(b));
+  const count = g => g === 'all' ? PROJECTS.length : PROJECTS.filter(p => p.group === g).length;
+  box.innerHTML = ['all', ...groups].map((g, i) =>
+    `<button type="button" class="wf" data-f="${esc(g)}" aria-pressed="${i === 0}">${g === 'all' ? 'All' : esc(g)} <i>${count(g)}</i></button>`).join('')
+    + `<a class="wf wf-link" href="#/motion">Motion ${arrow}</a>`;
+  const wc = document.querySelector('.work-count');
+  function apply(g) {
+    let n = 0;
+    workCards.forEach((c, i) => {
+      const show = g === 'all' || PROJECTS[i].group === g;
+      c.hidden = !show;
+      if (show) { n++; c.querySelector('.pcard-n').textContent = pad4(n) + ' / ' + pad4(count(g)); }
+    });
+    box.querySelectorAll('.wf[data-f]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.f === g)));
+    if (wc) wc.innerHTML = '<b>0001</b> — <span>' + pad4(count(g)) + '</span>';
+    requestStack();
+  }
+  box.addEventListener('click', e => { const b = e.target.closest('.wf[data-f]'); if (b) apply(b.dataset.f); });
+  apply('all');
 })();
 
 /* ---------- Stats count-up (runs once, when the band comes into view) ---------- */
@@ -2006,6 +2212,7 @@ const parse = hash => {
   if (name === 'project') return PROJECTS.some(p => p.slug === slug) ? { page: 'project', slug } : { page: 'notfound' };
   if (name === 'contact') return { page: 'contact' };
   if (name === 'eva') return { page: 'eva' };
+  if (name === 'motion') return { page: 'motion' };
   if (!name || SECTIONS.includes(name)) return { page: 'home', section: name || null };
   return { page: 'notfound' };
 };
@@ -2021,6 +2228,7 @@ function route(userInitiated) {
   if (r.page === 'project') title = `${renderProject(r.slug)} · ${SITE}`;
   if (r.page === 'contact') title = `Contact · ${SITE}`;
   if (r.page === 'eva') title = `Eva · ${SITE}`;
+  if (r.page === 'motion') title = `Motion · ${SITE}`;
   if (r.page === 'notfound') title = `Page not found · ${SITE}`;
   setTitle(title);
 
@@ -2101,7 +2309,7 @@ function setActiveLink() {
     SECTIONS.forEach(id => { const s = document.getElementById(id); if (s && s.getBoundingClientRect().top < 200) current = id; });
   }
   document.querySelectorAll('.nav-links a').forEach(a => {
-    const on = a.getAttribute('href') === `#/${current}` || (currentPage === 'eva' && a.getAttribute('href') === '#/eva');
+    const on = a.getAttribute('href') === `#/${current}` || (currentPage === 'eva' && a.getAttribute('href') === '#/eva') || (currentPage === 'motion' && a.getAttribute('href') === '#/motion');
     a.classList.toggle('active', on);
     if (on) a.setAttribute('aria-current', 'location'); else a.removeAttribute('aria-current');
   });
@@ -2164,6 +2372,7 @@ syncFromUrl();
 observe(document.querySelector('footer'));
 </script>
 <script src="assets/music.js"></script>
+<script src="assets/motion.js"></script>
 <script src="assets/hero.js"></script>
 <script src="assets/immersive.js"></script>
 <script src="assets/story.js"></script>
