@@ -1,7 +1,7 @@
 /* Translations (key = English source text). Generated; edit the English key to match the page. */
 window.I18N_DATA = {
 "fr": {
-"UX Designer & Digital Innovation Strategy Consultant": "Designer UX & consultant en stratégie d’innovation digitale",
+"UX Designer & Digital Innovation Strategy": "Designer UX & stratégie d’innovation digitale",
 "Experience is loading": "Chargement de l’expérience",
 "Skip to content": "Aller au contenu",
 "Work": "Projets",
@@ -9,7 +9,7 @@ window.I18N_DATA = {
 "Services": "Services",
 "Start a project": "Lancer un projet",
 "Hello": "Bonjour",
-"I’m Meryl, UX Designer & Digital Innovation Strategy Consultant": "Je suis Meryl, designer UX & consultant en stratégie d’innovation digitale",
+"I’m Meryl, UX Designer & Digital Innovation Strategy": "Je suis Meryl, designer UX & stratégie d’innovation digitale",
 "Websites, Products & Brands Designed to Stand Out": "Des sites, des produits et des marques conçus pour se démarquer",
 "I’m Meryl Agnikpe. I design digital products and websites in Figma, build them without code in Framer, and help businesses plan their digital innovation.": "Je suis Meryl Agnikpe. Je conçois des produits et des sites web dans Figma, je les construis sans code avec Framer, et j’aide les entreprises à planifier leur innovation digitale.",
 "See my work": "Voir mes projets",
@@ -234,7 +234,7 @@ window.I18N_DATA = {
 "Nyouz Media website: home page, Premium plan card, 404 page, weather widget and Instagram feed": "Site Nyouz Media : page d’accueil, carte de l’offre Premium, page 404, widget météo et fil Instagram",
 "Greentech City identity: logo, colour palette, field photo, cap and t-shirt, street banners": "Identité Greentech City : logo, palette de couleurs, photo de terrain, casquette et t-shirt, bannières de rue",
 "Chill & Groove website: hero with countdown, festival passes, jersey merch and crowd photo": "Site Chill & Groove : en-tête avec compte à rebours, pass du festival, maillots et photo de la foule",
-"Meryl Agnikpe, UX designer and digital innovation strategy consultant: websites, digital products and brand identities with Figma, Framer and Spline 3D.": "Meryl Agnikpe, designer UX et consultant en stratégie d’innovation digitale : sites web, produits digitaux et identités de marque avec Figma, Framer et Spline 3D.",
+"Meryl Agnikpe, UX designer and digital innovation strategy: websites, digital products and brand identities with Figma, Framer and Spline 3D.": "Meryl Agnikpe, designer UX et stratégie d’innovation digitale : sites web, produits digitaux et identités de marque avec Figma, Framer et Spline 3D.",
 "Websites, products and brand identities designed by Meryl Agnikpe.": "Sites web, produits et identités de marque conçus par Meryl Agnikpe.",
 "Language": "Langue",
 "Switch to dark theme": "Passer au thème sombre",
@@ -380,7 +380,7 @@ window.I18N_DATA = {
 "Meet Eva": "Rencontrer Eva"
 },
 "es": {
-"UX Designer & Digital Innovation Strategy Consultant": "Diseño UX y consultoría en estrategia de innovación digital",
+"UX Designer & Digital Innovation Strategy": "Diseño UX y estrategia de innovación digital",
 "Experience is loading": "Cargando la experiencia",
 "Skip to content": "Saltar al contenido",
 "Work": "Proyectos",
@@ -388,7 +388,7 @@ window.I18N_DATA = {
 "Services": "Servicios",
 "Start a project": "Empezar un proyecto",
 "Hello": "Hola",
-"I’m Meryl, UX Designer & Digital Innovation Strategy Consultant": "Soy Meryl: diseño UX y consultoría en estrategia de innovación digital",
+"I’m Meryl, UX Designer & Digital Innovation Strategy": "Soy Meryl: diseño UX y estrategia de innovación digital",
 "Websites, Products & Brands Designed to Stand Out": "Sitios web, productos y marcas diseñados para destacar",
 "I’m Meryl Agnikpe. I design digital products and websites in Figma, build them without code in Framer, and help businesses plan their digital innovation.": "Soy Meryl Agnikpe. Diseño productos digitales y sitios web en Figma, los construyo sin código con Framer y ayudo a las empresas a planificar su innovación digital.",
 "See my work": "Ver mis proyectos",
@@ -613,7 +613,7 @@ window.I18N_DATA = {
 "Nyouz Media website: home page, Premium plan card, 404 page, weather widget and Instagram feed": "Sitio de Nyouz Media: página de inicio, tarjeta del plan Premium, página 404, widget del tiempo y feed de Instagram",
 "Greentech City identity: logo, colour palette, field photo, cap and t-shirt, street banners": "Identidad de Greentech City: logotipo, paleta de colores, foto de campo, gorra y camiseta, banderolas de calle",
 "Chill & Groove website: hero with countdown, festival passes, jersey merch and crowd photo": "Sitio de Chill & Groove: cabecera con cuenta atrás, pases del festival, camisetas y foto del público",
-"Meryl Agnikpe, UX designer and digital innovation strategy consultant: websites, digital products and brand identities with Figma, Framer and Spline 3D.": "Meryl Agnikpe, diseño UX y consultoría en estrategia de innovación digital: sitios web, productos digitales e identidades de marca con Figma, Framer y Spline 3D.",
+"Meryl Agnikpe, UX designer and digital innovation strategy: websites, digital products and brand identities with Figma, Framer and Spline 3D.": "Meryl Agnikpe, diseño UX y estrategia de innovación digital: sitios web, productos digitales e identidades de marca con Figma, Framer y Spline 3D.",
 "Websites, products and brand identities designed by Meryl Agnikpe.": "Sitios web, productos e identidades de marca diseñados por Meryl Agnikpe.",
 "Language": "Idioma",
 "Switch to dark theme": "Cambiar al tema oscuro",
@@ -759,7 +759,7 @@ window.I18N_DATA = {
 "Meet Eva": "Conocer a Eva"
 },
 "ru": {
-"UX Designer & Digital Innovation Strategy Consultant": "UX-дизайн и консалтинг по стратегии цифровых инноваций",
+"UX Designer & Digital Innovation Strategy": "UX-дизайн и стратегия цифровых инноваций",
 "Experience is loading": "Загрузка опыта",
 "Skip to content": "Перейти к содержимому",
 "Work": "Проекты",
@@ -767,7 +767,7 @@ window.I18N_DATA = {
 "Services": "Услуги",
 "Start a project": "Начать проект",
 "Hello": "Привет",
-"I’m Meryl, UX Designer & Digital Innovation Strategy Consultant": "Я Мерил: UX-дизайн и консалтинг по стратегии цифровых инноваций",
+"I’m Meryl, UX Designer & Digital Innovation Strategy": "Я Мерил: UX-дизайн и стратегия цифровых инноваций",
 "Websites, Products & Brands Designed to Stand Out": "Сайты, продукты и бренды, созданные, чтобы выделяться",
 "I’m Meryl Agnikpe. I design digital products and websites in Figma, build them without code in Framer, and help businesses plan their digital innovation.": "Я Мерил Агникпе. Проектирую цифровые продукты и сайты в Figma, собираю их без кода во Framer и помогаю компаниям планировать цифровые инновации.",
 "See my work": "Смотреть проекты",
@@ -992,7 +992,7 @@ window.I18N_DATA = {
 "Nyouz Media website: home page, Premium plan card, 404 page, weather widget and Instagram feed": "Сайт Nyouz Media: главная, карточка тарифа Premium, страница 404, виджет погоды и лента Instagram",
 "Greentech City identity: logo, colour palette, field photo, cap and t-shirt, street banners": "Айдентика Greentech City: логотип, цветовая палитра, фото с поля, кепка и футболка, уличные баннеры",
 "Chill & Groove website: hero with countdown, festival passes, jersey merch and crowd photo": "Сайт Chill & Groove: главный экран с обратным отсчётом, пропуска на фестиваль, футболки и фото толпы",
-"Meryl Agnikpe, UX designer and digital innovation strategy consultant: websites, digital products and brand identities with Figma, Framer and Spline 3D.": "Meryl Agnikpe: UX-дизайн и консалтинг по стратегии цифровых инноваций. Сайты, цифровые продукты и айдентика в Figma, Framer и Spline 3D.",
+"Meryl Agnikpe, UX designer and digital innovation strategy: websites, digital products and brand identities with Figma, Framer and Spline 3D.": "Meryl Agnikpe: UX-дизайн и стратегия цифровых инноваций. Сайты, цифровые продукты и айдентика в Figma, Framer и Spline 3D.",
 "Websites, products and brand identities designed by Meryl Agnikpe.": "Сайты, продукты и айдентика, созданные Мерил Агникпе.",
 "Language": "Язык",
 "Switch to dark theme": "Включить тёмную тему",
