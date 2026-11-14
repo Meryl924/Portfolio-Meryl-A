@@ -1108,6 +1108,31 @@ html[data-theme="dark"] .nav-eva::before { box-shadow: 0 0 0 3px #0c163a; }
 <link rel="stylesheet" href="assets/story.css">
 <link rel="stylesheet" href="assets/universe.css">
 <link rel="stylesheet" href="assets/agents.css">
+<style id="mobile-fix">
+/* ---------- Mobile: no sideways scroll, a lighter Experience carousel, bigger tap targets (2026-11-14) ---------- */
+html, body { overflow-x: clip; }
+.bd { overflow-x: clip; }                         /* the neighbouring badges sit far to the right and widened the whole page */
+.ev-poses { grid-template-columns: repeat(5, minmax(0, 1fr)); } .ev-poses li { min-width: 0; }
+@media (max-width: 1080px) { .ev-poses { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 760px) {
+  .ev-poses { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ev-poses img { max-width: 100%; }
+  /* Experience: only the front badge swings, hidden ones are not drawn, no blur behind the board */
+  .bd-board { -webkit-backdrop-filter: none; backdrop-filter: none; background-color: rgba(255,255,255,.6); }
+  html[data-theme="dark"] .bd-board { background-color: rgba(18,28,64,.7); }
+  .bd-ctrl button, .bd-count { -webkit-backdrop-filter: none; backdrop-filter: none; }
+  .bd-stage { height: 620px; touch-action: pan-y pinch-zoom; -webkit-tap-highlight-color: transparent; }
+  .idb { --w: min(300px, 78vw); will-change: transform, opacity; transition-duration: 520ms, 360ms; }
+  .idb:not(.is-active) .idb-swing { animation: none; }
+  .idb.is-far { visibility: hidden; }
+  .idb-inner { height: 440px; }
+  .idb-flip { min-height: 40px; padding: 10px 14px; }
+  .bd-ctrl { gap: 12px; margin-top: 14px; } .bd-ctrl button { width: 52px; height: 48px; }
+  /* tap targets of at least 40 px */
+  .crumbs a { display: inline-block; padding: 10px 6px; margin: -10px -6px; }
+}
+@media (hover: none) and (pointer: coarse) { .hx-bdsw button { position: relative; } .hx-bdsw button::after { content: ""; position: absolute; inset: -9px -5px; } }
+</style>
 </head>
 <body>
 <canvas id="scene" aria-hidden="true"></canvas>
