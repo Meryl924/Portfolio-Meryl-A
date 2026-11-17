@@ -113,7 +113,7 @@
 
   function frame(now) {
     requestAnimationFrame(frame);
-    if (document.hidden) return;
+    if (document.hidden || root.classList.contains('perf-lite')) return;
     const t = (now - t0) / 1000;
     if (small.matches && now - last < 33) return;
     last = now;

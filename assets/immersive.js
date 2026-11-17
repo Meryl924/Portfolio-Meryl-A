@@ -297,6 +297,7 @@
     function frame() {
       requestAnimationFrame(frame);
       if (document.hidden) return;                                   // nothing to draw in a background tab
+      if (root.classList.contains('perf-lite')) return;              // lite mode: no continuous 3D
       const nowF = performance.now();
       if (nowF - lastF < (small.matches ? 33 : 16)) return;           // 30 fps on phones, 60 max elsewhere
       lastF = nowF;

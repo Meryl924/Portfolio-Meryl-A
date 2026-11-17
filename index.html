@@ -1146,6 +1146,50 @@ html, body { overflow-x: clip; }
   .page[data-page="home"] #faq { content-visibility: auto; contain-intrinsic-size: auto 990px; }
 }
 </style>
+<style id="perf-lite-css">
+/* Lite mode: switched on automatically when the device cannot hold ~35 fps (or with ?lite). Keeps the design, drops the continuous GPU work. */
+html.perf-lite #universe, html.perf-lite #scene { display: none !important; }
+html.perf-lite *, html.perf-lite *::before, html.perf-lite *::after { -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
+html.perf-lite .idb-swing, html.perf-lite .idb.kick .idb-swing { animation: none !important; }
+html.perf-lite .bd-board { background-color: rgba(255,255,255,.55); }
+html[data-theme="dark"].perf-lite .bd-board { background-color: rgba(255,255,255,.07); }
+html.perf-lite .hx-photo, html.perf-lite .hx-shadow { will-change: auto; }
+</style>
+<script id="perf-lite-js">
+(() => {
+  const root = document.documentElement;
+  let stored = null;
+  try { stored = localStorage.getItem('perf-mode'); } catch (_) {}
+  const q = location.search;
+  if (/[?&]full\b/.test(q)) { try { localStorage.removeItem('perf-mode'); } catch (_) {} stored = null; }
+  if (/[?&]lite\b/.test(q) || stored === 'lite') { root.classList.add('perf-lite'); return; }
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  // Measure real frame rate once the intro is over; switch to lite when it stays under ~35 fps
+  const start = () => {
+    let waited = 0;
+    const iv = setInterval(() => {
+      waited += 300;
+      if (root.classList.contains('loading') && waited < 20000) return;
+      clearInterval(iv);
+      setTimeout(() => {
+        if (document.hidden) return;
+        const d = []; const t0 = performance.now(); let last = t0, n = 0;
+        const tick = now => {
+          d.push(now - last); last = now;
+          if (++n < 90 && !(n >= 6 && now - t0 > 3000)) requestAnimationFrame(tick);
+          else {
+            d.sort((a, b) => a - b);
+            const med = d[Math.floor(d.length / 2)];
+            if (med > 29 && !document.hidden) { root.classList.add('perf-lite'); try { localStorage.setItem('perf-mode', 'lite'); } catch (_) {} }
+          }
+        };
+        requestAnimationFrame(tick);
+      }, 1500);
+    }, 300);
+  };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
+})();
+</script>
 </head>
 <body>
 <canvas id="scene" aria-hidden="true"></canvas>
