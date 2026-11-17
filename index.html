@@ -975,20 +975,26 @@ html[data-theme="dark"] .bd-board { background-image: radial-gradient(rgba(156,1
 .idb-back .idb-slot { background: rgba(255,255,255,.25); }
 .idb-band { background: var(--band); color: #fff; padding: 54px 18px 22px; text-align: center; }
 .idb-band h3 { font-size: clamp(22px, 7vw, 28px); font-weight: 800; letter-spacing: -.02em; line-height: 1.05; color: #fff; text-wrap: balance; }
-.idb-body { padding: 18px 20px 16px; display: grid; justify-items: center; text-align: center; gap: 4px; }
-.idb-av { width: 74px; height: 74px; border-radius: 50%; margin-top: -2px; background: url(assets/img/meryl-portrait.jpg) 46% 35% / 182% auto no-repeat; box-shadow: 0 0 0 4px #fff, 0 6px 16px rgba(11,31,79,.22); filter: grayscale(1); margin-bottom: 8px; }
+.idb-body { padding: 22px 20px 12px; display: grid; justify-items: center; text-align: center; gap: 4px; }
 .idb-name { font-size: 12px; font-family: var(--mono); letter-spacing: .14em; text-transform: uppercase; color: #5b6475; }
-.idb-role { font-size: 17px; font-weight: 700; line-height: 1.2; color: #0b1f4f; margin-top: 2px; text-wrap: balance; min-height: 2.4em; display: grid; align-items: center; }
+.idb-role { font-size: 21px; font-weight: 700; line-height: 1.2; color: #0b1f4f; margin-top: 2px; text-wrap: balance; min-height: 2.4em; display: grid; align-items: center; }
 .idb-dates { font-family: var(--mono); font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--band); font-weight: 600; margin-top: 4px; }
-.idb-bar { width: 76%; height: 34px; margin-top: 14px; color: #0b1f4f; } .idb-bar svg { width: 100%; height: 100%; display: block; }
+.idb-bar { width: 76%; height: 32px; margin-top: 10px; color: #0b1f4f; } .idb-bar svg { width: 100%; height: 100%; display: block; }
 .idb-flip { margin-top: 10px; font-family: var(--mono); font-size: 10.5px; letter-spacing: .2em; text-transform: uppercase; color: #8b95ab; padding: 6px 10px; border-radius: 8px; }
 .idb.is-active .idb-flip:hover { background: rgba(11,31,79,.07); color: #0b1f4f; }
 .idb:not(.is-active) .idb-flip { visibility: hidden; }
 .idb-no { font-size: 76px; font-weight: 800; letter-spacing: -.04em; line-height: .9; opacity: .95; }
-.idb-co { font-size: 15px; font-family: var(--mono); letter-spacing: .12em; text-transform: uppercase; opacity: .85; margin: 6px 0 22px; }
+.idb-co { font-size: 15px; font-family: var(--mono); letter-spacing: .12em; text-transform: uppercase; opacity: .85; margin: 6px 0 16px; }
 .idb-back dl { display: grid; gap: 14px; }
 .idb-back dt { font-family: var(--mono); font-size: 10px; letter-spacing: .2em; text-transform: uppercase; opacity: .65; }
 .idb-back dd { font-size: 17px; font-weight: 600; line-height: 1.25; margin-top: 2px; }
+.idb-back dl { gap: 16px; }
+.idb-back .dur { font-size: 26px; font-weight: 800; letter-spacing: -.02em; line-height: 1.05; margin-top: 6px; }
+.idb-meter { display: block; height: 6px; margin-top: 12px; border-radius: 6px; background: rgba(255,255,255,.22); overflow: hidden; }
+.idb-meter i { display: block; height: 100%; width: var(--w); border-radius: 6px; background: #fff; }
+.idb-state { display: flex; align-items: center; gap: 9px; margin-top: 6px; }
+.idb-state::before { content: ""; width: 9px; height: 9px; border-radius: 50%; background: rgba(255,255,255,.5); flex: none; }
+.idb-state.on::before { background: #7dffb0; box-shadow: 0 0 0 4px rgba(125,255,176,.22), 0 0 12px rgba(125,255,176,.7); }
 .idb-tag { margin-top: auto; font-size: 11px; line-height: 1.4; opacity: .75; font-family: var(--mono); letter-spacing: .06em; text-transform: uppercase; }
 .bd-ctrl { position: relative; z-index: 12; display: flex; align-items: center; justify-content: center; gap: 14px; margin-top: 6px; }
 .bd-ctrl button { display: grid; place-items: center; width: 46px; height: 42px; border-radius: 12px; background: rgba(255,255,255,.7); border: 1px solid rgba(56,102,241,.16); color: var(--ink); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); transition: transform 200ms var(--ease-out), opacity 200ms; }
@@ -2060,6 +2066,7 @@ counters.forEach(c => countIO.observe(c));
     return `<svg viewBox="0 0 ${pos} 30" preserveAspectRatio="none" aria-hidden="true" fill="currentColor">${out}</svg>`;
   };
   let cur = 0, N = EXPERIENCE.length, flipped = -1;
+  const MAXM = Math.max(...EXPERIENCE.map(e => span(e).months));
   const pad2 = n => String(n).padStart(2, '0');
 
   function build() {
@@ -2073,7 +2080,6 @@ counters.forEach(c => countIO.observe(c));
             <i class="idb-slot" aria-hidden="true"></i>
             <div class="idb-band"><h3>${esc(e.company)}</h3></div>
             <div class="idb-body">
-              <span class="idb-av" aria-hidden="true"></span>
               <p class="idb-name">Meryl Agnikpe</p>
               <p class="idb-role">${esc(e.role)}</p>
               <p class="idb-dates">${esc(e.dates)}</p>
@@ -2086,9 +2092,8 @@ counters.forEach(c => countIO.observe(c));
             <p class="idb-no">${pad2(i + 1)}</p>
             <p class="idb-co">${esc(e.company)}</p>
             <dl>
-              <div><dt>Role</dt><dd>${esc(e.role)}</dd></div>
-              <div><dt>Period</dt><dd>${esc(e.dates)}</dd></div>
-              <div><dt>Duration</dt><dd class="dur" data-m="${sp.months}">${duration(sp.months)}</dd></div>
+              <div><dt>Duration</dt><dd class="dur" data-m="${sp.months}">${duration(sp.months)}</dd><span class="idb-meter" aria-hidden="true"><i style="--w:${Math.round(sp.months / MAXM * 100)}%"></i></span></div>
+              <div><dt>Status</dt><dd class="idb-state${/Present/.test(e.dates) ? ' on' : ''}">${/Present/.test(e.dates) ? 'Ongoing' : 'Completed'}</dd></div>
             </dl>
             <p class="idb-tag">UX Designer &amp; Digital Innovation Strategy</p>
           </div>
