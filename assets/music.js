@@ -7,10 +7,10 @@
   const t = s => (window.I18N ? I18N.t(s) : s);
   const KEY = 'sound-v2';
   const TRACKS = [
-    { id: 'nuit', name: 'Night sky', desc: 'Slow pads and twinkling notes' },
-    { id: 'aurore', name: 'Aurora', desc: 'Bright plucks and soft echo' },
-    { id: 'studio', name: 'Studio', desc: 'Warm chords and a light beat' },
-    { id: 'orbite', name: 'Orbit', desc: 'Airy arpeggio that drifts' }
+    { id: 'studio', name: 'Studio', desc: 'Warm chords and a light beat', trim: 1.7 },
+    { id: 'orbite', name: 'Orbit', desc: 'Airy arpeggio that drifts', trim: 0.75 },
+    { id: 'neon', name: 'Neon', desc: 'Soft house groove, bright pulse', trim: 1.7 },
+    { id: 'drift', name: 'Drift', desc: 'Slow beat and wandering plucks', trim: 3 }
   ];
   const prefs = { on: false, track: 0, music: 0.6, fx: 0.8 };
   try { Object.assign(prefs, JSON.parse(localStorage.getItem(KEY) || '{}')); } catch (_) {}
@@ -69,7 +69,7 @@
       const ctx = this.ctx, now = ctx.currentTime;
       if (this.cur) { const old = this.cur; old.out.gain.setTargetAtTime(0, now, 0.6); setTimeout(() => old.stop(), 3500); }
       const out = ctx.createGain(); out.gain.value = 0; out.connect(this.musicBus);
-      out.gain.setTargetAtTime(1, now + 0.2, 1.2);
+      out.gain.setTargetAtTime(TRACKS[i].trim || 1, now + 0.2, 1.2);
       this.cur = this['_' + TRACKS[i].id](out);
       this.cur.out = out;
     },
@@ -108,60 +108,7 @@
       });
     },
 
-    // 1. Night sky: slow pads that change chord, with a few high notes that twinkle (the original site music)
-    _nuit(out) {
-      const ctx = this.ctx;
-      const CH = [[73.42, 146.83, 220, 329.63, 369.99], [61.74, 123.47, 185, 293.66, 329.63], [98, 196, 293.66, 369.99, 440], [55, 110, 164.81, 220, 246.94]];
-      const SP = [587.33, 659.25, 739.99, 880, 987.77, 1174.66, 1479.98];
-      let step = 0, nextC = ctx.currentTime + 0.1, nextT = ctx.currentTime + 3;
-      const voice = (freq, when, len, level) => {
-        const o1 = ctx.createOscillator(), o2 = ctx.createOscillator();
-        o1.type = 'triangle'; o2.type = 'sine'; o1.frequency.value = freq; o2.frequency.value = freq; o1.detune.value = -5; o2.detune.value = 6;
-        const lp = ctx.createBiquadFilter(); lp.type = 'lowpass'; lp.Q.value = 0.4; lp.frequency.value = 500 + Math.random() * 300;
-        const lfo = ctx.createOscillator(), lg = ctx.createGain(); lfo.frequency.value = 0.05 + Math.random() * 0.07; lg.gain.value = 220; lfo.connect(lg); lg.connect(lp.frequency);
-        const g = ctx.createGain(); g.gain.setValueAtTime(0, when);
-        g.gain.linearRampToValueAtTime(level, when + 4.2); g.gain.setValueAtTime(level, when + len - 1); g.gain.linearRampToValueAtTime(0, when + len + 6.5);
-        o1.connect(lp); o2.connect(lp); lp.connect(g); g.connect(out); this._send(g, 0.55);
-        const end = when + len + 6.7; o1.start(when); o2.start(when); lfo.start(when); o1.stop(end); o2.stop(end); lfo.stop(end);
-      };
-      return {
-        stop() {},
-        tick: now => {
-          while (nextC < now + 0.3) { CH[step % 4].forEach((f, i) => voice(f, nextC + i * 0.35, 12, i === 0 ? 0.08 : 0.033)); step++; nextC += 12; }
-          while (nextT < now + 0.3) {
-            const f = SP[Math.floor(Math.random() * SP.length)], o = ctx.createOscillator(), g = ctx.createGain();
-            o.type = 'sine'; o.frequency.value = f; const peak = 0.018 + Math.random() * 0.02;
-            g.gain.setValueAtTime(0, nextT); g.gain.linearRampToValueAtTime(peak, nextT + 0.04); g.gain.exponentialRampToValueAtTime(0.0001, nextT + 4.5);
-            o.connect(g); g.connect(out); this._send(g, 0.6); o.start(nextT); o.stop(nextT + 4.7);
-            nextT += 2.2 + Math.random() * 4.8;
-          }
-        }
-      };
-    },
-
-    // 2. Aurora: bright plucked notes drifting over a soft pad, with a gentle echo
-    _aurore(out) {
-      const ctx = this.ctx;
-      const nodes = this._pad(out, [146.83, 220, 293.66, 369.99], { cutoff: 900, gains: [0.05, 0.035, 0.03, 0.02], lfoRate: 0.045 });
-      const echo = this._echo(out, 0.39, 0.38, 0.45);
-      const notes = [587.33, 659.25, 739.99, 880, 987.77, 1174.66, 1318.51];   // D major pentatonic, high
-      let idx = 3, next = ctx.currentTime + 1;
-      const walk = [-2, -1, -1, 0, 1, 1, 2];
-      return {
-        stop: this._stopper(nodes),
-        tick: now => {
-          while (next < now + 0.3) {
-            if (Math.random() < 0.62) {
-              idx = Math.max(0, Math.min(notes.length - 1, idx + walk[Math.floor(Math.random() * walk.length)]));
-              this._pluck(out, notes[idx], next, 0.05, 1.7, echo);
-            }
-            next += 0.395;
-          }
-        }
-      };
-    },
-
-    // 3. Studio: a warm, slow lo-fi groove, soft chords and a light beat
+    // 1. Studio: a warm, slow lo-fi groove, soft chords and a light beat
     _studio(out) {
       const ctx = this.ctx;
       const bus = ctx.createBiquadFilter(); bus.type = 'lowpass'; bus.frequency.value = 3400; bus.Q.value = 0.3; bus.connect(out);
@@ -190,7 +137,7 @@
       };
     },
 
-    // 4. Orbit: a light electronic arpeggio that drifts, with a soft sub pulse
+    // 2. Orbit: a light electronic arpeggio that drifts, with a soft sub pulse
     _orbite(out) {
       const ctx = this.ctx;
       const nodes = this._pad(out, [73.42, 110, 146.83], { cutoff: 500, gains: [0.07, 0.04, 0.03], lfoRate: 0.04 });
@@ -212,6 +159,66 @@
               o.start(next); o.stop(next + 0.3);
             }
             if (k % 4 === 0) this._tone('sine', 73.42, 60, next, 0.01, 0.1, 0.35, 0, out);
+            n++; next += sx;
+          }
+        }
+      };
+    },
+
+    // 3. Neon: a soft house groove with a bright pulse and plucked stabs
+    _neon(out) {
+      const ctx = this.ctx;
+      const bus = ctx.createBiquadFilter(); bus.type = 'lowpass'; bus.frequency.value = 5200; bus.Q.value = 0.3; bus.connect(out);
+      const echo = this._echo(out, 60 / 118 * 0.75, 0.35, 0.3);
+      const roots = [73.42, 61.74, 49, 55];
+      const chords = [[293.66, 369.99, 440], [246.94, 293.66, 369.99], [196, 246.94, 293.66], [220, 277.18, 329.63]];
+      const sx = 60 / 118 / 4; let n = 0, next = ctx.currentTime + 0.5;
+      return {
+        stop() {},
+        tick: now => {
+          while (next < now + 0.3) {
+            const k = n % 16, c = ((n / 32) | 0) % 4, when = next;
+            if (k % 4 === 0) this._tone('sine', 120, 46, when, 0.004, 0.26, 0.2, 0, bus);
+            if (k === 4 || k === 12) this._noise('bandpass', 1500, 1200, 0.9, when, 0.002, 0.06, 0.12, 0.25, bus);
+            if (k % 4 === 2) {
+              this._noise('highpass', 7500, 7500, 0.7, when, 0.001, 0.035, 0.07, 0, bus);
+              this._tone('triangle', roots[c], roots[c], when, 0.006, 0.17, 0.2, 0, bus);
+            }
+            if (k % 2 === 0 && Math.random() < 0.8) this._pluck(bus, chords[c][(k / 2) % 3] * 2, when, 0.03, 0.45, echo, 0.3);
+            n++; next += sx;
+          }
+        }
+      };
+    },
+
+    // 4. Drift: a slow beat, warm chords and a few plucked notes that wander
+    _drift(out) {
+      const ctx = this.ctx;
+      const bus = ctx.createBiquadFilter(); bus.type = 'lowpass'; bus.frequency.value = 3600; bus.Q.value = 0.3; bus.connect(out);
+      const echo = this._echo(out, 60 / 88 * 0.75, 0.38, 0.35);
+      const CH = [[146.83, 185, 220, 329.63], [123.47, 146.83, 185, 277.18], [98, 123.47, 146.83, 220], [110, 138.59, 164.81, 246.94]];
+      const pent = [587.33, 659.25, 739.99, 880, 987.77]; let pi = 2;
+      const sx = 60 / 88 / 4; let n = 0, next = ctx.currentTime + 0.5;
+      return {
+        stop() {},
+        tick: now => {
+          while (next < now + 0.3) {
+            const when = next + (n % 2 ? 0.03 : 0), k = n % 16;
+            if (n % 32 === 0) CH[((n / 32) | 0) % 4].forEach((f, i) => {
+              [[1, 1, 'sine'], [2, 0.16, 'triangle']].forEach(([m, a, type]) => {
+                const o = ctx.createOscillator(), g = ctx.createGain(), lp = ctx.createBiquadFilter();
+                o.type = type; o.frequency.value = f * m; o.detune.value = (i - 1.5) * 5; lp.type = 'lowpass'; lp.frequency.value = 1300;
+                this._env(g, when + i * 0.03, 0.25, 0.1 * a, 5.6); o.connect(lp); lp.connect(g); g.connect(bus); this._send(g, 0.4);
+                o.start(when + i * 0.03); o.stop(when + 6);
+              });
+            });
+            if (k === 0 || k === 7) this._tone('sine', 120, 44, when, 0.004, k === 0 ? 0.32 : 0.2, 0.3, 0, bus);
+            if (k === 8) { this._noise('bandpass', 1700, 1300, 0.8, when, 0.002, 0.075, 0.16, 0.25, bus); this._tone('sine', 180, 140, when, 0.002, 0.03, 0.1, 0, bus); }
+            this._noise('highpass', 9000, 9000, 0.6, when, 0.001, 0.006 + Math.random() * 0.014, 0.03, 0, bus);
+            if (n % 2 === 0 && Math.random() < 0.22) {
+              pi = Math.max(0, Math.min(pent.length - 1, pi + [-1, 0, 1][Math.floor(Math.random() * 3)]));
+              this._pluck(bus, pent[pi], when, 0.04, 1.4, echo, 0.45);
+            }
             n++; next += sx;
           }
         }
@@ -265,11 +272,17 @@
   const css = document.createElement('style');
   css.id = 'sound-css';
   css.textContent = `
-  .sp { position: fixed; z-index: 90; left: 50%; bottom: 92px; width: min(340px, calc(100vw - 32px)); padding: 20px 20px 18px; border-radius: 22px; max-height: calc(100vh - 112px); max-height: calc(100svh - 112px); overflow-y: auto; overscroll-behavior: contain; color: var(--ink, #0b1f4f);
+  .sound-fab { position: fixed; z-index: 91; right: 20px; bottom: 28px; width: 48px; height: 48px; margin: 0; background: rgba(255,255,255,.78); box-shadow: 0 8px 28px rgba(16,42,110,.22); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
+  html[data-theme="dark"] .sound-fab { background: rgba(8,16,46,.72); box-shadow: 0 8px 28px rgba(0,0,0,.45); }
+  .sound-fab.on { background: var(--blue, #3866f1); }
+  html[data-theme="dark"] .sound-fab.on { background: #7195ff; }
+  .sound-fab[aria-expanded="true"] { box-shadow: 0 0 0 2px var(--blue, #3866f1), 0 8px 28px rgba(16,42,110,.22); }
+  @media (max-width: 760px) { .sp { right: 14px; bottom: 146px; } .sound-fab { right: 14px; bottom: 90px; width: 44px; height: 44px; } }
+  .sp { position: fixed; z-index: 90; right: 20px; bottom: 90px; width: min(340px, calc(100vw - 32px)); padding: 20px 20px 18px; border-radius: 22px; max-height: calc(100vh - 118px); max-height: calc(100svh - 118px); overflow-y: auto; overscroll-behavior: contain; color: var(--ink, #0b1f4f);
     background: rgba(255,255,255,.96); border: 1px solid rgba(56,102,241,.18); box-shadow: 0 24px 60px rgba(16,42,110,.24);
-    opacity: 0; transform: translate(-50%, 12px); transition: opacity 260ms ease, transform 360ms cubic-bezier(.23,1,.32,1); }
+    opacity: 0; transform: translateY(12px); transition: opacity 260ms ease, transform 360ms cubic-bezier(.23,1,.32,1); }
   .sp[hidden] { display: none; }
-  .sp.is-open { opacity: 1; transform: translate(-50%, 0); }
+  .sp.is-open { opacity: 1; transform: none; }
   html[data-theme="dark"] .sp { background: rgba(8,16,46,.96); color: #fff; border-color: rgba(255,255,255,.16); box-shadow: 0 24px 60px rgba(0,0,0,.5); }
   .sp-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
   .sp-title { font-size: 12px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; }
@@ -317,6 +330,7 @@
   const sw = panel.querySelector('#spOn'), list = panel.querySelector('#spTracks');
   const music = panel.querySelector('#spMusic'), fx = panel.querySelector('#spFx');
   const musicOut = panel.querySelector('#spMusicOut'), fxOut = panel.querySelector('#spFxOut');
+  btn.classList.add('sound-fab'); document.body.appendChild(btn);
   btn.setAttribute('aria-haspopup', 'dialog'); btn.setAttribute('aria-controls', 'soundPanel'); btn.setAttribute('aria-expanded', 'false');
 
   function renderTracks() {
