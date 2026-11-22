@@ -565,8 +565,8 @@ main, footer { position: relative; z-index: 1; }
   -webkit-backdrop-filter: blur(18px) saturate(1.4); backdrop-filter: blur(18px) saturate(1.4);
 }
 .case, .exp-card, .form-card, .next-proj { border: 1px solid rgba(255,255,255,.85); box-shadow: 0 24px 60px rgba(16,42,110,.10), 0 0 0 1px rgba(56,102,241,.06); }
-.acc-item { background: rgba(244,247,254,.66); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); }
-.contact-list a, .pd-meta > div, .pd-credits .who, .proc-steps > li { -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); background: rgba(244,247,254,.7); }
+.acc-item { background: rgba(244,247,254,.82); }
+.contact-list a, .pd-meta > div, .pd-credits .who, .proc-steps > li { background: rgba(244,247,254,.84); }
 .next-proj { background: linear-gradient(160deg, rgba(255,255,255,.75), rgba(234,240,254,.6)); }
 .band { box-shadow: 0 30px 80px rgba(1,59,154,.22); }
 
@@ -763,7 +763,7 @@ html[data-theme="dark"] .mobile-menu a:not(.btn):hover { background: rgba(255,25
 .hx-ctas { display: grid; gap: 12px; justify-items: start; margin-top: 26px; }
 .hx-btn { display: inline-flex; align-items: center; gap: 22px; padding: 8px 8px 8px 22px; min-height: 52px; border-radius: 14px; font-size: 15px; font-weight: 500; transition: transform 200ms var(--ease-out), background 300ms ease, color 300ms ease; }
 .hx-solid { background: var(--btn); color: var(--btn-fg); }
-.hx-ghost { border: 1px solid var(--ghost-line); color: var(--ghost-fg); background: rgba(255,255,255,.08); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+.hx-ghost { border: 1px solid var(--ghost-line); color: var(--ghost-fg); background: rgba(255,255,255,.08); }
 .hx-arr { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 10px; background: var(--chip-a); color: #fff; }
 .hx-ghost .hx-arr { background: rgba(11,31,79,.10); color: inherit; }
 .hx[data-bd="blue"] .hx-ghost .hx-arr, .hx[data-bd="dark"] .hx-ghost .hx-arr { background: rgba(255,255,255,.16); }
@@ -950,7 +950,7 @@ html[data-theme="dark"] .music-btn.on { background: #7195ff; color: #0b1f4f; }
 <style id="idb-css">
 /* ---------- Experience: ID badges hanging in a 3D row ---------- */
 .bd { position: relative; padding: 0 0 8px; }
-.bd-board { position: absolute; inset: -20px 0 56px; border-radius: 34px; background-image: radial-gradient(rgba(56,102,241,.22) 1.6px, transparent 2px); background-size: 26px 26px; background-color: rgba(255,255,255,.35); border: 1px solid rgba(255,255,255,.8); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); -webkit-mask-image: linear-gradient(#000 78%, transparent); mask-image: linear-gradient(#000 78%, transparent); }
+.bd-board { position: absolute; inset: -20px 0 56px; border-radius: 34px; background-image: radial-gradient(rgba(56,102,241,.22) 1.6px, transparent 2px); background-size: 26px 26px; background-color: rgba(255,255,255,.35); border: 1px solid rgba(255,255,255,.8); -webkit-mask-image: linear-gradient(#000 78%, transparent); mask-image: linear-gradient(#000 78%, transparent); }
 html[data-theme="dark"] .bd-board { background-image: radial-gradient(rgba(156,188,255,.22) 1.6px, transparent 2px); background-color: rgba(255,255,255,.04); border-color: rgba(255,255,255,.1); }
 .bd-stage { position: relative; height: 700px; perspective: 1500px; perspective-origin: 50% 20%; overflow: visible; touch-action: pan-y; }
 .idb { --w: min(300px, 74vw); position: absolute; left: 50%; top: 70px; width: var(--w); margin-left: calc(var(--w) / -2);
@@ -1043,7 +1043,7 @@ html[data-theme="dark"] .ld-b:hover { background: rgba(255,255,255,.14); } html[
 .ev-sec { padding-top: 120px; }
 .ev-file { display: grid; grid-template-columns: 1.2fr 1fr; gap: 28px; align-items: start; }
 .ev-dl { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-.ev-dl > div, .ev-swatches, .ev-traits article, .ev-series article { background: rgba(255,255,255,.66); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,.85); box-shadow: 0 20px 50px rgba(16,42,110,.08); }
+.ev-dl > div, .ev-swatches, .ev-traits article, .ev-series article { background: rgba(255,255,255,.82); border: 1px solid rgba(255,255,255,.85); box-shadow: 0 20px 50px rgba(16,42,110,.08); }
 .ev-dl > div { border-radius: 18px; padding: 18px 20px; }
 .ev-dl dt { font-family: var(--mono); font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
 .ev-dl dd { margin-top: 6px; font-size: 18px; font-weight: 600; color: var(--ink); line-height: 1.25; }
@@ -1788,17 +1788,17 @@ const PROJECTS = [
   {
     group: 'Product & AI', slug: 'lisa', title: 'Lisa AI Assistant', accent: 'AI Assistant',
     category: 'AI assistant · Product design', client: 'Personal project', year: '2026',
-    cover: 'lisa-1.png',
+    cover: 'lisa-1.webp',
     desc: 'Lisa is a personal AI assistant with a mascot, built as a single web page. She chats, keeps a daily task list, reads photos and files, remembers what matters to the person using her, and can ask a human for help. The interface has a day and a night mode, and the mascot changes mood as the conversation goes.',
-    gallery: ['lisa-1.png', 'lisa-2.png', 'lisa-3.png', 'lisa-4.png']
+    gallery: ['lisa-1.webp', 'lisa-2.webp', 'lisa-3.webp', 'lisa-4.webp']
   },
   {
     group: 'Product & AI', slug: 'fosso', title: 'Fosso Septic Monitoring', accent: 'Monitoring',
     category: 'Product design · UI/UX', client: 'Africa Design School × FIC', year: '2026',
-    cover: 'fosso-1.png', layout: ['full', 'full', 'full', 'full'],
+    cover: 'fosso-1.webp', layout: ['full', 'full', 'full', 'full'],
     desc: 'In Greater Cotonou, no household is connected to a sewer: every home relies on a septic tank, often emptied too late. Fosso puts a level sensor in the tank and alerts the household and the SGDS before it overflows. The household pays by mobile money, in one go or in instalments, and the SGDS schedules the emptying within 48 hours. A student concept from the Africa Design School M2 × FIC 2026 workshop: a presentation site, a household app and a supervision dashboard.',
     live: 'projects/fosso/', liveLabel: 'Open the prototype',
-    gallery: ['fosso-1.png', 'fosso-2.png', 'fosso-3.png', 'fosso-4.png']
+    gallery: ['fosso-1.webp', 'fosso-2.webp', 'fosso-3.webp', 'fosso-4.webp']
   },
   {
     group: 'Co-design', slug: 'situated-ai', title: 'Situated AI Workshop', accent: 'AI Workshop',
@@ -1811,39 +1811,39 @@ const PROJECTS = [
   {
     group: 'Web design', slug: 'sodeco', title: 'SODECO Website', accent: 'Website',
     category: 'Website design', client: 'SODECO (with SFP)', year: '2025',
-    thumb: 'sodeco-thumb.png', cover: 'sodeco-1.png',
+    thumb: 'sodeco-thumb.png', cover: 'sodeco-1.webp',
     desc: 'The Cotton Development Company (SODECO) is the leading cotton ginner in Africa. It controls the whole cotton value chain, which makes it a major player in Benin’s agriculture and industry.',
     live: 'https://www.figma.com/proto/gGc4iFesOenbIC7M6SLQfV/SODECO--Proposition?node-id=206-4006&viewport=-2285%2C-8033%2C0.29&t=eG77wObpPoxFA08U-1&scaling=min-zoom&content-scaling=fixed&starting-point-node-id=206%3A4006&page-id=0%3A1',
     liveLabel: 'View prototype',
-    gallery: ['sodeco-1.png', 'sodeco-2.png', 'sodeco-3.png', 'sodeco-4.png']
+    gallery: ['sodeco-1.webp', 'sodeco-2.webp', 'sodeco-3.webp', 'sodeco-4.webp']
   },
   {
     group: 'Web design', slug: 'nyouz-media', title: 'Nyouz Media', accent: 'Media',
     category: 'Web design · UI/UX', client: 'Emily', year: '2025',
-    thumb: 'nyouz-thumb.png', cover: 'nyouz-1.png',
+    thumb: 'nyouz-thumb.png', cover: 'nyouz-1.webp',
     desc: 'Nyouz is a news website for Gen Z. The interface is simple, articles are easy to share, and the news comes in a format young readers are used to.',
     live: 'https://www.figma.com/proto/sR6OXhpu7NdFVVCG2nXumO/Meryl-Agn?page-id=3065%3A2649&node-id=5592-15413&viewport=1767%2C-2265%2C0.13&t=4u64bvMvybah9tMI-1&scaling=scale-down-width&content-scaling=fixed&starting-point-node-id=5592%3A14739',
     liveLabel: 'View prototype',
-    gallery: ['nyouz-1.png', 'nyouz-2.png', 'nyouz-3.png', 'nyouz-4.png']
+    gallery: ['nyouz-1.webp', 'nyouz-2.webp', 'nyouz-3.webp', 'nyouz-4.webp']
   },
   {
     group: 'Brand identity', slug: 'greentech', title: 'GreenTech Brand Guidelines', accent: 'Brand Guidelines',
     credits: [{ name: 'Herman ZINZINDOHOUE', role: 'Graphic Designer' }],
     category: 'Brand identity', client: 'Greentech Holland', year: '2024',
-    thumb: 'greentech-thumb.png', cover: 'greentech-2.png', containFirst: true, layout: ['full', 'full', '', ''],
+    thumb: 'greentech-thumb.png', cover: 'greentech-2.webp', containFirst: true, layout: ['full', 'full', '', ''],
     desc: 'GreenTech City is an event about horticulture and technology in West Africa. The brief was an identity that stands out and brings together agricultural innovation, art and culture, nature and technology.',
     live: 'https://drive.google.com/file/d/1JEgwDjhd2CHjWUwhFcLqtCfHDP0y4NZm/view?usp=sharing', liveLabel: 'View guidelines',
-    gallery: ['greentech-1.png', 'greentech-2.png', 'greentech-3.png', 'greentech-4.png']
+    gallery: ['greentech-1.png', 'greentech-2.webp', 'greentech-3.webp', 'greentech-4.png']
   },
   {
     group: 'Web design', slug: 'chill-groove', title: 'Chill & Groove', accent: 'Groove',
     credits: [{ name: 'Alex Maurel CHEKETE', role: 'Graphic Designer' }],
     category: 'Event website', client: 'Vitalor', year: '2026',
-    thumb: 'chill-groove-thumb.png', cover: 'chill-groove-1.png',
+    thumb: 'chill-groove-thumb.webp', cover: 'chill-groove-1.webp',
     desc: 'Chill & Groove is a festival of Beninese culture: music, food, games and time spent together. The 2026 edition has local and international DJ sets, live entertainment and interactive activities.',
     live: 'https://www.figma.com/proto/2bu6pIB7qG0ly3kUUF4vJF/C-G---Proposition-2026?page-id=0%3A1&node-id=1943-24133&viewport=2625%2C-4420%2C0.12&t=XthHw6OO5STqNfUu-1&scaling=scale-down-width&content-scaling=fixed&starting-point-node-id=126%3A6463',
     liveLabel: 'View prototype',
-    gallery: ['chill-groove-1.png', 'chill-groove-2.png', 'chill-groove-3.png', 'chill-groove-4.png']
+    gallery: ['chill-groove-1.webp', 'chill-groove-2.webp', 'chill-groove-3.webp', 'chill-groove-4.png']
   }
 ];
 
@@ -1991,7 +1991,7 @@ const coverStage = p => COVERS[p.slug] ? `
 
 const track = document.getElementById('track');
 // [file, tile background, padding px, wide?]
-const PLOGO = { 'situated-ai': ['logo-ia-situee.svg', 'transparent', 0], lisa: ['logo-lisa.png', '#0b0714', 0], fosso: ['logo-fosso.svg', 'transparent', 0], sodeco: ['logo-sodeco.png', '#fff', 8, 1], 'nyouz-media': ['logo-nyouz.png', '#fff', 5, 1], greentech: ['logo-greentech.png', '#fff', 8], 'chill-groove': ['logo-chill-groove.png', '#3f0060', 4] };
+const PLOGO = { 'situated-ai': ['logo-ia-situee.svg', 'transparent', 0], lisa: ['logo-lisa.png', '#0b0714', 0], fosso: ['logo-fosso.svg', 'transparent', 0], sodeco: ['logo-sodeco.webp', '#fff', 8, 1], 'nyouz-media': ['logo-nyouz.png', '#fff', 5, 1], greentech: ['logo-greentech.png', '#fff', 8], 'chill-groove': ['logo-chill-groove.png', '#3f0060', 4] };
 const PCOLOR = { 'situated-ai': '#3f8f5f', lisa: '#6d3fd1', fosso: '#2f63d6', sodeco: '#268ba0', 'nyouz-media': '#ff2d3a', greentech: '#4c9854', 'chill-groove': '#7a28be' };
 const pad4 = n => String(n).padStart(4, '0');
 track.innerHTML = PROJECTS.map((p, i) => `
@@ -2457,7 +2457,7 @@ document.getElementById('contactForm').addEventListener('submit', e => {
 (() => {
   const root = document.documentElement, bar = document.getElementById('scrollBar'), light = document.getElementById('cursorLight');
   const fine = matchMedia('(hover: hover) and (pointer: fine)');
-  let tx = 0, ty = 0, cx = 0, cy = 0, lx = -999, ly = -999, ticking = false;
+  let tx = 0, ty = 0, cx = 0, cy = 0, lx = -999, ly = -999, plx = null, ply = null, ticking = false;
   const hero = () => document.querySelector('.hero');
   const vis = () => document.querySelector('.hero-visual.depth');
   function onScroll() {
@@ -2484,10 +2484,14 @@ document.getElementById('contactForm').addEventListener('submit', e => {
   }, { passive: true });
   document.addEventListener('pointerleave', () => light.classList.remove('on'));
   (function loop() {
-    cx += (tx - cx) * .08; cy += (ty - cy) * .08;
-    const v = vis();
-    if (v && !reduceMotion.matches) { v.style.setProperty('--hx', cx.toFixed(3)); v.style.setProperty('--hy', cy.toFixed(3)); }
-    light.style.transform = `translate(${lx}px, ${ly}px)`;
+    if (document.hidden) { requestAnimationFrame(loop); return; }
+    const mx = tx - cx, my = ty - cy;
+    if (Math.abs(mx) > .0005 || Math.abs(my) > .0005) {
+      cx += mx * .08; cy += my * .08;
+      const v = vis();
+      if (v && !reduceMotion.matches) { v.style.setProperty('--hx', cx.toFixed(3)); v.style.setProperty('--hy', cy.toFixed(3)); }
+    }
+    if (lx !== plx || ly !== ply) { light.style.transform = `translate(${lx}px, ${ly}px)`; plx = lx; ply = ly; }
     requestAnimationFrame(loop);
   })();
 })();

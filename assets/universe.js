@@ -115,7 +115,7 @@
     requestAnimationFrame(frame);
     if (document.hidden || root.classList.contains('perf-lite')) return;
     const t = (now - t0) / 1000;
-    if (small.matches && now - last < 33) return;
+    if (now - last < 33) return;
     last = now;
     smx += (mx - smx) * .05; smy += (my - smy) * .05; ssy += (sy - ssy) * .08;
     if (!shoot && t > nextShoot) { const ang = rnd(.25, .6), len = rnd(260, 420), dir = Math.random() < .5 ? 1 : -1; if (!CALM) shoot = { t, d: rnd(.7, 1.1), x: rnd(W * .15, W * .85), y: rnd(0, H * .4), dx: Math.cos(ang) * len * dir, dy: Math.sin(ang) * len }; nextShoot = t + rnd(5, 10); }

@@ -69,7 +69,7 @@
   document.head.appendChild(s);
 
   function start() {
-    const N = small.matches ? 5000 : 15000;   // lighter cloud: smoother on laptops and phones
+    const N = small.matches ? 4000 : 9000;   // lighter cloud: smoother on laptops and phones
     const SIZE = 512;
     const renderer = new THREE.WebGLRenderer({ canvas, antialias: false, alpha: true, powerPreference: 'high-performance' });
     renderer.setClearColor(0x000000, 0);
@@ -284,7 +284,7 @@
     addEventListener('pointermove', e => { ptX = e.clientX; ptY = e.clientY; lastMove = clock.elapsedTime; mouseish = e.pointerType === 'mouse'; }, { passive: true });
     addEventListener('pointerdown', e => { if (reduce.matches) return; group.updateMatrixWorld(true); const p = toLocal(e.clientX, e.clientY); mat.uniforms.uPulse.value.set(p.x, p.y, p.z, 0); pAge = 0; }, { passive: true });
     function resize() {
-      const w = innerWidth, h = innerHeight, dpr = Math.min(devicePixelRatio || 1, small.matches ? 1 : 1.25);
+      const w = innerWidth, h = innerHeight, dpr = 1;
       renderer.setPixelRatio(dpr); renderer.setSize(w, h, false);
       camera.aspect = w / h; camera.updateProjectionMatrix();
       mat.uniforms.uPx.value = dpr * (h / 800);
@@ -299,7 +299,7 @@
       if (document.hidden) return;                                   // nothing to draw in a background tab
       if (root.classList.contains('perf-lite')) return;              // lite mode: no continuous 3D
       const nowF = performance.now();
-      if (nowF - lastF < (small.matches ? 33 : 16)) return;           // 30 fps on phones, 60 max elsewhere
+      if (nowF - lastF < 33) return;           // 30 fps cap everywhere: the cloud is a backdrop, not the content
       lastF = nowF;
       const dt = Math.min(clock.getDelta(), .05), t = clock.elapsedTime;
       if (t - lastPick > .12) { lastPick = t; morph(pick()); }
