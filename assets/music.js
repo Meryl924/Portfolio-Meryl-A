@@ -246,23 +246,28 @@
     play(name) {
       if (!prefs.on || !this.ctx || this.ctx.state !== 'running') return;
       const when = this.ctx.currentTime + 0.005;
+      const jit = 1 + (Math.random() - 0.5) * 0.12;   // a tiny pitch change each time, so it never sounds mechanical
       switch (name) {
-        case 'hover':   // tiny dry grain
-          this._noise('highpass', 5200, 5200, 0.7, when, 0.002, 0.05, 0.03);
-          this._tone('sine', 2400, 2100, when, 0.002, 0.018, 0.05);
+        case 'hover':   // a soft glassy tick
+          this._tone('sine', 2500 * jit, 2900 * jit, when, 0.003, 0.022, 0.045, 0.15);
           break;
-        case 'click':   // low, clean click
-          this._tone('sine', 220, 58, when, 0.003, 0.32, 0.16, 0.15);
-          this._noise('bandpass', 2600, 1200, 1.4, when, 0.001, 0.14, 0.04);
+        case 'click':   // a bright, soft pop with a small glass ping
+          this._tone('sine', 480 * jit, 900 * jit, when, 0.004, 0.22, 0.09);
+          this._tone('sine', 1760 * jit, 1760 * jit, when + 0.01, 0.004, 0.04, 0.3, 0.35);
+          break;
+        case 'glide':   // moving to another section: a light airy sweep with two rising notes
+          this._noise('bandpass', 300, 2600, 0.9, when, 0.16, 0.06, 0.45, 0.35);
+          this._tone('sine', 587.33, 587.33, when + 0.05, 0.01, 0.035, 0.5, 0.5);
+          this._tone('sine', 880, 880, when + 0.13, 0.01, 0.03, 0.6, 0.5);
           break;
         case 'whoosh':  // moving from one page to another
-          this._noise('bandpass', 180, 2400, 1.1, when, 0.32, 0.16, 0.55, 0.4);
-          this._tone('sine', 90, 42, when + 0.05, 0.05, 0.18, 0.9, 0.3);
+          this._noise('bandpass', 250, 2200, 0.9, when, 0.22, 0.07, 0.6, 0.4);
+          this._tone('sine', 523.25, 523.25, when + 0.06, 0.01, 0.035, 0.6, 0.5);
+          this._tone('sine', 784, 784, when + 0.14, 0.01, 0.03, 0.7, 0.5);
           break;
-        case 'open':    // a project opens
-          this._tone('sine', 70, 38, when, 0.01, 0.34, 1.1, 0.4);
-          this._noise('lowpass', 900, 5200, 0.6, when, 0.12, 0.09, 0.6, 0.5);
-          this._tone('triangle', 880, 880, when + 0.08, 0.01, 0.03, 0.9, 0.6);
+        case 'open':    // a project opens: three soft notes going up
+          [659.25, 880, 1318.51].forEach((f, i) => this._tone('sine', f, f, when + i * 0.07, 0.008, 0.045 - i * 0.008, 0.9, 0.55));
+          this._noise('bandpass', 400, 3000, 0.8, when, 0.12, 0.04, 0.5, 0.4);
           break;
       }
     }
@@ -377,7 +382,7 @@
   });
   document.addEventListener('click', e => {
     const el = e.target.closest && e.target.closest('a, button');
-    if (el && el !== btn && !panel.contains(el)) S.play('click');
+    if (el && el !== btn && !panel.contains(el)) S.play(el.matches('a[href^="#"]') ? 'glide' : 'click');
   });
   addEventListener('hashchange', () => S.play(/^#\/project\//.test(location.hash) ? 'open' : 'whoosh'));
 
