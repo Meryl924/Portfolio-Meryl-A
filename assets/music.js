@@ -7,15 +7,14 @@
   const t = s => (window.I18N ? I18N.t(s) : s);
   const KEY = 'sound-v2';
   const TRACKS = [
-    { id: 'brume', name: 'Mist', desc: 'Low pad that breathes' },
-    { id: 'cristal', name: 'Crystal', desc: 'Distant bells and echo' },
-    { id: 'pulsation', name: 'Pulse', desc: 'Soft beat, 70 per minute' },
-    { id: 'abysse', name: 'Abyss', desc: 'Deep swell and breath' }
+    { id: 'nuit', name: 'Night sky', desc: 'Slow pads and twinkling notes' },
+    { id: 'aurore', name: 'Aurora', desc: 'Bright plucks and soft echo' },
+    { id: 'studio', name: 'Studio', desc: 'Warm chords and a light beat' },
+    { id: 'orbite', name: 'Orbit', desc: 'Airy arpeggio that drifts' }
   ];
   const prefs = { on: false, track: 0, music: 0.6, fx: 0.8 };
   try { Object.assign(prefs, JSON.parse(localStorage.getItem(KEY) || '{}')); } catch (_) {}
   const save = () => { try { localStorage.setItem(KEY, JSON.stringify(prefs)); } catch (_) {} };
-  const NOTES = [220, 261.63, 293.66, 329.63, 392, 440, 523.25, 587.33, 659.25, 784];   // A minor pentatonic
 
   const S = {
     ctx: null, master: null, musicBus: null, fx: null, verb: null, noise: null, cur: null, timer: 0,
@@ -75,7 +74,7 @@
       this.cur.out = out;
     },
 
-    /* ---------- ambiences ---------- */
+    /* ---------- ambiences: bright, blue, calm; all in D major or lydian ---------- */
     _pad(out, freqs, { type = 'sine', cutoff = 600, gains, lfoRate = 0.05, sweep = 0 } = {}) {
       const ctx = this.ctx, nodes = [];
       const filt = ctx.createBiquadFilter(); filt.type = 'lowpass'; filt.frequency.value = cutoff; filt.Q.value = 0.6; filt.connect(out);
@@ -90,85 +89,130 @@
       return nodes;
     },
     _stopper(nodes) { return () => nodes.forEach(n => { try { n.stop(); } catch (_) {} }); },
-    _bell(out, f, when, peak = 0.05, dec = 3.2, delay) {
+    _send(node, amount) { const w = this.ctx.createGain(); w.gain.value = amount; node.connect(w); w.connect(this.verb); },
+    _echo(out, time, feedback, level) {
+      const ctx = this.ctx, d = ctx.createDelay(2); d.delayTime.value = time;
+      const fb = ctx.createGain(); fb.gain.value = feedback; const dg = ctx.createGain(); dg.gain.value = level;
+      const lp = ctx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 3200;
+      d.connect(lp); lp.connect(fb); fb.connect(d); lp.connect(dg); dg.connect(out);
+      return d;
+    },
+    // a soft plucked note: sine plus a quiet octave, short attack, long fade
+    _pluck(out, f, when, peak, dec, echo, wet = 0.5) {
       const ctx = this.ctx;
-      [[1, 1], [2.76, 0.25], [5.4, 0.08]].forEach(([m, a]) => {
-        const o = ctx.createOscillator(), g = ctx.createGain(); o.type = 'sine'; o.frequency.value = f * m;
-        this._env(g, when, 0.004, peak * a, dec / m);
-        o.connect(g); g.connect(out); if (delay) g.connect(delay);
-        const w = ctx.createGain(); w.gain.value = 0.6; g.connect(w); w.connect(this.verb);
+      [[1, 1, 'sine'], [2, 0.28, 'triangle']].forEach(([m, a, type]) => {
+        const o = ctx.createOscillator(), g = ctx.createGain(); o.type = type; o.frequency.value = f * m;
+        this._env(g, when, 0.008, peak * a, dec);
+        o.connect(g); g.connect(out); if (echo) g.connect(echo); this._send(g, wet);
         o.start(when); o.stop(when + dec + 0.1);
       });
     },
-    _brume(out) {
-      const nodes = this._pad(out, [55, 82.4, 110.2, 164.8], { type: ['triangle', 'sine'], cutoff: 480, gains: [0.2, 0.1, 0.075, 0.04], sweep: 140 });
-      return { stop: this._stopper(nodes) };
-    },
-    _cristal(out) {
+
+    // 1. Night sky: slow pads that change chord, with a few high notes that twinkle (the original site music)
+    _nuit(out) {
       const ctx = this.ctx;
-      const nodes = this._pad(out, [110, 164.8, 220], { cutoff: 700, gains: [0.07, 0.04, 0.025], lfoRate: 0.04 });
-      const delay = ctx.createDelay(2); delay.delayTime.value = 0.46;
-      const fb = ctx.createGain(); fb.gain.value = 0.42; const dg = ctx.createGain(); dg.gain.value = 0.5;
-      delay.connect(fb); fb.connect(delay); delay.connect(dg); dg.connect(out);
-      let next = ctx.currentTime + 0.8;
+      const CH = [[73.42, 146.83, 220, 329.63, 369.99], [61.74, 123.47, 185, 293.66, 329.63], [98, 196, 293.66, 369.99, 440], [55, 110, 164.81, 220, 246.94]];
+      const SP = [587.33, 659.25, 739.99, 880, 987.77, 1174.66, 1479.98];
+      let step = 0, nextC = ctx.currentTime + 0.1, nextT = ctx.currentTime + 3;
+      const voice = (freq, when, len, level) => {
+        const o1 = ctx.createOscillator(), o2 = ctx.createOscillator();
+        o1.type = 'triangle'; o2.type = 'sine'; o1.frequency.value = freq; o2.frequency.value = freq; o1.detune.value = -5; o2.detune.value = 6;
+        const lp = ctx.createBiquadFilter(); lp.type = 'lowpass'; lp.Q.value = 0.4; lp.frequency.value = 500 + Math.random() * 300;
+        const lfo = ctx.createOscillator(), lg = ctx.createGain(); lfo.frequency.value = 0.05 + Math.random() * 0.07; lg.gain.value = 220; lfo.connect(lg); lg.connect(lp.frequency);
+        const g = ctx.createGain(); g.gain.setValueAtTime(0, when);
+        g.gain.linearRampToValueAtTime(level, when + 4.2); g.gain.setValueAtTime(level, when + len - 1); g.gain.linearRampToValueAtTime(0, when + len + 6.5);
+        o1.connect(lp); o2.connect(lp); lp.connect(g); g.connect(out); this._send(g, 0.55);
+        const end = when + len + 6.7; o1.start(when); o2.start(when); lfo.start(when); o1.stop(end); o2.stop(end); lfo.stop(end);
+      };
       return {
-        stop: this._stopper(nodes),
+        stop() {},
         tick: now => {
-          while (next < now + 0.3) {
-            const f = NOTES[3 + Math.floor(Math.random() * 7)];
-            this._bell(out, f, next, 0.045, 3.4, delay);
-            if (Math.random() < 0.3) this._bell(out, f * 1.5, next + 0.23, 0.02, 2.6, delay);
-            next += 1.1 + Math.random() * 2.2;
+          while (nextC < now + 0.3) { CH[step % 4].forEach((f, i) => voice(f, nextC + i * 0.35, 12, i === 0 ? 0.08 : 0.033)); step++; nextC += 12; }
+          while (nextT < now + 0.3) {
+            const f = SP[Math.floor(Math.random() * SP.length)], o = ctx.createOscillator(), g = ctx.createGain();
+            o.type = 'sine'; o.frequency.value = f; const peak = 0.018 + Math.random() * 0.02;
+            g.gain.setValueAtTime(0, nextT); g.gain.linearRampToValueAtTime(peak, nextT + 0.04); g.gain.exponentialRampToValueAtTime(0.0001, nextT + 4.5);
+            o.connect(g); g.connect(out); this._send(g, 0.6); o.start(nextT); o.stop(nextT + 4.7);
+            nextT += 2.2 + Math.random() * 4.8;
           }
         }
       };
     },
-    _pulsation(out) {
+
+    // 2. Aurora: bright plucked notes drifting over a soft pad, with a gentle echo
+    _aurore(out) {
       const ctx = this.ctx;
-      const nodes = this._pad(out, [110, 130.81, 164.81, 220], { type: 'sawtooth', cutoff: 700, gains: [0.03, 0.022, 0.02, 0.012], sweep: 450, lfoRate: 0.06 });
-      const beat = 60 / 70; let next = ctx.currentTime + 0.4, n = 0;
+      const nodes = this._pad(out, [146.83, 220, 293.66, 369.99], { cutoff: 900, gains: [0.05, 0.035, 0.03, 0.02], lfoRate: 0.045 });
+      const echo = this._echo(out, 0.39, 0.38, 0.45);
+      const notes = [587.33, 659.25, 739.99, 880, 987.77, 1174.66, 1318.51];   // D major pentatonic, high
+      let idx = 3, next = ctx.currentTime + 1;
+      const walk = [-2, -1, -1, 0, 1, 1, 2];
       return {
         stop: this._stopper(nodes),
         tick: now => {
           while (next < now + 0.3) {
-            const when = next;
-            const o = ctx.createOscillator(), g = ctx.createGain(); o.type = 'sine';
-            o.frequency.setValueAtTime(110, when); o.frequency.exponentialRampToValueAtTime(42, when + 0.22);
-            this._env(g, when, 0.004, 0.32, 0.5); o.connect(g); g.connect(out); o.start(when); o.stop(when + 0.6);
-            const s = ctx.createBufferSource(), f = ctx.createBiquadFilter(), hg = ctx.createGain();
-            s.buffer = this.noise; f.type = 'highpass'; f.frequency.value = 7000;
-            this._env(hg, when + beat / 2, 0.002, 0.025, 0.07); s.connect(f); f.connect(hg); hg.connect(out); s.start(when + beat / 2, Math.random()); s.stop(when + beat / 2 + 0.12);
-            if (n % 4 === 0) {
-              const b = ctx.createOscillator(), bg = ctx.createGain(); b.type = 'triangle'; b.frequency.value = n % 8 === 0 ? 55 : 41.2;
-              this._env(bg, when, 0.05, 0.12, beat * 3.6); b.connect(bg); bg.connect(out); b.start(when); b.stop(when + beat * 4);
+            if (Math.random() < 0.62) {
+              idx = Math.max(0, Math.min(notes.length - 1, idx + walk[Math.floor(Math.random() * walk.length)]));
+              this._pluck(out, notes[idx], next, 0.05, 1.7, echo);
             }
-            n++; next += beat;
+            next += 0.395;
           }
         }
       };
     },
-    _abysse(out) {
+
+    // 3. Studio: a warm, slow lo-fi groove, soft chords and a light beat
+    _studio(out) {
       const ctx = this.ctx;
-      const nodes = this._pad(out, [41.2, 55, 82.4], { cutoff: 260, gains: [0.22, 0.12, 0.05], lfoRate: 0.03 });
-      const s = ctx.createBufferSource(); s.buffer = this.noise; s.loop = true;
-      const f = ctx.createBiquadFilter(); f.type = 'lowpass'; f.frequency.value = 450; f.Q.value = 0.4;
-      const l = ctx.createOscillator(), lg = ctx.createGain(); l.frequency.value = 0.11; lg.gain.value = 320; l.connect(lg); lg.connect(f.frequency);
-      const g = ctx.createGain(); g.gain.value = 0.09;
-      const l2 = ctx.createOscillator(), lg2 = ctx.createGain(); l2.frequency.value = 0.11; lg2.gain.value = 0.06; l2.connect(lg2); lg2.connect(g.gain);
-      s.connect(f); f.connect(g); g.connect(out); s.start(); l.start(); l2.start();
-      nodes.push(s, l, l2);
-      let next = ctx.currentTime + 4;
+      const bus = ctx.createBiquadFilter(); bus.type = 'lowpass'; bus.frequency.value = 3400; bus.Q.value = 0.3; bus.connect(out);
+      const CH = [[146.83, 185, 220, 277.18], [123.47, 146.83, 185, 220], [98, 123.47, 146.83, 185], [110, 138.59, 164.81, 220]];   // Dmaj7 Bm7 Gmaj7 A6ish
+      const sx = 60 / 78 / 4; let n = 0, next = ctx.currentTime + 0.5;
+      return {
+        stop() {},
+        tick: now => {
+          while (next < now + 0.3) {
+            const when = next + (n % 2 ? 0.035 : 0), k = n % 16;
+            if (n % 32 === 0) CH[(n / 32) % 4 | 0].forEach((f, i) => {
+              [[1, 1, 'sine'], [2, 0.18, 'triangle']].forEach(([m, a, type]) => {
+                const o = ctx.createOscillator(), g = ctx.createGain(), lp = ctx.createBiquadFilter();
+                o.type = type; o.frequency.value = f * m; o.detune.value = (i - 1.5) * 4; lp.type = 'lowpass'; lp.frequency.value = 1500;
+                this._env(g, when + i * 0.02, 0.03, 0.12 * a, 4.4); o.connect(lp); lp.connect(g); g.connect(bus); this._send(g, 0.35);
+                o.start(when + i * 0.02); o.stop(when + 4.7);
+              });
+            });
+            if (k === 0 || k === 10) this._tone('sine', 130, 45, when, 0.004, 0.34, 0.28, 0, bus);
+            if (k === 8) { this._noise('bandpass', 1900, 1500, 0.8, when, 0.002, 0.07, 0.13, 0.2, bus); this._tone('sine', 190, 150, when, 0.002, 0.03, 0.09, 0, bus); }
+            if (n % 2 === 0) this._noise('highpass', 8000, 8000, 0.7, when, 0.001, n % 4 === 2 ? 0.026 : 0.016, 0.04, 0, bus);
+            else if (Math.random() < 0.15) this._noise('highpass', 6000, 6000, 0.5, when, 0.001, 0.008, 0.02, 0, bus);
+            n++; next += sx;
+          }
+        }
+      };
+    },
+
+    // 4. Orbit: a light electronic arpeggio that drifts, with a soft sub pulse
+    _orbite(out) {
+      const ctx = this.ctx;
+      const nodes = this._pad(out, [73.42, 110, 146.83], { cutoff: 500, gains: [0.07, 0.04, 0.03], lfoRate: 0.04 });
+      const filt = ctx.createBiquadFilter(); filt.type = 'lowpass'; filt.frequency.value = 1500; filt.Q.value = 1.2; filt.connect(out);
+      const sweep = ctx.createOscillator(), sg = ctx.createGain(); sweep.frequency.value = 0.07; sg.gain.value = 800; sweep.connect(sg); sg.connect(filt.frequency); sweep.start(); nodes.push(sweep);
+      const echo = this._echo(out, 60 / 104 * 0.75, 0.4, 0.4);
+      const sc = [293.66, 329.63, 369.99, 415.3, 440, 493.88, 554.37, 587.33];   // D lydian
+      const pat = [0, 2, 4, 7, 4, 2, 5, 3, 0, 2, 4, 6, 7, 6, 4, 2], bases = [0, 5, 3, 4];
+      const sx = 60 / 104 / 4; let n = 0, next = ctx.currentTime + 0.6;
       return {
         stop: this._stopper(nodes),
         tick: now => {
           while (next < now + 0.3) {
-            [220, 329.63, 392].forEach((fr, i) => {
-              const o = ctx.createOscillator(), og = ctx.createGain(); o.type = 'triangle'; o.frequency.value = fr * (Math.random() < 0.5 ? 1 : 0.5);
-              og.gain.setValueAtTime(0.0001, next); og.gain.linearRampToValueAtTime(0.018 - i * 0.004, next + 3); og.gain.exponentialRampToValueAtTime(0.0001, next + 8.5);
-              o.connect(og); og.connect(out); const w = ctx.createGain(); w.gain.value = 0.8; og.connect(w); w.connect(this.verb);
-              o.start(next); o.stop(next + 9);
-            });
-            next += 9 + Math.random() * 6;
+            const k = n % 16, base = bases[(n / 64 | 0) % 4];
+            if (Math.random() < 0.85) {
+              const i = (pat[k] + base) % 8, f = sc[i] * (pat[k] + base >= 8 ? 2 : 1) * (k % 8 === 0 ? 0.5 : 1);
+              const o = ctx.createOscillator(), g = ctx.createGain(); o.type = 'sawtooth'; o.frequency.value = f; o.detune.value = (Math.random() - 0.5) * 8;
+              this._env(g, next, 0.004, k % 4 === 0 ? 0.034 : 0.022, 0.22); o.connect(g); g.connect(filt); g.connect(echo); this._send(g, 0.3);
+              o.start(next); o.stop(next + 0.3);
+            }
+            if (k % 4 === 0) this._tone('sine', 73.42, 60, next, 0.01, 0.1, 0.35, 0, out);
+            n++; next += sx;
           }
         }
       };
@@ -176,19 +220,19 @@
 
     /* ---------- synthesis bricks ---------- */
     _env(g, when, a, peak, d) { g.gain.setValueAtTime(0.0001, when); g.gain.linearRampToValueAtTime(peak, when + a); g.gain.exponentialRampToValueAtTime(0.0001, when + a + d); },
-    _tone(type, f0, f1, when, a, peak, d, wet = 0) {
+    _tone(type, f0, f1, when, a, peak, d, wet = 0, dest) {
       const ctx = this.ctx, o = ctx.createOscillator(), g = ctx.createGain();
       o.type = type; o.frequency.setValueAtTime(f0, when); if (f1 !== f0) o.frequency.exponentialRampToValueAtTime(f1, when + a + d);
-      this._env(g, when, a, peak, d); o.connect(g); g.connect(this.fx);
+      this._env(g, when, a, peak, d); o.connect(g); g.connect(dest || this.fx);
       if (wet) { const w = ctx.createGain(); w.gain.value = wet; g.connect(w); w.connect(this.verb); }
       o.start(when); o.stop(when + a + d + 0.05);
     },
-    _noise(type, f0, f1, q, when, a, peak, d, wet = 0) {
+    _noise(type, f0, f1, q, when, a, peak, d, wet = 0, dest) {
       const ctx = this.ctx, s = ctx.createBufferSource(), f = ctx.createBiquadFilter(), g = ctx.createGain();
       s.buffer = this.noise; s.playbackRate.value = 0.8 + Math.random() * 0.4;
       f.type = type; f.Q.value = q; f.frequency.setValueAtTime(f0, when); if (f1 !== f0) f.frequency.exponentialRampToValueAtTime(f1, when + a + d);
       this._env(g, when, a, peak, d);
-      s.connect(f); f.connect(g); g.connect(this.fx);
+      s.connect(f); f.connect(g); g.connect(dest || this.fx);
       if (wet) { const w = ctx.createGain(); w.gain.value = wet; g.connect(w); w.connect(this.verb); }
       s.start(when, Math.random()); s.stop(when + a + d + 0.1);
     },
